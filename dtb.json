@@ -1,0 +1,1991 @@
+[
+{
+"title": "Guidepost To The Gardens 2000",
+"guid": "c7cf66d087764365910f089c44457630.16",
+"latlng": "47.609836,-122.183696"
+},
+{
+"title": "Spotted Towhee",
+"guid": "0410dd3229284bbda50458f43c55f99d.16",
+"latlng": "47.606939,-122.17656"
+},
+{
+"title": "Western Tanager",
+"guid": "7f01b6bfae6146838180b8a20a2dc0c3.16",
+"latlng": "47.606421,-122.176408"
+},
+{
+"title": "Sun Soil Water",
+"guid": "e89b0b2f4a4a438085c891a8dd5951bc.16",
+"latlng": "47.608562,-122.179645"
+},
+{
+"title": "Mulch",
+"guid": "f778127d637d4ba98c94cf079278073c.16",
+"latlng": "47.609297,-122.179722"
+},
+{
+"title": "Native Discovery",
+"guid": "763ad0b0a6c14e509ea5f33f93529263.11",
+"latlng": "47.608232,-122.178345"
+},
+{
+"title": "Yao Lantern",
+"guid": "b09ca8ade684449f8161a978d3ab60a5.11",
+"latlng": "47.608377,-122.177972"
+},
+{
+"title": "The Incredible Hardy Fern",
+"guid": "1d552faa720d4718a95e12c648bb249c.16",
+"latlng": "47.608744,-122.178687"
+},
+{
+"title": "Totempole ",
+"guid": "39c8542b72ae4232adbe9b35ca37846a.16",
+"latlng": "47.611483,-122.182019"
+},
+{
+"title": "Lake to Lake Trailhead",
+"guid": "21d75839af7b48afb5eb8bd762c26ffa.16",
+"latlng": "47.606429,-122.175173"
+},
+{
+"title": "Lake To Lake Trail Marker",
+"guid": "59c0f17172274d659c5334841f658743.16",
+"latlng": "47.606142,-122.175289"
+},
+{
+"title": "Pileated Woodpecker",
+"guid": "dab3faaead55481f8d88e5006fa05c55.16",
+"latlng": "47.606846,-122.176074"
+},
+{
+"title": "Tateuchi Pavilion",
+"guid": "13d34bbb380c4bb1b4fd015c0ac98d68.11",
+"latlng": "47.608967,-122.179245"
+},
+{
+"title": "Yao Obelisk 2000 ",
+"guid": "0e7026e47fd845669fb524cbd8b1c090.16",
+"latlng": "47.608519,-122.177672"
+},
+{
+"title": "Steller's Jay",
+"guid": "f2c56b6940aa4604b3e4e4f654e8de4d.16",
+"latlng": "47.606261,-122.176239"
+},
+{
+"title": "Bellevue Botanical Garden Fountain",
+"guid": "97f4ae7593a549468a0071a49ab074b8.16",
+"latlng": "47.609181,-122.179345"
+},
+{
+"title": "How will you be Remembered?",
+"guid": "bebe7678afe041b7a9dba78f3d6c76e9.16",
+"latlng": "47.608672,-122.179067"
+},
+{
+"title": "Partners",
+"guid": "9a70c9d258474d1f9b490bb1f158b47b.16",
+"latlng": "47.608754,-122.179818"
+},
+{
+"title": "Bellevue Botanical Garden",
+"guid": "4af38c520e7b445f99dcdf249d935632.11",
+"latlng": "47.609935,-122.178087"
+},
+{
+"title": "Impossible Balancing Rocks",
+"guid": "9a5d021243594ed09ef50c472bd1c1c0.16",
+"latlng": "47.608848,-122.18029"
+},
+{
+"title": "Bellevue Botanical Hobbit Hole",
+"guid": "f1b239d4e6454189bb1a85d04c188970.16",
+"latlng": "47.608625,-122.179352"
+},
+{
+"title": "Yao Garden Gate",
+"guid": "ce1a1cb8513f4b2c8aa18a4a3bb944a6.16",
+"latlng": "47.608706,-122.177996"
+},
+{
+"title": "Ridgewood Garden ",
+"guid": "883e2707a0da4799aef712d36c10fb6c.16",
+"latlng": "47.611062,-122.181767"
+},
+{
+"title": "Kyoto Garden Plaque",
+"guid": "8c7a3fdace894f3eb992271b4b947df6.16",
+"latlng": "47.611335,-122.182508"
+},
+{
+"title": "The Ever Changing Garden",
+"guid": "bcb3d0cf612d44588f88af78e411aa1e.16",
+"latlng": "47.608496,-122.180151"
+},
+{
+"title": "Bellevue Botanical Lost Meadow",
+"guid": "9489bd51377f4111bcb9f4262cf430be.16",
+"latlng": "47.60812,-122.179646"
+},
+{
+"title": "Sharp Cabin",
+"guid": "e38b2cdefe1b46c5b2c68a1c45776444.16",
+"latlng": "47.609646,-122.180388"
+},
+{
+"title": "Botanical Garden Trail Marker",
+"guid": "d082856b76bf4143a7950bc6daef4ca0.16",
+"latlng": "47.605633,-122.175165"
+},
+{
+"title": "Drip Irrigation",
+"guid": "a5f8b6d6b38443e092886516af6a50a0.16",
+"latlng": "47.609289,-122.18002"
+},
+{
+"title": "Wilburton Hill",
+"guid": "e5805bb08e68497b925bbe1b6dea6f9b.16",
+"latlng": "47.609942,-122.182552"
+},
+{
+"title": "Lost Meadow Trail",
+"guid": "f3fd5b6a79f542129ffca06801a16e48.16",
+"latlng": "47.607602,-122.178945"
+},
+{
+"title": "Bellevue Botanical: Carved Spire",
+"guid": "8d06f15dd8c04296ac7c4651784521d0.16",
+"latlng": "47.609076,-122.179564"
+},
+{
+"title": "The Nature of Sitting",
+"guid": "09b815e734774a568fa2801cb6c773e3.16",
+"latlng": "47.608354,-122.178995"
+},
+{
+"title": "Yao Garden",
+"guid": "70af7328f5984d798640fa3f07b68e20.16",
+"latlng": "47.608684,-122.178435"
+},
+{
+"title": "National Geodetic Survey Marker",
+"guid": "3480f54cc7244c5b8f054ef5ffcf7785.16",
+"latlng": "47.60463,-122.182835"
+},
+{
+"title": "Bellevue Botanical Alpine Garden",
+"guid": "d2f568014afa4813a477548e22c02dfa.16",
+"latlng": "47.609432,-122.179215"
+},
+{
+"title": "The Ravine Bridge",
+"guid": "971b63dc6b4e450a93fbe1dfbbe987fa.16",
+"latlng": "47.606359,-122.177582"
+},
+{
+"title": "Bellevue Botanical Garden Map",
+"guid": "9f8c321bed3d4334920acdfdb0857ad0.16",
+"latlng": "47.609,-122.178763"
+},
+{
+"title": "The Ravine Experience",
+"guid": "64a772a19744451cabfd978ff5165d20.16",
+"latlng": "47.606428,-122.177868"
+},
+{
+"title": "Eastside Heritage Center",
+"guid": "ea048c4953dd4953935b93ec249f42eb.12",
+"latlng": "47.61022,-122.182974"
+},
+{
+"title": "Bellevue Botanical Waterfall",
+"guid": "1a4369699f774a21a17fc4aa029da8fd.16",
+"latlng": "47.609193,-122.178908"
+},
+{
+"title": "Welcome to Bellevue Botanical Garden",
+"guid": "61195841ccc34b9e94edf42f8ff16da9.16",
+"latlng": "47.608487,-122.177292"
+},
+{
+"title": "Wilburton Park Trail",
+"guid": "60c23751185a40cb8eb4a2134e64632c.16",
+"latlng": "47.606891,-122.180308"
+},
+{
+"title": "Waterwise Gardening",
+"guid": "524f408252ec47d8a45c48c4d28c3639.16",
+"latlng": "47.609873,-122.179532"
+},
+{
+"title": "PACCAR Donation Bench",
+"guid": "a41ffda26f4e41c598b921b606a4e37b.16",
+"latlng": "47.607243,-122.17795"
+},
+{
+"title": "Death by Foot",
+"guid": "4181a65494414ab2a22fa0def0efa65c.16",
+"latlng": "47.607081,-122.177708"
+},
+{
+"title": "Tateuchi Loop Trail",
+"guid": "196aab2bffd54170a4b874d69006f5f9.16",
+"latlng": "47.607865,-122.178238"
+},
+{
+"title": "Bellevue Botanical: 17 Acres",
+"guid": "9648a2fcf12849e0a8d29d6b1e1673ab.16",
+"latlng": "47.607501,-122.177898"
+},
+{
+"title": "Grand Adapters",
+"guid": "616dc720b7ac4b06ad4465b172f1de8f.16",
+"latlng": "47.608833,-122.179567"
+},
+{
+"title": "Native Discovery Garden ",
+"guid": "ce14bddf239345a5b1cbe6e19060a7fb.16",
+"latlng": "47.608394,-122.178514"
+},
+{
+"title": "Salmon Sculpture",
+"guid": "05fb9d43ba9d43288c3c3b33d08dff44.16",
+"latlng": "47.600078,-122.210194"
+},
+{
+"title": "Chism Beach Trail Marker ",
+"guid": "07be2ac79bed4c9da0e4615b09053e00.16",
+"latlng": "47.602182,-122.210659"
+},
+{
+"title": "The SS Chism",
+"guid": "de2b42a277f44c25bf6333b5e5b2ed01.16",
+"latlng": "47.599833,-122.210704"
+},
+{
+"title": "Brenda Gomez Memorial",
+"guid": "5ce17a2b3655424e87c9c77fe1a8076e.16",
+"latlng": "47.599743,-122.210451"
+},
+{
+"title": "Clyde Beach Park",
+"guid": "477043f593aa4bd2b4ef7448ba8a4cc5.16",
+"latlng": "47.614277,-122.217872"
+},
+{
+"title": "Clyde Beach Park",
+"guid": "537b88f15669484aa5f1fd5eaffdfe4a.16",
+"latlng": "47.615073,-122.217261"
+},
+{
+"title": "Meydenbauer Beach Park Entrance",
+"guid": "8bae4463aa6f45b1b195ffa826cd1574.16",
+"latlng": "47.614415,-122.20976"
+},
+{
+"title": "Little free library",
+"guid": "609164c4777a4b988928f2c29e0dd31b.16",
+"latlng": "47.617464,-122.210687"
+},
+{
+"title": "Three Metal Pillars",
+"guid": "9894f3bc530d4a9ea2b5070ad110a030.16",
+"latlng": "47.612368,-122.21106"
+},
+{
+"title": "The Jolly Clyde",
+"guid": "f6eee2f856b34137911f407aa4ee6e41.16",
+"latlng": "47.614546,-122.217562"
+},
+{
+"title": "Grace Lutheran Church",
+"guid": "b08af5d032e34c0f8df5d0073fabe701.16",
+"latlng": "47.617134,-122.211359"
+},
+{
+"title": "Corner Cupcake",
+"guid": "19d0de25fa03419aa23de991eb4a9fa3.16",
+"latlng": "47.616384,-122.180788"
+},
+{
+"title": "City University of Seattle Library",
+"guid": "958d485ed8de4265a71bf028abe209fd.12",
+"latlng": "47.612105,-122.179894"
+},
+{
+"title": "Farmall Relic",
+"guid": "92b7e06f1733440dbe93fcae27aa4643.16",
+"latlng": "47.61771,-122.185037"
+},
+{
+"title": "Boozehalla",
+"guid": "d07566be7a814e3392b67eca90eea3a7.16",
+"latlng": "47.616102,-122.182206"
+},
+{
+"title": "The Pumphouse",
+"guid": "fb5d6e89eda641ca8fa2529f04d0d21b.16",
+"latlng": "47.61773,-122.183215"
+},
+{
+"title": "Overlake Hospital Waterfall",
+"guid": "63efef7d0dd74d84a2d7cb41357c134e.16",
+"latlng": "47.61906,-122.185995"
+},
+{
+"title": "The Long Pig",
+"guid": "b0e4f34002d0489da980be235f1a6640.16",
+"latlng": "47.618372,-122.184723"
+},
+{
+"title": "Uwajimaya Firepit",
+"guid": "61a81dd3555e4f2e89736ddd03d5e223.16",
+"latlng": "47.615578,-122.182104"
+},
+{
+"title": "Dragon of Sadako Cafe",
+"guid": "fd7eb173a71d4773aa4cb25d7441522a.16",
+"latlng": "47.615704,-122.182618"
+},
+{
+"title": "Heard it Through the GH Vine",
+"guid": "97805becfe3042eaba55e2ffa33a23fc.11",
+"latlng": "47.617521,-122.186049"
+},
+{
+"title": "Ampitheater For Flowers",
+"guid": "bb2dcdd66bd94c38a37ed6132db8d1fb.16",
+"latlng": "47.619795,-122.186249"
+},
+{
+"title": "Yippie Kai A",
+"guid": "89f29552ff2a43ebaaa30db2da7f8b95.16",
+"latlng": "47.603552,-122.185033"
+},
+{
+"title": "Lake To Lake Trail - Wilburton",
+"guid": "fe2d0e5a72904c429e1676fd27003ce5.16",
+"latlng": "47.603506,-122.18329"
+},
+{
+"title": "Bellevue Trail System Marker",
+"guid": "7c145e401e1f4f0cae44d66ae2cb036e.16",
+"latlng": "47.603974,-122.175904"
+},
+{
+"title": "Pond, Wilburton P&R Bus Stop Art",
+"guid": "56ba6fd4bd87475ebeb08e3b9cadc383.16",
+"latlng": "47.602744,-122.18526"
+},
+{
+"title": "McTavish Open Space Loop Trail",
+"guid": "b2dffb23668a4e4bad6d758ebd475dfc.16",
+"latlng": "47.599394,-122.175471"
+},
+{
+"title": "Bellevue Fire Station 7",
+"guid": "145d4931704f482ea10dda11d23ae551.12",
+"latlng": "47.60379,-122.181342"
+},
+{
+"title": "Pretty Power Boxes",
+"guid": "de00142f86fe4bbfa7be10fd1b6db80f.16",
+"latlng": "47.603598,-122.176825"
+},
+{
+"title": "Wilburton Trestle",
+"guid": "270c65c259094a83baac1becdced6c2d.16",
+"latlng": "47.601974,-122.180643"
+},
+{
+"title": "Lake to Lake Trail Marker",
+"guid": "0e8cc769d4614ee38384aa5704a1e5e1.16",
+"latlng": "47.602266,-122.185425"
+},
+{
+"title": "Animals Need Water",
+"guid": "64415266154648428fc7c471cd1c4900.16",
+"latlng": "47.601642,-122.184335"
+},
+{
+"title": "Wood Ridge",
+"guid": "3325d73475714b62ad6d610f309ed319.16",
+"latlng": "47.602175,-122.179025"
+},
+{
+"title": "Lake to Lake Trail Sign",
+"guid": "0e1036eb13ea426d9f29a9a834df483d.16",
+"latlng": "47.602541,-122.185674"
+},
+{
+"title": "Wilburton Sign",
+"guid": "f876acfe8e5942c19b71a7a7409bb594.16",
+"latlng": "47.603911,-122.176543"
+},
+{
+"title": "Mercer Slough Fish Ladder",
+"guid": "f759b11a3405470eab0f51c5ede06352.16",
+"latlng": "47.601414,-122.184491"
+},
+{
+"title": "Steel Bonsai Silhouette",
+"guid": "b3ab5bc0f0cd4f148ebdf6ccd6c670be.16",
+"latlng": "47.617154,-122.202101"
+},
+{
+"title": "Annie's Bench",
+"guid": "2111033b73304af3ae36cd8d1ca9cc43.16",
+"latlng": "47.612909,-122.205331"
+},
+{
+"title": "Nicholas and Marie O'Connell Memorial Bench",
+"guid": "a5ee13c07fee46dabaa8358614493eb8.16",
+"latlng": "47.612998,-122.202775"
+},
+{
+"title": "Family Life Memorial",
+"guid": "5438bb724de9404da7c98c381c6b729a.16",
+"latlng": "47.612356,-122.202771"
+},
+{
+"title": "Doxa Church",
+"guid": "41f5963d55de420aa68cdf04bcd9be79.11",
+"latlng": "47.616052,-122.198355"
+},
+{
+"title": "Horbach Plaza Memorial",
+"guid": "81b44dd1d3734c61ab7d726a3bc82320.16",
+"latlng": "47.619175,-122.19825"
+},
+{
+"title": "Chihuly's Splatter",
+"guid": "9181e59039804f2da0049ebd7101a0ed.16",
+"latlng": "47.617306,-122.201298"
+},
+{
+"title": "Completing The Circle",
+"guid": "7c8afa3539e44216a20698c4d0c87264.16",
+"latlng": "47.612123,-122.203975"
+},
+{
+"title": "New Bench In Loving Memory of Meegan ",
+"guid": "be312050d3634d1282d25b63ee4f43a1.16",
+"latlng": "47.613652,-122.204504"
+},
+{
+"title": "Bellevue Place Dedication",
+"guid": "2c4f68e9706d4087849bbe003768b366.16",
+"latlng": "47.618151,-122.199902"
+},
+{
+"title": "G. Spencer Russell",
+"guid": "15f61e1529cc4d30b2c3c549afbc09c9.16",
+"latlng": "47.61374,-122.20529"
+},
+{
+"title": "Transmuter Lamppost",
+"guid": "6adbe90be3fc426a81d778a0d89bfa0a.16",
+"latlng": "47.614287,-122.201876"
+},
+{
+"title": "Bellevue Chase Fountain",
+"guid": "c450af7914f045488b31c65d0ddb3b91.11",
+"latlng": "47.617551,-122.199421"
+},
+{
+"title": "Avalon sculpture",
+"guid": "0c5b971c4ff940aa9f85d40b26602163.16",
+"latlng": "47.619162,-122.202465"
+},
+{
+"title": "Cass Preston Memorial Bench",
+"guid": "d358a75aa5d3443d80a54a6a5b484ba6.16",
+"latlng": "47.613421,-122.204548"
+},
+{
+"title": "Forever our Angel",
+"guid": "99d737b3cc4a49cead377822e3a24b30.16",
+"latlng": "47.613428,-122.203876"
+},
+{
+"title": "We Make Games We Want to Play",
+"guid": "0f8b0984e72f4db4a9b3c3c1a117cbdb.16",
+"latlng": "47.615426,-122.198183"
+},
+{
+"title": "Carl Hoefener Memorial",
+"guid": "cc4bbdafd07a4ed1928395b46c0342ef.16",
+"latlng": "47.612356,-122.205625"
+},
+{
+"title": "Heart Bench",
+"guid": "52f31814342849f4bbb309e3a13d21fe.16",
+"latlng": "47.612778,-122.20255"
+},
+{
+"title": "Sea Mural Wall",
+"guid": "5c5bf0a083654c19b8d3eb92e8ef8947.16",
+"latlng": "47.614815,-122.200234"
+},
+{
+"title": "The Apple Web",
+"guid": "d3b35d812fb34b7ca108ecfef659934e.16",
+"latlng": "47.616395,-122.203981"
+},
+{
+"title": "Coleman Dock Totems",
+"guid": "8d8fa7f0885d4db799f16d6ca1bee35d.16",
+"latlng": "47.618677,-122.200303"
+},
+{
+"title": "Hollow Planet",
+"guid": "f00dda49a0fa4e92be092acc063ea2aa.16",
+"latlng": "47.616034,-122.201442"
+},
+{
+"title": "Full Circle",
+"guid": "cb333faa59574fdf99cd769f0d9a2006.16",
+"latlng": "47.616946,-122.202013"
+},
+{
+"title": "Marie's Garden Bellevue",
+"guid": "b108fe10403a4c48a20b7f1c6d90f152.16",
+"latlng": "47.612894,-122.202203"
+},
+{
+"title": "Bellgate",
+"guid": "ea6d98008a9a442ea78777c3df27f7f0.11",
+"latlng": "47.615691,-122.19872"
+},
+{
+"title": "Ivan Mclean",
+"guid": "3598a8867d4c48dca6fa9f1772f4861c.16",
+"latlng": "47.612094,-122.203312"
+},
+{
+"title": "Fish Ladder",
+"guid": "7da51199be634c6f8a35971ef495e985.16",
+"latlng": "47.61277,-122.201285"
+},
+{
+"title": "Forest Deity",
+"guid": "b589420bbb2e43e9a99120e55777d0bb.11",
+"latlng": "47.617259,-122.205669"
+},
+{
+"title": "Via Vita",
+"guid": "2c04b9a3f31b41cca63253c19897a990.16",
+"latlng": "47.619387,-122.198475"
+},
+{
+"title": "The Perfect Way to Start Each Day",
+"guid": "bd18678990ec49908e0733066dad838c.16",
+"latlng": "47.613324,-122.20491"
+},
+{
+"title": "Jim Webster Memorial Bench",
+"guid": "b28ed8e2a7bf4d33bf5c451229f75085.16",
+"latlng": "47.612316,-122.207262"
+},
+{
+"title": "Headless Fairy on a Go-kart",
+"guid": "6818b8ec743f44aab6112162b060827b.16",
+"latlng": "47.616374,-122.201028"
+},
+{
+"title": "The Golden Seamster",
+"guid": "6258a8fd040242f9a62168c256a9d41c.16",
+"latlng": "47.618046,-122.204208"
+},
+{
+"title": "Cypress Monolith",
+"guid": "51e81d2592554cc7a62b2342f48dc498.16",
+"latlng": "47.615667,-122.200445"
+},
+{
+"title": "Goddard Park",
+"guid": "e04fd7310310422a9be1705fb4404f32.16",
+"latlng": "47.616564,-122.20719"
+},
+{
+"title": "Washington Square Waterfall",
+"guid": "920243462f6740d493ff13981db21e4d.16",
+"latlng": "47.618731,-122.197956"
+},
+{
+"title": "Bellevue Square Time Capsule",
+"guid": "279b06bf87dd4835a469b894d1ed53a4.16",
+"latlng": "47.616252,-122.205302"
+},
+{
+"title": "Hyatt Place Fountain",
+"guid": "9eb27f0401d94d8dbdfb1596cf346ef9.16",
+"latlng": "47.618099,-122.200302"
+},
+{
+"title": "Bellevue Square",
+"guid": "a250aa25cde543939874c9e6f0b16d6b.11",
+"latlng": "47.615534,-122.203786"
+},
+{
+"title": "Paccar Wing Sculpture",
+"guid": "945a18e8edb24c76940b9c14bc651e6a.16",
+"latlng": "47.616543,-122.199684"
+},
+{
+"title": "Lodge Sculpture ",
+"guid": "1792d19d10274615a9bb98c74ad6c2b6.16",
+"latlng": "47.616873,-122.202287"
+},
+{
+"title": "Bellevue Portholes",
+"guid": "e29f629200584aa2bdc0bb0bae5fd72f.11",
+"latlng": "47.615642,-122.201902"
+},
+{
+"title": "Mary Kinkle Cahill Memorial",
+"guid": "d8a4ef65fb1745139da44e425182b6b4.16",
+"latlng": "47.613385,-122.203599"
+},
+{
+"title": "Half Mile Loop",
+"guid": "9542bb3c2008447bb98d363b08fa3a1c.16",
+"latlng": "47.613305,-122.204273"
+},
+{
+"title": "Din Tai Fung",
+"guid": "80a1b4295f9e4ab58092bced78178c97.16",
+"latlng": "47.617322,-122.200713"
+},
+{
+"title": "Bellevue Square Fountain",
+"guid": "2f14023120f94eb3b9739cc62cfce580.16",
+"latlng": "47.615593,-122.201988"
+},
+{
+"title": "Hidden Sun",
+"guid": "d65a522bd47740a685e032d0f99a69aa.16",
+"latlng": "47.61594,-122.201851"
+},
+{
+"title": "Martin and Josephine Jastad Memorial",
+"guid": "71c22ef333f44019967f4a2f96c320cd.16",
+"latlng": "47.613291,-122.203365"
+},
+{
+"title": "Mam-kiya",
+"guid": "e94f5fb5018142beb056cb66b1a31952.11",
+"latlng": "47.614414,-122.19867"
+},
+{
+"title": "Downtown Bellevue Park",
+"guid": "f4e8a2f1e3c040dab0b0b17329713d35.16",
+"latlng": "47.613741,-122.206805"
+},
+{
+"title": "Arch Building Mural",
+"guid": "baace941cc5246b1a0ebccef915cc080.16",
+"latlng": "47.617538,-122.199872"
+},
+{
+"title": "Eastside Heritage Plaque",
+"guid": "bb7cddf2f41340f6a46ddac324f71f10.16",
+"latlng": "47.61268,-122.204574"
+},
+{
+"title": "Water,  Precious Water",
+"guid": "f9174f1acad84c0eb0db797fbced539c.16",
+"latlng": "47.612224,-122.202586"
+},
+{
+"title": "Water Stairs, Bellevue",
+"guid": "5893ca64fc944cab8e74ff0710b6b468.16",
+"latlng": "47.613166,-122.205114"
+},
+{
+"title": "California Pizza Kitchen Fountain",
+"guid": "4d09825154934cb9973ba9d4e222b937.16",
+"latlng": "47.615486,-122.19909"
+},
+{
+"title": "Chelsea Marie Howe Memorial",
+"guid": "8bb5c9bba7a54da7849146ff6174e24d.16",
+"latlng": "47.613023,-122.20301"
+},
+{
+"title": "Sun, Moon and Stars",
+"guid": "088258b320054befa3f53ae1bad39bfc.16",
+"latlng": "47.616673,-122.200427"
+},
+{
+"title": "Unconcealed Column",
+"guid": "54669537b78d43a4b384369a8e5426a0.16",
+"latlng": "47.613074,-122.203842"
+},
+{
+"title": "Three Graces",
+"guid": "ac8d257a513446c2bca4d4bba2ae97b5.11",
+"latlng": "47.613622,-122.203851"
+},
+{
+"title": "Shining Diamonds",
+"guid": "55edec4dc87e4961bf8429c226c03bb7.16",
+"latlng": "47.614705,-122.201804"
+},
+{
+"title": "I Want You to Thrive",
+"guid": "6472c5fb77a447b3a2566e943a2e3ea0.16",
+"latlng": "47.613678,-122.204777"
+},
+{
+"title": "Russalka",
+"guid": "fa1c80ef71084c66befab1a76294e87a.16",
+"latlng": "47.613993,-122.197733"
+},
+{
+"title": "Downtown Bellevue Park Fountain",
+"guid": "efa2415e29e644338b5e277d287fd9b1.11",
+"latlng": "47.613586,-122.204234"
+},
+{
+"title": "Rods of Damocles",
+"guid": "74db4f62ea994c3c87f14041b670ad02.16",
+"latlng": "47.614197,-122.201592"
+},
+{
+"title": "Wind Spoons",
+"guid": "608855ed90de444398f0b82ae9592920.11",
+"latlng": "47.612092,-122.205794"
+},
+{
+"title": "Kemper Freeman Memorial",
+"guid": "9c8451ac2e2a4e59821d756d3f3ef0b5.16",
+"latlng": "47.61501,-122.204587"
+},
+{
+"title": "Homegrown Waterfall",
+"guid": "322434ce840f43ba92634c62982b8e9a.16",
+"latlng": "47.615313,-122.198732"
+},
+{
+"title": "Mama Pat Memorial",
+"guid": "ac201db69fce4c42ba211a048bdff86d.16",
+"latlng": "47.612669,-122.202806"
+},
+{
+"title": "Blue Man Smoking",
+"guid": "30bb7f35d7304e698f954a869afd31ce.16",
+"latlng": "47.619626,-122.203195"
+},
+{
+"title": "Mini Park Statue",
+"guid": "f83fcbe107964d9c9f1f65f15b5fe344.16",
+"latlng": "47.612634,-122.20321"
+},
+{
+"title": "Arc with Four Forms",
+"guid": "bbc156d1e4bd4ae697a0b129ae181fdf.11",
+"latlng": "47.613439,-122.203109"
+},
+{
+"title": "Bellevue Place Fountain",
+"guid": "7ca1a3394af14f539c8e8821ab52e518.16",
+"latlng": "47.617912,-122.200944"
+},
+{
+"title": "Audrey Criley Memorial",
+"guid": "bfcb6a83d0164d79b31a44292223435b.16",
+"latlng": "47.612823,-122.205645"
+},
+{
+"title": "Little Free Library #5515",
+"guid": "c0a4675eaf3a4c31bf34a1a549ff68bb.16",
+"latlng": "47.61466,-122.208638"
+},
+{
+"title": "Are you a Mod?",
+"guid": "846a33217c784f50a78e0ca6fa87dbe9.11",
+"latlng": "47.613162,-122.201883"
+},
+{
+"title": "Leafy Crosswalk",
+"guid": "f0ea25d18b8f4223846edd5e296dd826.16",
+"latlng": "47.61832,-122.204295"
+},
+{
+"title": "Summer Rose Scott and Kehran Carr II Memorial  ",
+"guid": "c2b293733f1544bcbc03391b846ab463.16",
+"latlng": "47.613305,-122.202466"
+},
+{
+"title": "Blast Off",
+"guid": "fc384b6d0a124113b981bdae52f1c105.16",
+"latlng": "47.616276,-122.204679"
+},
+{
+"title": "University Book Store",
+"guid": "471c631a56654750825302c1b6e9ac92.16",
+"latlng": "47.61876,-122.20426"
+},
+{
+"title": "Ballet Arts Center",
+"guid": "ccf01118878f46f993283160e4b76a51.16",
+"latlng": "47.612126,-122.206655"
+},
+{
+"title": "Something Silver",
+"guid": "9795da7cf4294717a394ef792d8057f7.16",
+"latlng": "47.615311,-122.203127"
+},
+{
+"title": "Fairy Tale Mural",
+"guid": "b53c433a0b004592b863190246ef94c7.16",
+"latlng": "47.617286,-122.199266"
+},
+{
+"title": "Lest We Forget",
+"guid": "06874bf64a2d4375988ea867e558596a.16",
+"latlng": "47.612764,-122.204046"
+},
+{
+"title": "Dragon Bench",
+"guid": "598ca83093944fe588a66e7b46837fc3.16",
+"latlng": "47.617335,-122.204087"
+},
+{
+"title": "Once Upon A Time",
+"guid": "0352b89c263348859415ae52b55ff397.16",
+"latlng": "47.617548,-122.204814"
+},
+{
+"title": "Bellevue Square Clock Tower",
+"guid": "645cc67a704c4c24a1c9a9c227c1f395.11",
+"latlng": "47.615674,-122.20142"
+},
+{
+"title": "Endless Celebration",
+"guid": "861cb1f00d634aa4b2fc008ddb6d7a5e.12",
+"latlng": "47.61762,-122.20151"
+},
+{
+"title": "Paris In the Window",
+"guid": "f6ddbf8ce9f54a278f76e574c89150b6.16",
+"latlng": "47.617116,-122.198116"
+},
+{
+"title": "Qfc Mural of Seattle",
+"guid": "b063970d409146f5bad59fd4510cef19.16",
+"latlng": "47.618611,-122.20481"
+},
+{
+"title": "100th NE & NE 8th Bus Stop",
+"guid": "a4a429ed06ae4374aa7ccbd7dfe54339.16",
+"latlng": "47.617511,-122.207727"
+},
+{
+"title": "The Silver Spire",
+"guid": "03f3d967ee4c47bd83e3d4b0b10d35d4.16",
+"latlng": "47.612637,-122.19866"
+},
+{
+"title": "Ferrous Furball",
+"guid": "83c95905467848b092f69a655dd4e120.16",
+"latlng": "47.617827,-122.197837"
+},
+{
+"title": "Bellevue Square Water Tower",
+"guid": "43544a19e56b4743b1fff20acc43b33d.16",
+"latlng": "47.615607,-122.204802"
+},
+{
+"title": "Bellevue Bucks for Pace",
+"guid": "cff6e87348634798b1950b7196bfb34f.16",
+"latlng": "47.619544,-122.205543"
+},
+{
+"title": "Ice Sculpture",
+"guid": "21c4ac7d768a45fda7f7830695e5e581.16",
+"latlng": "47.613985,-122.200923"
+},
+{
+"title": "Downtown Bellevue Bells",
+"guid": "772a5a407e8a4ae38cc575426b6f811e.16",
+"latlng": "47.613751,-122.201311"
+},
+{
+"title": "Bellevue Arts Museum",
+"guid": "a4cc26e2b5664157a7c9204d4fec86ea.12",
+"latlng": "47.615275,-122.201434"
+},
+{
+"title": "Blood And Water",
+"guid": "339dcbf512344b278cfbdc2da1e72265.16",
+"latlng": "47.612102,-122.2049"
+},
+{
+"title": "The City Within the City",
+"guid": "5e74052ccadf420b97537c47a80ee0a2.16",
+"latlng": "47.615488,-122.198572"
+},
+{
+"title": "Mother and Baby ",
+"guid": "18b1285222484bf193b53ab3a3945f4e.16",
+"latlng": "47.612127,-122.198123"
+},
+{
+"title": "Bellevue Boys & Girls Club Bell",
+"guid": "3b1a93830dec49d7bfdcea449c5aec6f.16",
+"latlng": "47.612609,-122.207895"
+},
+{
+"title": "Birds And Flowers Mural",
+"guid": "50a4a39f34dd4b2cbd08ed2102931aa4.16",
+"latlng": "47.613064,-122.198751"
+},
+{
+"title": "Forward Into The City",
+"guid": "c680a6d531bd4d12b6a0c31b2cc0c740.16",
+"latlng": "47.616692,-122.198849"
+},
+{
+"title": "Goddard Park Plaque",
+"guid": "d8b093735dcd43278bac317848549c27.16",
+"latlng": "47.616425,-122.207481"
+},
+{
+"title": "Bellevue Downtown Park",
+"guid": "38510c46581b4fa99bc936ae82db4583.11",
+"latlng": "47.613688,-122.201847"
+},
+{
+"title": "Lincoln Square Fiori",
+"guid": "18efaf05c7394271b13498470b741950.16",
+"latlng": "47.616845,-122.20143"
+},
+{
+"title": "Christopher C. Steele Memorial Bench",
+"guid": "dabb02d181d54cbb92d04bdda9a826e2.16",
+"latlng": "47.613229,-122.203297"
+},
+{
+"title": "Legend of DTF Mural",
+"guid": "095e7994b2e64c1796e7c280c35b39d5.16",
+"latlng": "47.617028,-122.200933"
+},
+{
+"title": "Class of 1964 Memorial",
+"guid": "91d68150e59040fab7adc94dd44a5891.16",
+"latlng": "47.612529,-122.202477"
+},
+{
+"title": "Safeway Waterfall",
+"guid": "9c12ea4bdb89414e9ee1885d3b17d268.16",
+"latlng": "47.613085,-122.200859"
+},
+{
+"title": "Downtown Bellevue Bells",
+"guid": "c38fa909f7bc4949ac284a123fca8ba6.16",
+"latlng": "47.615719,-122.198351"
+},
+{
+"title": "Greek Spa Relief Mural at Orvis",
+"guid": "c7f3ed13b4254040b4ff439f4df686ed.16",
+"latlng": "47.618997,-122.203151"
+},
+{
+"title": "Tiny Metal Bicycle in Circle",
+"guid": "59d93167515e4f72a9e1044a91215fec.16",
+"latlng": "47.613766,-122.199946"
+},
+{
+"title": "Cracked Pillar",
+"guid": "5048f66b68bd400e880f6f623c77949f.16",
+"latlng": "47.613662,-122.203295"
+},
+{
+"title": "Hear Taste See Smell Feel",
+"guid": "56289f6c63c84f8f92593e5dd747a934.16",
+"latlng": "47.612788,-122.207066"
+},
+{
+"title": "Olympic Topographic Map",
+"guid": "4ba1e6bb19b04e9690e44fe0db3f8c9c.16",
+"latlng": "47.613295,-122.202914"
+},
+{
+"title": "Monsters Take Seattle Mural",
+"guid": "c1352069b4c44191be7b1c4553d3514c.16",
+"latlng": "47.613384,-122.201775"
+},
+{
+"title": "Eye Of Sauron",
+"guid": "3ae7fc25d32a45f699bfc9090a19e9a2.16",
+"latlng": "47.61897,-122.202417"
+},
+{
+"title": "Giga Now",
+"guid": "f528c1ff30a44d0bb3c31b2e5e68140c.11",
+"latlng": "47.613022,-122.202697"
+},
+{
+"title": "I Am Haunted by Waters",
+"guid": "184df1199b1b467dab203124d610d58d.16",
+"latlng": "47.612155,-122.20462"
+},
+{
+"title": "Home Furnishings",
+"guid": "b6f3314846b444349fb3e9f0ff9c07df.16",
+"latlng": "47.610338,-122.196486"
+},
+{
+"title": "Parot de Aztec",
+"guid": "a9acad1bbb0a49c097aa3f8f31dacd7b.16",
+"latlng": "47.611484,-122.189781"
+},
+{
+"title": "Bellevue Club Fountain of Hope",
+"guid": "e7c8493d4e784a53a6292e2e90a2d60a.16",
+"latlng": "47.605203,-122.18933"
+},
+{
+"title": "Bellevue Club",
+"guid": "b0982572908b45e996ab9c82228f5c75.16",
+"latlng": "47.604684,-122.189208"
+},
+{
+"title": "First Congregational Church Of Bellevue Bell",
+"guid": "3a93c7782818429aa225b6b30cb1fcc1.16",
+"latlng": "47.611534,-122.192547"
+},
+{
+"title": "Three Piece Lobby Art",
+"guid": "4d082d5ee2f540088f6e393bbe9a4555.16",
+"latlng": "47.610287,-122.197009"
+},
+{
+"title": "Bells Bellevue Downtown Map",
+"guid": "8286a8a593154d9f915e047388cc2e4c.16",
+"latlng": "47.610202,-122.19101"
+},
+{
+"title": "Bellevue Fountain",
+"guid": "0e84055a3d044530979a655cedf4601b.16",
+"latlng": "47.606559,-122.188308"
+},
+{
+"title": "Fish Sailor",
+"guid": "b57412a642af4ffb90710834262b8dfd.16",
+"latlng": "47.611404,-122.197084"
+},
+{
+"title": "First Congregational Church",
+"guid": "763ecb1f70ff40cbab09a155d03d7256.16",
+"latlng": "47.611886,-122.19261"
+},
+{
+"title": "Bellevue Dancing Horses",
+"guid": "b2ff2fec59154c5790442c62f552f84d.16",
+"latlng": "47.611659,-122.197272"
+},
+{
+"title": "Surrey Downs",
+"guid": "ffab3139a97748488f4755690f4eee9d.16",
+"latlng": "47.60989,-122.193985"
+},
+{
+"title": "Broken Fountain ",
+"guid": "653be1ebabd746e4ac0c581ca5cc5636.16",
+"latlng": "47.610186,-122.191423"
+},
+{
+"title": "Jonah's",
+"guid": "0be742b5b37d411abbe9507fa8e529be.16",
+"latlng": "47.608527,-122.189223"
+},
+{
+"title": "Steel Alloy 40 Church Bell",
+"guid": "040326657aab408697d03cc201cfde2a.16",
+"latlng": "47.611438,-122.192783"
+},
+{
+"title": "Tru Tina",
+"guid": "5b454ef2f9f34ecc8a7923715b5607db.16",
+"latlng": "47.609994,-122.195015"
+},
+{
+"title": "Main Street Market Place Clock",
+"guid": "c1a262419dd54417a9c7c681c6a13199.16",
+"latlng": "47.610327,-122.195968"
+},
+{
+"title": "Bingham Company Sculpture",
+"guid": "76606e5c0a9046bbaf72eae567b32798.16",
+"latlng": "47.609972,-122.195954"
+},
+{
+"title": "Trail Split off",
+"guid": "44c36f64c26f49f2aa7738a4b6e0a249.16",
+"latlng": "47.599706,-122.173808"
+},
+{
+"title": "McTavish Trail Head",
+"guid": "3e3b6a72ab0b44d0a210a1187a8af1aa.16",
+"latlng": "47.60144,-122.174781"
+},
+{
+"title": "Trail Marker To NE 8th Street",
+"guid": "f1f2a669b91544f5947f321c63a0316b.16",
+"latlng": "47.616538,-122.169666"
+},
+{
+"title": "8th St. Art 1996-2005",
+"guid": "0e3ba8b9db67488da75fd7a6ea135240.16",
+"latlng": "47.617247,-122.173426"
+},
+{
+"title": "NE 8th Art Wall: Brookwood ",
+"guid": "2759a890c4b54917b96c0720597352c2.16",
+"latlng": "47.617139,-122.167769"
+},
+{
+"title": "Trail Marker to NE 2nd St ",
+"guid": "f9675bbf1952433081fd033ed949039a.16",
+"latlng": "47.612211,-122.172257"
+},
+{
+"title": "NE 8th Art Wall Scholastic",
+"guid": "ab7cc2f86b254849aabb16e6346592c9.16",
+"latlng": "47.617227,-122.174476"
+},
+{
+"title": "NE 8th Art Wall: Glendale ",
+"guid": "6c16306788744d43abb3c00c12cec3c8.16",
+"latlng": "47.617165,-122.172183"
+},
+{
+"title": "NE 8th Art Wall: Northern Glendale",
+"guid": "b4d7bd7de802480a8f98f8de31f5c24d.16",
+"latlng": "47.617425,-122.172653"
+},
+{
+"title": "Pictures Art Wall",
+"guid": "e690d372e25744e9810ad712747a6426.16",
+"latlng": "47.617228,-122.174767"
+},
+{
+"title": "Meydenbauer Beach Playground",
+"guid": "40751ca76f7648659d159e2b2d5d34ed.16",
+"latlng": "47.611406,-122.211701"
+},
+{
+"title": "Brass Compass",
+"guid": "4d94b2e3acaf4ecba1bde2d14f6b021b.16",
+"latlng": "47.611295,-122.211449"
+},
+{
+"title": "Bellevue marina ",
+"guid": "2d2b9c0487fc4c46bf786377211047e1.16",
+"latlng": "47.610378,-122.209981"
+},
+{
+"title": "Bench For Jo Borgford",
+"guid": "f83d08c0e8974dd88151b2d204272c8b.16",
+"latlng": "47.61115,-122.211181"
+},
+{
+"title": "First Church of Christ Scientist",
+"guid": "324083c8542a44b1a11033437c2c651f.16",
+"latlng": "47.616978,-122.220693"
+},
+{
+"title": "Jagged Edge",
+"guid": "9a1cc8dc84094151bfeb5649a6a4495a.16",
+"latlng": "47.611581,-122.204511"
+},
+{
+"title": "D.A.R.E. Bench",
+"guid": "0c1d3edef27c467f8b2fe73e8e067e59.16",
+"latlng": "47.611802,-122.20518"
+},
+{
+"title": "Bunny Bench",
+"guid": "2608c8efccc44bad90bd006590ad6b54.16",
+"latlng": "47.610216,-122.204331"
+},
+{
+"title": "Judith Ann Paup Memorial",
+"guid": "50e381556c0f4476be96727532a8a0a7.16",
+"latlng": "47.611646,-122.20648"
+},
+{
+"title": "Mercato Stellina Pizzeria ",
+"guid": "83f38b20f76e47a0abc75dda453b7991.16",
+"latlng": "47.610273,-122.205656"
+},
+{
+"title": "Memorial Bench",
+"guid": "15d6b6871fbe467bb269612aa0bda5c1.16",
+"latlng": "47.611819,-122.206284"
+},
+{
+"title": "Meydenbauer Bay Fountain",
+"guid": "0b944bf19f50409db00c3f3a16d64d87.11",
+"latlng": "47.608501,-122.205569"
+},
+{
+"title": "Pop's Bench",
+"guid": "301b1cd1a7ed478e84f9bdee6f3da3fe.16",
+"latlng": "47.611653,-122.204809"
+},
+{
+"title": "Shepherd II",
+"guid": "4a305c90570a4227bb75243bd57c07f5.16",
+"latlng": "47.611802,-122.204403"
+},
+{
+"title": "Ginza Mt. Fuji Painting ",
+"guid": "16b6da60351b48dea192532b73b6a9ce.16",
+"latlng": "47.609775,-122.204283"
+},
+{
+"title": "You Don't Have to Grow Up",
+"guid": "2aa5fc185eea4fe5883f1517d698c50a.16",
+"latlng": "47.61199,-122.205419"
+},
+{
+"title": "Giant's Thumbprint",
+"guid": "b221e74ca4b941818bb36f10ac398353.16",
+"latlng": "47.608551,-122.204677"
+},
+{
+"title": "Courtyard Fountain",
+"guid": "e808cdf69a5d44c39156af4dc03d878d.16",
+"latlng": "47.609487,-122.203989"
+},
+{
+"title": "Park Map",
+"guid": "20e43d653c314f598d6159fc42415d0a.16",
+"latlng": "47.611763,-122.203936"
+},
+{
+"title": "Bellevue Wildwood Park",
+"guid": "593e23d888e148f98f6c08259c741d9b.16",
+"latlng": "47.608652,-122.204229"
+},
+{
+"title": "Wildwood Walking Park",
+"guid": "a7dccc56b79e4b0b8d739f6c966523af.16",
+"latlng": "47.608049,-122.205287"
+},
+{
+"title": "Downtown Bellevue Map",
+"guid": "5b4f01bb23534f41b4e62f7e2a85cab0.16",
+"latlng": "47.610114,-122.203862"
+},
+{
+"title": "Meydenbauer Bay Yacht Club",
+"guid": "43fa503065404f97b1b1112f689500e8.16",
+"latlng": "47.608864,-122.206946"
+},
+{
+"title": "The Bells",
+"guid": "57a4c286b5b8495e8338a651b5a2644e.16",
+"latlng": "47.61049,-122.199131"
+},
+{
+"title": "Golden Cycle",
+"guid": "7c37c18ff23543d8aab30db94dea6efa.16",
+"latlng": "47.611638,-122.201724"
+},
+{
+"title": "Downtown Bellevue Park",
+"guid": "2dd35e8ce688464390afa3258ed436e6.16",
+"latlng": "47.611388,-122.206718"
+},
+{
+"title": "Inspiration Playground ",
+"guid": "21b79484fb3f4b8f8e1680a3e5b5e4a6.16",
+"latlng": "47.611838,-122.205922"
+},
+{
+"title": "Inspiration Playground",
+"guid": "74e684e1e14a47e6aff571a893f4a62f.16",
+"latlng": "47.611305,-122.204985"
+},
+{
+"title": "Future Park Expansion",
+"guid": "c8e13e65819f4547ad13db567dfc913e.16",
+"latlng": "47.611464,-122.2035"
+},
+{
+"title": "Memorial 14",
+"guid": "9a6b2a5500184d7f8984e972f03b41d3.16",
+"latlng": "47.611126,-122.204048"
+},
+{
+"title": "Bellevue Downtown Park South Entrance ",
+"guid": "503b4b63a24648cbaa4334d05baafb7e.16",
+"latlng": "47.611416,-122.204016"
+},
+{
+"title": "Waterfowl Information",
+"guid": "691e4ec6088742799c7ecff341f61938.16",
+"latlng": "47.611656,-122.205778"
+},
+{
+"title": "City Of Bellevue Marina Map",
+"guid": "dd877bbb38e74a92a7bc3dcbedc5fd6b.16",
+"latlng": "47.609576,-122.208679"
+},
+{
+"title": "Faith Hope and Love Bench",
+"guid": "2dd093906a444490be73a28de98acb07.16",
+"latlng": "47.61162,-122.205185"
+},
+{
+"title": "Klahanie Courtyard Fountain",
+"guid": "db13a4064b4d469fa054ba44f4785d7a.16",
+"latlng": "47.607437,-122.205553"
+},
+{
+"title": "Flying Contraption",
+"guid": "6f580dd8a02e4409b53e172824504e56.16",
+"latlng": "47.608912,-122.203846"
+},
+{
+"title": "Male Japanese Lion",
+"guid": "f9753c9ecc9d497bbe8f3efe47ab3742.16",
+"latlng": "47.609835,-122.203692"
+},
+{
+"title": "Old Bellevue Clock",
+"guid": "fa0adc95ce89420a96c6d360b7905281.16",
+"latlng": "47.610108,-122.203082"
+},
+{
+"title": "Bike of Old Bellevue",
+"guid": "a5150d93d9ff470ca30269fec0cbe6a6.16",
+"latlng": "47.61012,-122.2054"
+},
+{
+"title": "Borgata Fountain",
+"guid": "52102a959053425ebe1ac522c7497efe.16",
+"latlng": "47.611046,-122.203038"
+},
+{
+"title": "Bellevue City Traffic Box Art",
+"guid": "80724e3372e5440aa6477712594a1f01.16",
+"latlng": "47.610037,-122.20182"
+},
+{
+"title": "Fountain Bellevue Park and Main",
+"guid": "f76c01b0975e4d51a24fbe83167480fb.16",
+"latlng": "47.610673,-122.206024"
+},
+{
+"title": "Old Bellevue Entrance",
+"guid": "0183c5b858c84467a1f98067d7dc4cf1.16",
+"latlng": "47.610094,-122.206699"
+},
+{
+"title": "W.G. Clark Weathervane",
+"guid": "aa78d62a187d45ac82c898d1005384a5.16",
+"latlng": "47.610314,-122.197735"
+},
+{
+"title": "Apartment Fountain",
+"guid": "33a56b6964484f39a8dfd7f3e9791bf3.16",
+"latlng": "47.608964,-122.199625"
+},
+{
+"title": "Relic ",
+"guid": "6a390a6437b14465915fc89377b337df.11",
+"latlng": "47.613991,-122.196941"
+},
+{
+"title": "Oodles Noodle Bar",
+"guid": "527482f5b10645919a71db62b0ae7983.16",
+"latlng": "47.614856,-122.196481"
+},
+{
+"title": "Three Fish",
+"guid": "aefe1505573d47e19a4a1e85c4b75aec.16",
+"latlng": "47.614349,-122.194434"
+},
+{
+"title": "Quantum Man",
+"guid": "61914e08adc745789c41dc6ef0a4bb21.11",
+"latlng": "47.616909,-122.191756"
+},
+{
+"title": "Well Rendered Swarm",
+"guid": "40bb37c2b6a342eda538186a76ec71cb.16",
+"latlng": "47.614196,-122.194205"
+},
+{
+"title": "Bellevue Symetra Fountain",
+"guid": "473b4a4a5e6c406b91838dd003d5a522.11",
+"latlng": "47.617198,-122.196717"
+},
+{
+"title": "Salmon Run",
+"guid": "988741a397ba410588547afbff639978.16",
+"latlng": "47.615359,-122.19601"
+},
+{
+"title": "Backwards Town Clock",
+"guid": "83e82994fdff49e4bc8316d7318bb6e6.16",
+"latlng": "47.616184,-122.19348"
+},
+{
+"title": "Bellevue's Early Years History Wall",
+"guid": "3928d9e796ae416ebb6401f89cf662c5.16",
+"latlng": "47.617276,-122.19711"
+},
+{
+"title": "Bellevue PSE Fountain",
+"guid": "1e662e68a21e4ffaaaec3902d3db334f.16",
+"latlng": "47.61308,-122.194647"
+},
+{
+"title": "Chihuly Art Elements",
+"guid": "463e7307d21a49d293094d2590f48d6e.11",
+"latlng": "47.618393,-122.191755"
+},
+{
+"title": "Bellevue Spheres",
+"guid": "d754c5da7f164de990cc204666c0339a.16",
+"latlng": "47.616412,-122.196987"
+},
+{
+"title": "Bellevue City Hall",
+"guid": "cd3ade39cdca499cb1ce062a150a82f1.16",
+"latlng": "47.614487,-122.193165"
+},
+{
+"title": "Bellevue Greek Church Fountain",
+"guid": "6045950e124f49ee803da9cf4d6df19c.16",
+"latlng": "47.617127,-122.19554"
+},
+{
+"title": "Bellevue Chumon",
+"guid": "a5c7d8573c21499bb5df608ba6631621.16",
+"latlng": "47.613247,-122.195382"
+},
+{
+"title": "Bellevue Steps",
+"guid": "6972617bc0324518b1f68599391097a6.16",
+"latlng": "47.613943,-122.196429"
+},
+{
+"title": "Rock Formations ",
+"guid": "e51d039ccd9a44e18daa628ddd027296.16",
+"latlng": "47.61917,-122.190706"
+},
+{
+"title": "Holding Wings ",
+"guid": "b574bfdb3e2544518f3c477c569f1f70.16",
+"latlng": "47.613899,-122.192618"
+},
+{
+"title": "Bravern Toad Fountain",
+"guid": "66e9a82e0dbb409b9ec428e61e85363a.16",
+"latlng": "47.616294,-122.193062"
+},
+{
+"title": "PSE Building",
+"guid": "dea8bcb82bf3409e8630ba23d309a80f.11",
+"latlng": "47.613593,-122.194779"
+},
+{
+"title": "Kids on the Rooftop",
+"guid": "f1d8e2f5848d42ec90416327034bf212.16",
+"latlng": "47.61353,-122.192722"
+},
+{
+"title": "Ornamental Leaves",
+"guid": "c891dae8edd946c7a50136db7c6463e4.16",
+"latlng": "47.615268,-122.194572"
+},
+{
+"title": "Triangle Pool",
+"guid": "a2fd00c75ae94cc786ac2d657e1c2a08.16",
+"latlng": "47.618159,-122.191843"
+},
+{
+"title": "Bellevue Transit Center",
+"guid": "3ea9c48190c24162b215cd2c69517d86.11",
+"latlng": "47.615491,-122.193964"
+},
+{
+"title": "Symetra Key Plaza",
+"guid": "82562f548abc46528d98990433b1b19c.16",
+"latlng": "47.616675,-122.197072"
+},
+{
+"title": "Dots Of Confusion",
+"guid": "7dcaccda314b4e67adef370c9a380a74.16",
+"latlng": "47.616841,-122.191482"
+},
+{
+"title": "City Center Clock",
+"guid": "f833d3a5aa0344b0822f56c5325cf7e5.16",
+"latlng": "47.615147,-122.196162"
+},
+{
+"title": "Family Time Gathering - Stephen Kishel",
+"guid": "c324e5e9084e4626a947f3a3b58c297a.11",
+"latlng": "47.616427,-122.193457"
+},
+{
+"title": "Fu Dog",
+"guid": "94fffc23b2ca46caad7bc4b4206ebdb4.11",
+"latlng": "47.614817,-122.19298"
+},
+{
+"title": "Civica Terrace",
+"guid": "421ff0bbbacd49d090bccd7cba51f6a1.16",
+"latlng": "47.612479,-122.197458"
+},
+{
+"title": "Endless Transportation",
+"guid": "895466b90e6e483089ef2c0b38f234f4.11",
+"latlng": "47.614739,-122.192843"
+},
+{
+"title": "Friends In The '40s Mural",
+"guid": "71366bda1f384b01927d7b82fc8ba05a.16",
+"latlng": "47.614176,-122.196465"
+},
+{
+"title": "The Bavern Compass ",
+"guid": "b0412754222c49feb48900e779821e82.16",
+"latlng": "47.616914,-122.192522"
+},
+{
+"title": "High Road",
+"guid": "c55fbe3c539340cdbc24f0274da324fc.11",
+"latlng": "47.615627,-122.195316"
+},
+{
+"title": "Seashell Sculpture",
+"guid": "509cc0dae0de4b99a5ec484b1642fde0.16",
+"latlng": "47.61335,-122.193261"
+},
+{
+"title": "Bravern Squirrels",
+"guid": "ae04bcf77b9a4348986a70751c94a198.11",
+"latlng": "47.616107,-122.193103"
+},
+{
+"title": "Heart Wall Mural",
+"guid": "49eb5854df3a4890b8aba85e5cd9869d.16",
+"latlng": "47.615373,-122.197178"
+},
+{
+"title": "Ashwood Trellis",
+"guid": "1a8d9f634eab4aaab2dcc4453f8efb9a.16",
+"latlng": "47.61948,-122.196148"
+},
+{
+"title": "Nibbana",
+"guid": "54c1066419c94473884bf3e608b8bd66.16",
+"latlng": "47.615143,-122.19673"
+},
+{
+"title": "Civica Fountain",
+"guid": "0862a9e848ca453db41e7856933c8be4.16",
+"latlng": "47.612468,-122.196811"
+},
+{
+"title": "County Fair Bus Stop Art",
+"guid": "1fc3d92645214860b384dcd7c03b3714.16",
+"latlng": "47.619141,-122.187074"
+},
+{
+"title": "The Root",
+"guid": "b29597f4f8ef4a5cbefccf0bd2f29964.11",
+"latlng": "47.615193,-122.192962"
+},
+{
+"title": "Longboat Reed Rookery",
+"guid": "90c033e023764430a2f9a27ab43eaa67.11",
+"latlng": "47.614604,-122.192636"
+},
+{
+"title": "Danube Fountain",
+"guid": "8ceef74b60e04033a8b3642f1680dab7.16",
+"latlng": "47.619462,-122.193079"
+},
+{
+"title": "Northern Rock Formations",
+"guid": "f18861ae0075428c9350965935f3c570.16",
+"latlng": "47.619547,-122.190728"
+},
+{
+"title": "Waterfall Sculpture",
+"guid": "b4619eb275194152a8544bf372a1d4e6.16",
+"latlng": "47.612191,-122.195986"
+},
+{
+"title": "Ooba Tooba",
+"guid": "07a0907b6bef4a7ea989bf93a9da6f6e.16",
+"latlng": "47.615384,-122.196598"
+},
+{
+"title": "City Center Infinity Fountain",
+"guid": "3d9b4cdabfa24252a05ae3e9de985e05.16",
+"latlng": "47.615024,-122.194776"
+},
+{
+"title": "Compass",
+"guid": "82e7f84ac243425cb86d3140a964e398.11",
+"latlng": "47.613878,-122.191695"
+},
+{
+"title": "Fish in a Barrel",
+"guid": "46890d704db242a38733d44c9a4678fe.16",
+"latlng": "47.615349,-122.195427"
+},
+{
+"title": "Bellevue City Center Plaza Archway",
+"guid": "7b2cad3935d446b186e925ca6d5706bf.11",
+"latlng": "47.615332,-122.195146"
+},
+{
+"title": "Salon Tewl",
+"guid": "60c53cca8d524610bd43329160041a73.16",
+"latlng": "47.618617,-122.193457"
+},
+{
+"title": "Mosaic ",
+"guid": "51ad3feb0e9d4e0f9abb0b159f60019a.16",
+"latlng": "47.615588,-122.191671"
+},
+{
+"title": "Glass and Steel Stabby Sculpture ",
+"guid": "a4cc32019238447abee974f4c8c32be1.16",
+"latlng": "47.614759,-122.193365"
+},
+{
+"title": "Bellevue First Congregational Church",
+"guid": "e26af1d83b2844889ffa883757a9d008.16",
+"latlng": "47.617041,-122.195855"
+},
+{
+"title": "Melting Pot Garden",
+"guid": "f42306020f60428ea39a987e6793fdd2.16",
+"latlng": "47.612524,-122.196076"
+},
+{
+"title": "Waterfall and Flags",
+"guid": "d37ac2029787446d81c2f05abb68a1da.16",
+"latlng": "47.615052,-122.19341"
+},
+{
+"title": "Stainless Stele No.1",
+"guid": "f7794ef9b6fe44c5b99165b39081d51c.16",
+"latlng": "47.613153,-122.194246"
+},
+{
+"title": "Double Inquiry",
+"guid": "0238c1977917407da0deedf64a56c0d9.11",
+"latlng": "47.619585,-122.194178"
+},
+{
+"title": "Infinite Blue Bicycle Rack",
+"guid": "0904dc8eaec2499cb510fa9557d33cf6.16",
+"latlng": "47.614038,-122.193708"
+},
+{
+"title": "Broken Cube",
+"guid": "679cf8984c2d4fdd9081d9ac3294f0ab.16",
+"latlng": "47.61391,-122.194883"
+},
+{
+"title": "Leaf-engraved Crosswalk",
+"guid": "23c62884da9f4e55a88d91d3584a12a3.16",
+"latlng": "47.619412,-122.194799"
+},
+{
+"title": "North Bravern Fountain",
+"guid": "524446c2a0fc4107865eeb71dc636e9e.16",
+"latlng": "47.617023,-122.192259"
+},
+{
+"title": "Bellevue Library Bells",
+"guid": "996c3f878df24c29b22ca692cad0d5a4.16",
+"latlng": "47.619489,-122.193841"
+},
+{
+"title": "Waterwall Fountain",
+"guid": "e6d000d891a84ed6bf1401c01a145c8d.16",
+"latlng": "47.617838,-122.19347"
+},
+{
+"title": "Bellevue City Hall Sign",
+"guid": "1b0f96c3e5284396adb403610e7f8fd7.16",
+"latlng": "47.613852,-122.191204"
+},
+{
+"title": "Stone Garden at Elements",
+"guid": "74fa993f491142ebba0967eb9b58179d.16",
+"latlng": "47.619105,-122.19117"
+},
+{
+"title": "Gandhi Statue",
+"guid": "38309184963a4197a18ccd2ebb76683a.11",
+"latlng": "47.619644,-122.194651"
+},
+{
+"title": "Windswept",
+"guid": "ae0476d072694668890e888677c5cddf.16",
+"latlng": "47.615642,-122.196062"
+},
+{
+"title": "Bike Bike Rack",
+"guid": "381e1925e295411d920354ad9a4d5453.16",
+"latlng": "47.616032,-122.196466"
+},
+{
+"title": "Garage Barcode",
+"guid": "c0315f3968b24fcdb40418a52d8c4b72.16",
+"latlng": "47.613997,-122.195135"
+},
+{
+"title": "Guan Yin",
+"guid": "36fd4327a4c04c0786e3de98c365f5fa.11",
+"latlng": "47.615044,-122.192811"
+},
+{
+"title": "Mini Bicycle",
+"guid": "e54a2ef2f12e46e19875bb78d20f0c6e.16",
+"latlng": "47.616481,-122.193852"
+},
+{
+"title": "Quilted Arches Extension",
+"guid": "212a52bbb7694dafb33017125eca59cd.16",
+"latlng": "47.615351,-122.192936"
+},
+{
+"title": "Bill Gates Quote",
+"guid": "bc89d4f7d457459a8c6de0a3530f8f35.16",
+"latlng": "47.619588,-122.195664"
+},
+{
+"title": "Leaf Walk",
+"guid": "c0f8d04636214437a7552657f87681b4.16",
+"latlng": "47.612696,-122.196344"
+},
+{
+"title": "Fountain",
+"guid": "1eb499443901411ab561f24163b9ef84.16",
+"latlng": "47.612309,-122.195975"
+},
+{
+"title": "Winslow & Wells",
+"guid": "dda36117383343fd8f59a3f213d391da.16",
+"latlng": "47.612578,-122.191071"
+},
+{
+"title": "Metal Sculpture",
+"guid": "f8a7648bb99f4ee4aa073a1f56c7521f.16",
+"latlng": "47.61402,-122.194312"
+},
+{
+"title": "Bellevue Inverted Clockwork Face",
+"guid": "449d32f453084539b1c12eb2bf5fd99b.16",
+"latlng": "47.619476,-122.194399"
+},
+{
+"title": "Apsaras",
+"guid": "cc8731f6a3be4feb80f460afafaf23e9.11",
+"latlng": "47.615668,-122.192556"
+},
+{
+"title": "Playground Spiderweb",
+"guid": "a59d5dfdc4424052a8bccdab4200ed13.16",
+"latlng": "47.608193,-122.174189"
+},
+{
+"title": "Blue Herons at Kelsey Creek",
+"guid": "36b3c8748a1c4d519c8efb1f3ed88863.16",
+"latlng": "47.604816,-122.165036"
+},
+{
+"title": "Bellevue's 50th Anniversary at Kelsey Creek",
+"guid": "51e03fcdf09846489094cf6c34592be4.16",
+"latlng": "47.605252,-122.165211"
+},
+{
+"title": "Grandpa Larry Memorial Bench ",
+"guid": "92cc1126e76a44d483d26d8af5595740.16",
+"latlng": "47.604718,-122.165334"
+},
+{
+"title": "The Environment of Kelsey Creek ",
+"guid": "63e00fc3e9f849e8b015a8a2b52dd483.16",
+"latlng": "47.605545,-122.165407"
+},
+{
+"title": "Wilburton Hill Park Lake to Lake Greenway",
+"guid": "4f262783560b4b58a3ae03541d8c0803.16",
+"latlng": "47.608048,-122.174892"
+},
+{
+"title": "Botanical Gardens trail",
+"guid": "4442a3c1e4534611a03e8ca0b35cb12a.16",
+"latlng": "47.607726,-122.169489"
+},
+{
+"title": "Kelsey Creek Park",
+"guid": "13da0692cdac429a83b78d1906ea6cc2.16",
+"latlng": "47.605834,-122.166628"
+},
+{
+"title": "Wilburton Hill Park Entrance",
+"guid": "59143fdc3aba4bcdad4086a8796dd481.16",
+"latlng": "47.60998,-122.174781"
+},
+{
+"title": "Little Red Cook House",
+"guid": "8c51a3beacc14aacadb13be3dacfc5d8.16",
+"latlng": "47.608081,-122.174517"
+},
+{
+"title": "Trail Marker to Willburton Hill Park",
+"guid": "33023023973c4027be443ca6e52d50d2.16",
+"latlng": "47.609583,-122.169498"
+},
+{
+"title": "128th Ave Trail Marker",
+"guid": "07891354174b444eaaa16d994b18ba04.16",
+"latlng": "47.60731,-122.169556"
+},
+{
+"title": "Kelsey Creek Farm Map",
+"guid": "ad54b57d152f4f248d7b30b324e46d6c.16",
+"latlng": "47.605501,-122.165866"
+},
+{
+"title": "Arbor Day 2003",
+"guid": "b3c7e98362734ca5aea15a7cdbf79bcd.16",
+"latlng": "47.605745,-122.164859"
+},
+{
+"title": "City of Bellevue Trailhead",
+"guid": "f69f19bde4ad4051a283ba2326d5441f.16",
+"latlng": "47.609395,-122.1735"
+},
+{
+"title": "Streams are Alive",
+"guid": "933c3770b96f4998b5bdd39b76ca75cf.16",
+"latlng": "47.605112,-122.164667"
+},
+{
+"title": "Willburton hill Park Plaque",
+"guid": "7dbe9bf81ed545c2a9c5bdcec4ab5296.16",
+"latlng": "47.609382,-122.173795"
+},
+{
+"title": "Kelsey Creek New Playground",
+"guid": "439fa1aa703b47adbd62a26ded7e01de.16",
+"latlng": "47.604533,-122.166293"
+},
+{
+"title": "Lake-to-Lake Trail Marker at SE 4th ",
+"guid": "0d4b4d6f30694a5a9aab8924e2a591e3.16",
+"latlng": "47.605953,-122.169311"
+},
+{
+"title": "Riparian Areas Are Cool",
+"guid": "567d39ba1a2042229d6dc1520eb55392.16",
+"latlng": "47.605377,-122.164882"
+},
+{
+"title": "City of Bellevue Fire Dept # 1 ",
+"guid": "75258be203234c4cb95a443d1a500762.16",
+"latlng": "47.603076,-122.201075"
+},
+{
+"title": "Bellevue  Church of Jesus Christ",
+"guid": "e7bbcc6e09f84612a012be6d12c852cb.16",
+"latlng": "47.600164,-122.201253"
+},
+{
+"title": "Pilgrim Lutheran Church",
+"guid": "71dcb94f8e354aab9521681ee05b2dea.16",
+"latlng": "47.600368,-122.200756"
+},
+{
+"title": "Sixth Street Park",
+"guid": "3a191caaba2845ac87c5048fccff3450.16",
+"latlng": "47.604352,-122.204662"
+},
+{
+"title": "Gnome",
+"guid": "fc28e74516d744e08027be23c1b0203d.16",
+"latlng": "47.604371,-122.204325"
+},
+{
+"title": "102nd Ave Trail",
+"guid": "58bc990bad334c229a2ca3d36bed73c8.16",
+"latlng": "47.604239,-122.20409"
+},
+{
+"title": "Chism Beach Park",
+"guid": "396d931aca8f4467bf144d8137659c35.16",
+"latlng": "47.600148,-122.20865"
+},
+{
+"title": "First Baptist Church of Bellevue",
+"guid": "ef96cad70398412a8f5706aa3a0c86de.16",
+"latlng": "47.600054,-122.200142"
+},
+{
+"title": "Surry Downs Baseball Field 2",
+"guid": "7f97fb59278349959a25ff9db3a3885c.16",
+"latlng": "47.603583,-122.193193"
+},
+{
+"title": "Surrey Downs Park",
+"guid": "8d3a1ebd170d493488a939886c691976.16",
+"latlng": "47.603445,-122.190937"
+},
+{
+"title": "Shaper Cairn",
+"guid": "f63cb0214487484ca81673f988d5204b.16",
+"latlng": "47.603631,-122.189551"
+},
+{
+"title": "Bird Rock ",
+"guid": "1c9a02f9dda2414d85e215d96bae49cd.16",
+"latlng": "47.619686,-122.193873"
+},
+{
+"title": "Discover Read Explore",
+"guid": "154c9f64c2e9484889b5bd88a13105cf.16",
+"latlng": "47.619958,-122.194685"
+},
+{
+"title": "Crosswalk Leaves",
+"guid": "c8fe2f0186e24207ab74042781aa45fd.16",
+"latlng": "47.619952,-122.196217"
+},
+{
+"title": "Ashton Power Flower",
+"guid": "4bf13df4104c4a8eb569080ddfffb4b2.11",
+"latlng": "47.619985,-122.197423"
+},
+{
+"title": "Story of Reynard",
+"guid": "21b5cf120ce54bc8a48f3d86963ba480.16",
+"latlng": "47.619882,-122.193933"
+},
+{
+"title": "Turtle Island",
+"guid": "5dbe91bb5db04824ab5b2757e532f2bc.16",
+"latlng": "47.61996,-122.194379"
+}]

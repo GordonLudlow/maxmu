@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<!--
+ MaxMu: Given a set of points (in lat,lng), find the largest area triangle.  From the set of points within that triangle (including 2 of the three outer triangle vertices), find the second largest triangle.  Repeat until there are no points within the innermost triangle.
+ In the degenerate case, this will yield a standard layered field, but in the typical case the spine will be non-continuous.  Build the field inside out, creating the triangle first and then linking to the third portal of the inner triangle.
+-->
+<html>
+<head>
+<title>Max Mu</title>
+<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+<style type="text/css">
+html { height: 100% }
+body { height: 100%; margin: 0; padding: 0 }
+</style>
+
+<script type="text/javascript">
+
+// https://github.com/indy256/convexhull-js/blob/master/convexhull.js
+(function () {
+ 'use strict';
+ 
+ function convexHull(points) {
+ points.sort(function (a, b) {
+             return a.x != b.x ? a.x - b.x : a.y - b.y;
+             });
+ 
+ var n = points.length;
+ var hull = [];
+ 
+ for (var i = 0; i < 2 * n; i++) {
+ var j = i < n ? i : 2 * n - 1 - i;
+ while (hull.length >= 2 && removeMiddle(hull[hull.length - 2], hull[hull.length - 1], points[j]))
+ hull.pop();
+ hull.push(points[j]);
+ }
+ 
+ hull.pop();
+ return hull;
+ }
+ 
+ function removeMiddle(a, b, c) {
+ var cross = (a.x - b.x) * (c.y - b.y) - (a.y - b.y) * (c.x - b.x);
+ var dot = (a.x - b.x) * (c.x - b.x) + (a.y - b.y) * (c.y - b.y);
+ return cross < 0 || cross == 0 && dot <= 0;
+ }
+ 
+ // export as AMD module / Node module / browser or worker variable
+ if (typeof define === 'function' && define.amd) define(function () { return convexHull; });
+ else if (typeof module !== 'undefined') module.exports = convexHull;
+ else if (typeof self !== 'undefined') self.convexHull = convexHull;
+ else window.convexHull = convexHull;
+ })();
+
+// https://github.com/mattdesl/point-in-triangle (hacked a bit for the different data format)
+function pointInTriangle(point, triangle) {
+    //compute vectors & dot products
+    var cx = point.x, cy = point.y,
+        t0 = triangle[0], t1 = triangle[1], t2 = triangle[2],
+        v0x = t2.x-t0.x, v0y = t2.y-t0.y,
+        v1x = t1.x-t0.x, v1y = t1.y-t0.y,
+        v2x = cx-t0.x, v2y = cy-t0.y,
+        dot00 = v0x*v0x + v0y*v0y,
+        dot01 = v0x*v1x + v0y*v1y,
+        dot02 = v0x*v2x + v0y*v2y,
+        dot11 = v1x*v1x + v1y*v1y,
+        dot12 = v1x*v2x + v1y*v2y
+
+    // Compute barycentric coordinates
+    var b = (dot00 * dot11 - dot01 * dot01),
+        inv = b === 0 ? 0 : (1 / b),
+        u = (dot11*dot02 - dot01*dot12) * inv,
+        v = (dot00*dot12 - dot01*dot02) * inv
+    return u>=0 && v>=0 && (u+v < 1)
+}
+
+var triangleCount = 0;
+var maxLayers = 9999;
+var keysRequired = {};
+
+function IncrementKeyCount(portal, count) {
+    if (keysRequired.hasOwnProperty(portal.guid)) {
+        keysRequired[portal.guid].count += count;
+    }
+    else {
+        keysRequired[portal.guid] = {count: count, title: portal.title, lat: portal.lat, lng: portal.lng};
+    }
+}
+
+function FindLargestInnerTriangle(triangle, portal) {
+    let logString="";
+    
+    // Cull points not strictly in the triangle
+    for (let i=0; i<portal.length; ) {
+        if (portal[i] == triangle[0]
+        || portal[i] == triangle[1]
+        || portal[i] == triangle[2]
+        || !pointInTriangle(portal[i], triangle)) {
+            portal.splice(i,1);
+        }
+        else {
+            i++;
+        }
+    }
+    
+    if (!portal.length || triangleCount == maxLayers) {
+        // We're at the end which is really the beginning
+        IncrementKeyCount(triangle[1], 2);
+        IncrementKeyCount(triangle[2], 1);
+        return "Link "  + triangle[0].title + " https://intel.ingress.com/intel?pll=" + triangle[0].lat + "," + triangle[0].lng +
+               " to "   + triangle[1].title + " https://intel.ingress.com/intel?pll=" + triangle[1].lat + "," + triangle[1].lng +
+               " and "  + triangle[2].title + " https://intel.ingress.com/intel?pll=" + triangle[2].lat + "," + triangle[2].lng + "\n" +
+               " Link " + triangle[2].title + " https://intel.ingress.com/intel?pll=" + triangle[2].lat + "," + triangle[2].lng +
+               " to "   + triangle[1].title + " https://intel.ingress.com/intel?pll=" + triangle[1].lat + "," + triangle[1].lng + "\n";
+    }
+    
+    triangleCount++;
+    
+    let maxArea = 0;
+    let innerTriangle = [];
+    let previousPoint = {};
+    for (let i=0; i<portal.length; i++) {
+        let a = portal[i];
+        for (let exclude=0; exclude<3; exclude++) {
+            let tempTri = JSON.parse(JSON.stringify(triangle));
+            let excluded = JSON.parse(JSON.stringify(tempTri[exclude]));
+            tempTri.splice(exclude,1);
+            
+            let b = tempTri[0];
+            let c = tempTri[1];
+
+            let area = Math.abs(
+                (a.x * (b.y-c.y))
+                + (b.x * (c.y-a.y))
+                + (c.x * (a.y-b.y))
+            );
+            if (area > maxArea) {
+                maxArea = area;
+                innerTriangle = [a, b, c];
+                previousPoint = excluded;
+            }
+        }
+    }
+    
+    // Draw the inner triangle
+    let polygon = new google.maps.Polygon({
+        paths: innerTriangle,
+        strokeColor: '#0000FF',
+        strokeOpacity: 1,
+        strokeWeight: 2,
+        fillColor: '#0000FF',
+        fillOpacity: 0.05,
+        map: map
+    });
+    
+    // Draw the spine segment
+    polyLine = new google.maps.Polyline({
+                path: [new google.maps.LatLng(innerTriangle[0]),
+                       new google.maps.LatLng(previousPoint)],
+                    strokeColor: '#FF0000',//lineColors[to],
+                    strokeOpacity: 1.0,
+                    strokeWeight: 2,
+                    map: map
+    });
+    
+    IncrementKeyCount(innerTriangle[0], 1);
+    IncrementKeyCount(innerTriangle[1], 1);
+    IncrementKeyCount(innerTriangle[2], 1);
+    
+    logString = "Link "         +   previousPoint.title + " https://intel.ingress.com/intel?pll=" +    previousPoint.lat + "," +    previousPoint.lng +
+                " to "          + innerTriangle[1].title + " https://intel.ingress.com/intel?pll=" + innerTriangle[1].lat + "," + innerTriangle[1].lng +
+                " and "         + innerTriangle[2].title + " https://intel.ingress.com/intel?pll=" + innerTriangle[2].lat + "," + innerTriangle[2].lng +
+                " and then to " + innerTriangle[0].title + " https://intel.ingress.com/intel?pll=" + innerTriangle[0].lat + "," + innerTriangle[0].lng + "\n";
+
+    return FindLargestInnerTriangle(innerTriangle, portal) + logString;
+}
+
+var map;
+var mapInitialized = false;
+function initializeMap()
+{
+    if (!mapInitialized)
+    {
+        // Default map options
+        var mapOptions = { center: new google.maps.LatLng(47.488451,-122.169666),
+                            zoom: 15,
+                            mapTypeId: google.maps.MapTypeId.ROADMAP };
+        
+        map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions);
+        mapInitialized=true;
+
+        // Load the portal coordinates
+        // [{"title":"Title", "guid":"guid", "latlng":"lat,lng"},...]
+        $.ajaxSetup({
+            cache:false
+        });          
+        $.getJSON('seattlecenter.json', function (data) {
+            portal = data;
+            for (let i=0; i<portal.length; i++) {
+                let latlngArray = portal[i].latlng.split(',');
+                let lat = parseFloat(latlngArray[0]);
+                let lng = parseFloat(latlngArray[1]);
+                portal[i].lat = lat;
+                portal[i].lng = lng;
+                portal[i].x = lng; // convexHull function wants x,y
+                portal[i].y = lat;
+                
+                let marker = new google.maps.Marker({
+                  position: new google.maps.LatLng(lat, lng),
+                  map: map,
+                  icon: {url: 'hum_reso_08.png', scaledSize: new google.maps.Size(20, 20), anchor: new google.maps.Point(10,10)},
+                  title: portal[i].title + " " + portal[i].latlng
+                });
+                let infoWindow = new google.maps.InfoWindow({
+                    content: portal[i].title + " " + portal[i].latlng
+                });
+                google.maps.event.addListener(marker, 'click', function () {
+                    infoWindow.open(map, marker);
+                });                
+            }
+  
+            // TODO: Move all the math to a web worker
+            // Find largest triangle
+            let maxArea = 0;
+            let triangle = [];
+            let hull = convexHull(portal);
+            for (let a=0; a<hull.length-2; a++) {
+                for (let b=a+1; b<hull.length-1; b++) {
+                    for (let c=b+1; c<hull.length; c++) {
+                        // Find twice the area of the triangle abc
+                        let area = Math.abs(
+                              (hull[a].x * (hull[b].y-hull[c].y))
+                            + (hull[b].x * (hull[c].y-hull[a].y))
+                            + (hull[c].x * (hull[a].y-hull[b].y))
+                            );
+                        if (area > maxArea) {
+                            maxArea = area;
+                            triangle = [hull[a], hull[b], hull[c]];
+                        }
+                    }
+                }
+            }
+            // Draw the triangle
+            let polygon = new google.maps.Polygon({
+                paths: triangle,
+                strokeColor: '#0000FF',
+                strokeOpacity: 1,
+                strokeWeight: 2,
+                fillColor: '#0000FF',
+                fillOpacity: 0.1,
+                map: map
+            });
+            
+            triangleCount++;
+            logString = FindLargestInnerTriangle(triangle, portal) + "Outermost triangle:\n" +
+                triangle[0].title + " https://intel.ingress.com/intel?pll=" + triangle[0].lat + "," + triangle[0].lng + "\n" +
+                triangle[1].title + " https://intel.ingress.com/intel?pll=" + triangle[1].lat + "," + triangle[1].lng + "\n" +
+                triangle[2].title + " https://intel.ingress.com/intel?pll=" + triangle[2].lat + "," + triangle[2].lng + "\n";
+            console.log(triangleCount + " layers");
+            
+            console.log("\nKeys required:\n");
+            let sortedKeys = [];
+            for (let key in keysRequired) {
+                if (keysRequired.hasOwnProperty(key)) {
+                    sortedKeys.push(("    " + keysRequired[key].count).slice(-4) + " " + keysRequired[key].title +" https://intel.ingress.com/intel?pll=" + keysRequired[key].lat + "," + keysRequired[key].lng + "\n");
+                }
+            }
+            sortedKeys.sort();
+            for (let key in sortedKeys) {
+                console.log(sortedKeys[key]);
+            }
+            
+            console.log(logString);
+            
+            // The stock intel page errors out with more than a dozen triangles.  So let's just do the outermost
+            logString = "https://intel.ingress.com/intel?ll=";
+            logString += (triangle[0].lat + triangle[1].lat + triangle[2].lat)/3;
+            logString += ",";
+            logString += (triangle[0].lng + triangle[1].lng + triangle[2].lng)/3;
+            logString += "&pls=";
+            logString += triangle[0].lat + "," + triangle[0].lng + "," + triangle[1].lat + "," + triangle[1].lng;
+            logString += "_" + triangle[0].lat + "," + triangle[0].lng + "," + triangle[2].lat + "," + triangle[2].lng;
+            logString += "_" + triangle[1].lat + "," + triangle[1].lng + "," + triangle[2].lat + "," + triangle[2].lng;
+            console.log(logString);
+
+                  
+        })
+        .fail(function(jqXHR, textStatus, errorThrown) { 
+            console.log('getJSON request failed! ' + textStatus); 
+            console.log("incoming Text " + jqXHR.responseText);
+        });
+    } 
+}
+    
+</script>
+</head>
+
+<body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script>
+    $.getJSON('apikey.json', function (data) {
+        var s = document.createElement("script");
+        s.type = "text/javascript";
+        s.src = "http://maps.googleapis.com/maps/api/js?key=" + data.key + "&callback=initializeMap";
+        $("head").append(s);
+    })
+    .fail(function(jqXHR, textStatus, errorThrown) { 
+        console.log('getJSON request failed! ' + textStatus); 
+        console.log("incoming Text " + jqXHR.responseText);
+    });
+</script>
+<div id="map_canvas" style="width:100%; height:90%"></div>
+</body>
+</html>

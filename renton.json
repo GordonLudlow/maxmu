@@ -1,0 +1,1826 @@
+[
+{
+"title": "Bethlehem Lutheran Church",
+"guid": "3a7e74df3eac48399e32169afb62a6b0.16",
+"latlng": "47.500174,-122.174971"
+},
+{
+"title": "Renton Bible Church",
+"guid": "2ba811f2bad84d56b2112435b78c8177.16",
+"latlng": "47.499119,-122.164861"
+},
+{
+"title": "Saint Andrew Presbyterian Church",
+"guid": "5195099c626d49f0906e0fa87445800d.16",
+"latlng": "47.500188,-122.17064"
+},
+{
+"title": "Renton Water Tower",
+"guid": "dd605b03e28b405db659ede2b39f625b.16",
+"latlng": "47.503584,-122.173682"
+},
+{
+"title": "Powerline Playground",
+"guid": "3d6d4fb282b047078634d509e50747e5.16",
+"latlng": "47.492046,-122.168065"
+},
+{
+"title": "Kiwanis Park Ball Field",
+"guid": "e30e9bb58010410db0131d910e12cf09.16",
+"latlng": "47.496466,-122.166939"
+},
+{
+"title": "Church of Nazarene",
+"guid": "fcef25cd6a6e47aca4b24755fafd7abf.16",
+"latlng": "47.497344,-122.164351"
+},
+{
+"title": "Kiwanis Park",
+"guid": "0c072fb659ad41bda1ab1079da6c6bfa.16",
+"latlng": "47.496787,-122.164995"
+},
+{
+"title": "George Pocock Memorial Rowing Center",
+"guid": "d4a41b0a3d6e40dfab830b899777af8c.16",
+"latlng": "47.500904,-122.214625"
+},
+{
+"title": "Rogers and Post Memorial",
+"guid": "9c97d450326c4a6c884ed7ce592e22f3.16",
+"latlng": "47.500412,-122.218284"
+},
+{
+"title": "The Old Boeing Bridge ",
+"guid": "79f19208d5d143988250eda6eb17fd34.16",
+"latlng": "47.500589,-122.214975"
+},
+{
+"title": "Patricia Ann (Chambers)  Walradt Dedication",
+"guid": "7a0ba51430594939b4bd6a9404c7427b.16",
+"latlng": "47.499095,-122.214764"
+},
+{
+"title": "Tucker Lee Wales Memorial",
+"guid": "24e1f4c948f24a8e9e6133a37cfe8f85.16",
+"latlng": "47.49995,-122.21505"
+},
+{
+"title": "First United Methodist Church",
+"guid": "291dec5853c74ddf975310ea617c6bd3.16",
+"latlng": "47.488504,-122.189383"
+},
+{
+"title": "Windsor Hill Park",
+"guid": "3c5d905fce5b416696d409792ce55c12.16",
+"latlng": "47.48975,-122.187703"
+},
+{
+"title": "Great Music Brought To You By 420",
+"guid": "207eae63555e4c9fbf319ae4e12356df.16",
+"latlng": "47.489328,-122.19363"
+},
+{
+"title": "Renton First United Methodist Church",
+"guid": "44794f3a75d54944a57d20185f1c0c82.16",
+"latlng": "47.487953,-122.189147"
+},
+{
+"title": "Windsor Hill Park Playground",
+"guid": "dba979936a544b09a3a745ca5eb8e2eb.16",
+"latlng": "47.489547,-122.186767"
+},
+{
+"title": "Tracey Reese Memorial",
+"guid": "59478f55216149a490caf5d45336185d.16",
+"latlng": "47.48805,-122.208779"
+},
+{
+"title": "Renton Uhaul Space Needle",
+"guid": "fcd3e00406644a268ca4ad89c04641f9.16",
+"latlng": "47.489835,-122.21817"
+},
+{
+"title": "Clarence Williams Memorial",
+"guid": "31d67be5e433475f880a03ef987d899c.16",
+"latlng": "47.48813,-122.209082"
+},
+{
+"title": "Blair Barnes Dedication Plaque",
+"guid": "d1b3c648a1414814bd091cb1cf51c506.16",
+"latlng": "47.487895,-122.210766"
+},
+{
+"title": "Wilbert Wedenoja Dedicated Bench",
+"guid": "3f366bf09e1942258ef154a753d117c4.16",
+"latlng": "47.489704,-122.211478"
+},
+{
+"title": "Ann Chism Dedicated Bench",
+"guid": "39c2455c5feb42359ead63671647a200.16",
+"latlng": "47.490438,-122.211765"
+},
+{
+"title": "Boeing Historical  Marker",
+"guid": "f128f413bff749168040cf4a374709e2.16",
+"latlng": "47.48993,-122.211538"
+},
+{
+"title": "Cedar River Trail Etiquette",
+"guid": "d93d4c53e7674868b37bf88bebc2563d.16",
+"latlng": "47.488338,-122.210954"
+},
+{
+"title": "Renton Highlands Post Office",
+"guid": "08f710f5dcfc43d49335f36a1c9b10e9.11",
+"latlng": "47.48829,-122.161011"
+},
+{
+"title": "Freedom of The  Braves",
+"guid": "2d7c92e517ee4b6896065d2e688d0cf4.16",
+"latlng": "47.48886,-122.160585"
+},
+{
+"title": "Metamorphosis",
+"guid": "1caf28a8dc7040f0bd5ae272b153255b.16",
+"latlng": "47.48793,-122.173166"
+},
+{
+"title": "Renton Aerie No 1722 F.O.E.",
+"guid": "c27f113e47a14941bee221b37a2341ca.16",
+"latlng": "47.488222,-122.171616"
+},
+{
+"title": "Yeah Yeah Thanks Puddin",
+"guid": "7cd14f47dc4a41d5bff70174c4b96b28.16",
+"latlng": "47.488086,-122.174574"
+},
+{
+"title": "Garden of Friends Bench",
+"guid": "f1c552ce6d9448519f7184f77a16b470.16",
+"latlng": "47.488083,-122.169903"
+},
+{
+"title": "East Memorial Wall",
+"guid": "73fcb6a9a4384778931aafb5ae1f9f4c.16",
+"latlng": "47.488078,-122.169664"
+},
+{
+"title": "Gazebo Memorial",
+"guid": "39b6e55744c84b7cad9cb1e920532400.16",
+"latlng": "47.487901,-122.173749"
+},
+{
+"title": "Neoclassic Pillar",
+"guid": "be836c86ca2c4031949afc21c62bd153.16",
+"latlng": "47.488107,-122.172259"
+},
+{
+"title": "Sempre nel nostro cuore..Con amure bench",
+"guid": "c89f546ac11c4117ace1017557b6af69.16",
+"latlng": "47.487944,-122.170096"
+},
+{
+"title": "Cedar View Memorial",
+"guid": "cd2f34d0a9d14319a4009265c0270b6e.16",
+"latlng": "47.488451,-122.169666"
+},
+{
+"title": "Highland Community Church ",
+"guid": "d66b84fc8d63421489adfc929c47bd2a.16",
+"latlng": "47.498497,-122.177836"
+},
+{
+"title": "KCLS: Renton Highlands Branch",
+"guid": "763796c2991b4851bb3f5066207ff643.12",
+"latlng": "47.503273,-122.180721"
+},
+{
+"title": "Renton Library Turtle",
+"guid": "83525dc2717c4332b13d1171344f3029.16",
+"latlng": "47.503491,-122.181123"
+},
+{
+"title": "Jack And Jill Getting A Pail Of Water Fountain",
+"guid": "ec2d6eaf37e0471ba5287015dc62db61.16",
+"latlng": "47.501964,-122.178289"
+},
+{
+"title": "Sunset Court Park ",
+"guid": "3fd4c9fb77b346c6beac67ed4385b727.16",
+"latlng": "47.501791,-122.181564"
+},
+{
+"title": "Buddhist Foundation",
+"guid": "eccf440838644258b0343b0aa8f68f7c.16",
+"latlng": "47.501111,-122.185214"
+},
+{
+"title": "Calvary Baptist Church ",
+"guid": "1b58e2040b924089a07d99a3b5a2a740.16",
+"latlng": "47.500027,-122.185346"
+},
+{
+"title": "Renton Seventh-Day Adventist Church",
+"guid": "b819133969474b56964e16a09fa3605e.16",
+"latlng": "47.499989,-122.175832"
+},
+{
+"title": "Renton Fire Department Station",
+"guid": "13c54b8de1ff469d86d28793c57418c5.12",
+"latlng": "47.503403,-122.179003"
+},
+{
+"title": "Highlands Globe Art",
+"guid": "1f59c3aba5db4f1da627a3b0fb88b016.16",
+"latlng": "47.498802,-122.177985"
+},
+{
+"title": "Renton Municipal Airport Control Tower",
+"guid": "77ef6f9a833e4a52a885cfcd5da5ac4f.16",
+"latlng": "47.49187,-122.217486"
+},
+{
+"title": "1 / 4 Mile Marker Stone",
+"guid": "94acaaec978a41ee938cf22f86bc33da.16",
+"latlng": "47.493514,-122.212868"
+},
+{
+"title": "Nishiwaki Lane",
+"guid": "41655f7b04f045448c465d023da9a9c3.16",
+"latlng": "47.494916,-122.213145"
+},
+{
+"title": "Cedar River Welcoming Sign",
+"guid": "e3d6dd16c5524ed382e8fd1600871c27.16",
+"latlng": "47.492076,-122.212544"
+},
+{
+"title": "Nishiwaki Lane Playground",
+"guid": "3633c695259749758349a445a731d9ef.16",
+"latlng": "47.495058,-122.213333"
+},
+{
+"title": "Helmer & Bessie Mellroth Dedication ",
+"guid": "e4c4d34c4d1c4899a69372a890b1d9ea.16",
+"latlng": "47.495608,-122.213773"
+},
+{
+"title": "Clayton Scott Field Mural",
+"guid": "77c13f5c73ec4512a57bf518cb8ccb00.16",
+"latlng": "47.491351,-122.21731"
+},
+{
+"title": "Gymnasium At Highlands Church",
+"guid": "d24b47b18ec34e6ca5f4616dc46facf9.16",
+"latlng": "47.498003,-122.178323"
+},
+{
+"title": "Renton Highlands Neighborhood Center",
+"guid": "1f5d397de2e5454ea8ed134756418481.16",
+"latlng": "47.496046,-122.185439"
+},
+{
+"title": "Union Plaque at Renton Technical College",
+"guid": "b6e03e7217114b41b9c2815c53e57bb9.16",
+"latlng": "47.49368,-122.176582"
+},
+{
+"title": "Renton Community of Christ",
+"guid": "5e38b5e74c1d413cbba26b9381b4d41a.16",
+"latlng": "47.495442,-122.175727"
+},
+{
+"title": "Renton Technical College Trans",
+"guid": "590c8aca2e144452a1b4f03efa0aefe9.11",
+"latlng": "47.491226,-122.175982"
+},
+{
+"title": "Renton Memorial Stadium",
+"guid": "bc0207d98f774f61ac5b2a05a793a00e.16",
+"latlng": "47.488014,-122.208414"
+},
+{
+"title": "Dog And Pony Alehouse",
+"guid": "7661570a99df409a8f5881cb9614b2c2.16",
+"latlng": "47.48827,-122.202548"
+},
+{
+"title": "Seattle Car and Manufacturing - 1908",
+"guid": "362ca2f95a4145a68b6c8ecc98f51efa.16",
+"latlng": "47.488558,-122.198303"
+},
+{
+"title": "Around Here NW Bus Stop Art Installation",
+"guid": "7e10d8b8c4664f77b5e3e61c589c6ec5.16",
+"latlng": "47.48871,-122.202055"
+},
+{
+"title": "Pickled Onion British Pub",
+"guid": "743ce06016d74a8dab67020515de145f.16",
+"latlng": "47.504539,-122.163725"
+},
+{
+"title": "Toreros Fountain",
+"guid": "34cb9cccd4e74c1bb7958e64a0fce4f0.16",
+"latlng": "47.49814,-122.202482"
+},
+{
+"title": "Music And Sports",
+"guid": "8a1dbf3c839a49d1b54bc2b70aa42361.16",
+"latlng": "47.492379,-122.202067"
+},
+{
+"title": "Metal Rock Gears",
+"guid": "11b9a5c2ab2e418e90707964c71ae622.16",
+"latlng": "47.498089,-122.204118"
+},
+{
+"title": "Marble Balls",
+"guid": "4e34b403f5fd4fb6b02ec09b3b98cdda.16",
+"latlng": "47.497181,-122.198212"
+},
+{
+"title": "Red Balls",
+"guid": "e43d9a80edbf4b8aa870dd6f88aea837.16",
+"latlng": "47.496729,-122.200164"
+},
+{
+"title": "Renton Landing",
+"guid": "6c74ce34ac5e4af0b1947c7f6515e044.11",
+"latlng": "47.497826,-122.204628"
+},
+{
+"title": "Caterpillar Land Structure",
+"guid": "0930d58b75d0490eaeecf2d494ea54d8.16",
+"latlng": "47.507376,-122.180548"
+},
+{
+"title": "Meadow Crest Playground",
+"guid": "f31289d97ed0400c884e9888487a97a4.16",
+"latlng": "47.507129,-122.180379"
+},
+{
+"title": "Three Hands",
+"guid": "9483f03833ac444eba165b2e92e9bbbf.16",
+"latlng": "47.507183,-122.180067"
+},
+{
+"title": "Moonlit Swan Mural",
+"guid": "c3f227325eab47659750925c4fda3483.16",
+"latlng": "47.506584,-122.184391"
+},
+{
+"title": "Meadowcrest Playground",
+"guid": "bd767f54c4d74f619ade960740c758c7.16",
+"latlng": "47.507447,-122.180288"
+},
+{
+"title": "Bear Sculpture",
+"guid": "e49511c36414474f93ccb96a10c064c2.16",
+"latlng": "47.507695,-122.180226"
+},
+{
+"title": "St. Matthew's Lutheran Church",
+"guid": "ac46317fd8214f13ac8fedf595224cc8.16",
+"latlng": "47.506376,-122.185405"
+},
+{
+"title": "North Highlands Community Center ",
+"guid": "f244cfaca6594d98b96e16ee10fb71ab.16",
+"latlng": "47.507013,-122.179748"
+},
+{
+"title": "Richard Stredicke Memorial Bench",
+"guid": "8c9e753cbb89433cbb5bade6ead7597a.16",
+"latlng": "47.504622,-122.202227"
+},
+{
+"title": "Renton Landing Fireplace",
+"guid": "3f8c467802ee4eaa923d9e474beacd65.11",
+"latlng": "47.498607,-122.203483"
+},
+{
+"title": "Bristol Fountain Sculpture",
+"guid": "3fccfe8f602545d5820070217865311b.16",
+"latlng": "47.502198,-122.202175"
+},
+{
+"title": "Gene Coulon Memorial Beach Park",
+"guid": "cb4ec1cbf51a4655b91e919bb6ab5bbe.16",
+"latlng": "47.503224,-122.200147"
+},
+{
+"title": "Gitte Proctor",
+"guid": "ab2db7503b944ac583d547470aa42e1c.16",
+"latlng": "47.504737,-122.205428"
+},
+{
+"title": "Gene Coulon Plaque",
+"guid": "e3f8aa4ac0e34ee9a6ea1538e332ea7d.16",
+"latlng": "47.503538,-122.201347"
+},
+{
+"title": "Standing Stones @ The Landing",
+"guid": "fdd86a3a03d54aa59a7ce0054ff33373.16",
+"latlng": "47.498326,-122.20323"
+},
+{
+"title": "Coulon Park",
+"guid": "fb1449cd57464082b3fdd178565e6090.11",
+"latlng": "47.503822,-122.203948"
+},
+{
+"title": "Coulon Beach Map",
+"guid": "be8e051c7c8b44b8a16bbf54212b40ee.16",
+"latlng": "47.505119,-122.201924"
+},
+{
+"title": "Dentist Farm",
+"guid": "74047b47005c4c209ca39db2e87abd13.16",
+"latlng": "47.498353,-122.201915"
+},
+{
+"title": "Leslee K. Weisser 1943-2000",
+"guid": "e521b25049c340a482091276b978e7ae.16",
+"latlng": "47.504214,-122.202953"
+},
+{
+"title": "Stephen McKiernan",
+"guid": "c0bf417b72ed4aae9aa7ec5e0c80883b.16",
+"latlng": "47.503597,-122.202804"
+},
+{
+"title": "Roy Yothers Memorial Bench!",
+"guid": "2112c73b423e4190827d867b335148b9.16",
+"latlng": "47.503318,-122.20542"
+},
+{
+"title": "Shuffelton Steam Plant 1929 Plaque",
+"guid": "c6cc8f8e42684979a3b607a8b4daa2cf.16",
+"latlng": "47.501233,-122.201234"
+},
+{
+"title": "Mayer Earl Clymer",
+"guid": "95434fa677ca4c6786b1ff70765215ab.16",
+"latlng": "47.50436,-122.20263"
+},
+{
+"title": "Sculptuer at Bristol Waterfront",
+"guid": "ea2dc5b06d4547ada743e5448bf5f626.16",
+"latlng": "47.503719,-122.204819"
+},
+{
+"title": "Sunset Community Garden",
+"guid": "cdc26492a8194574ba16fbfa886069ff.16",
+"latlng": "47.50004,-122.186714"
+},
+{
+"title": "Horse Sculpture",
+"guid": "a3f237153f6a4cbbb9d46e1e44e930ca.16",
+"latlng": "47.505053,-122.190736"
+},
+{
+"title": "Renton Airport",
+"guid": "78cfe7308090459b8a60575ad445856f.16",
+"latlng": "47.49778,-122.220024"
+},
+{
+"title": "Giant Sequoia",
+"guid": "fad941fecf37480186fed79a6a0fe953.16",
+"latlng": "47.506178,-122.201604"
+},
+{
+"title": "Fragrant Sarcococca",
+"guid": "ab7d5115af6043439335d98db95e5bf0.16",
+"latlng": "47.50844,-122.202372"
+},
+{
+"title": "Coulon Park Dedication Plaque",
+"guid": "e94cf87ff25e4a3aad36145451453720.16",
+"latlng": "47.506856,-122.202667"
+},
+{
+"title": "Sawleaf Zelkova",
+"guid": "71fd59e027c24480886a81f8a2d732c0.16",
+"latlng": "47.507189,-122.202163"
+},
+{
+"title": "Grace Cortes Memorial Bench",
+"guid": "616b111bda90436baa02dcaac328d478.16",
+"latlng": "47.506986,-122.202427"
+},
+{
+"title": "Interface",
+"guid": "f99122e9333d49ddb2f1c3e87199ef0d.11",
+"latlng": "47.507521,-122.201994"
+},
+{
+"title": "In Memory of Scott R. Spengler",
+"guid": "79087dabfd9f496fac04877175b9614e.16",
+"latlng": "47.508039,-122.202916"
+},
+{
+"title": "Kobus Magnolia",
+"guid": "2d450dad3a354db389ed95dc24c5504f.16",
+"latlng": "47.506329,-122.201894"
+},
+{
+"title": "The Pavilion: Coulon Beach",
+"guid": "8666feced63b4beca008fc4862f4863c.16",
+"latlng": "47.506769,-122.202263"
+},
+{
+"title": "In Loving Memory of Chuck and Gloria Dickey",
+"guid": "b57695ba5473414db04d2a76cdaccc2c.16",
+"latlng": "47.507711,-122.202522"
+},
+{
+"title": "Coulon Beach Park Shelter",
+"guid": "c6ab244dd5a84fe0b678249cd8f56239.11",
+"latlng": "47.507907,-122.202677"
+},
+{
+"title": "In Loving Memory of David Razwick",
+"guid": "b7d135936d334ec19127f5e8b9a6fb54.16",
+"latlng": "47.507302,-122.201881"
+},
+{
+"title": "Interpretive Walk",
+"guid": "b8ac117d9ad248449cf95cd7c4eca3c2.16",
+"latlng": "47.507051,-122.201802"
+},
+{
+"title": "Manzanita",
+"guid": "012e976a862548dda16481effb449376.16",
+"latlng": "47.507939,-122.20186"
+},
+{
+"title": "Manzanita",
+"guid": "2cd445ea31a14bf9b4e58efdd84c8398.16",
+"latlng": "47.505941,-122.20138"
+},
+{
+"title": "In Memory of Shannon Smith",
+"guid": "582d8835e0c34e7bb6cdcc22258c6793.16",
+"latlng": "47.506419,-122.203223"
+},
+{
+"title": "Renton Tech Collage",
+"guid": "ba14ca39924b4cafb5edbff8391629e8.16",
+"latlng": "47.489363,-122.177949"
+},
+{
+"title": "Welcome to the Renton Highlands",
+"guid": "5fa666c2c12b4edc9d72992c1e35682c.16",
+"latlng": "47.488357,-122.177957"
+},
+{
+"title": "Metal Sculpture",
+"guid": "c772d8fff0dc4c58bd3c4f6bac092715.16",
+"latlng": "47.489824,-122.176998"
+},
+{
+"title": "The Owls are not What They Seem",
+"guid": "f3431bd2c65744d689de9db41e59cf07.16",
+"latlng": "47.483118,-122.188378"
+},
+{
+"title": "First United Methodist Church",
+"guid": "291dec5853c74ddf975310ea617c6bd3.16",
+"latlng": "47.488504,-122.189383"
+},
+{
+"title": "Here Lies Stone",
+"guid": "9be1f8ccda284afb9dd2fbf09649ed8b.16",
+"latlng": "47.483433,-122.187085"
+},
+{
+"title": "Windsor Hill Park",
+"guid": "3c5d905fce5b416696d409792ce55c12.16",
+"latlng": "47.48975,-122.187703"
+},
+{
+"title": "Renton First Methodist Gazebo",
+"guid": "f7098fefa06642f6a6b23aac2240a235.16",
+"latlng": "47.487622,-122.188869"
+},
+{
+"title": "Great Music Brought To You By 420",
+"guid": "207eae63555e4c9fbf319ae4e12356df.16",
+"latlng": "47.489328,-122.19363"
+},
+{
+"title": "Lexington Playground",
+"guid": "1dfde273273e441dab41667fdb849e8f.16",
+"latlng": "47.486975,-122.190177"
+},
+{
+"title": "Mt.Olivet Cemetery",
+"guid": "96d0fa06a9e544bea9f25eddb0f59339.16",
+"latlng": "47.484903,-122.188582"
+},
+{
+"title": "Renton First United Methodist Church",
+"guid": "44794f3a75d54944a57d20185f1c0c82.16",
+"latlng": "47.487953,-122.189147"
+},
+{
+"title": "Renton's Pioneer Cemetery",
+"guid": "d42469d43ce2478cb5083788c6a31e14.16",
+"latlng": "47.485189,-122.188507"
+},
+{
+"title": "Windsor Hill Park Playground",
+"guid": "dba979936a544b09a3a745ca5eb8e2eb.16",
+"latlng": "47.489547,-122.186767"
+},
+{
+"title": "Tempus Fugit",
+"guid": "f16e26d0708a4d17b68be5e0f8a89f9c.16",
+"latlng": "47.483473,-122.187592"
+},
+{
+"title": "Renton Diamond Jubilee",
+"guid": "49788ac9110349aaa8e9423dcce57feb.16",
+"latlng": "47.485838,-122.217327"
+},
+{
+"title": "Life Stream Worship Center",
+"guid": "fb32d1d043f943a49dbfb7ef6a9a86f3.16",
+"latlng": "47.48412,-122.214953"
+},
+{
+"title": "Renton Brown Bear",
+"guid": "55d3eaa7e41e414e8fc1c1b40f224443.16",
+"latlng": "47.484026,-122.217535"
+},
+{
+"title": "Tracey Reese Memorial",
+"guid": "59478f55216149a490caf5d45336185d.16",
+"latlng": "47.48805,-122.208779"
+},
+{
+"title": "Henry Moses Renton Centennial Marker",
+"guid": "31ab50ea581b4eaa89690281cfdac2b9.16",
+"latlng": "47.483932,-122.21572"
+},
+{
+"title": "Renton Uhaul Space Needle",
+"guid": "fcd3e00406644a268ca4ad89c04641f9.16",
+"latlng": "47.489835,-122.21817"
+},
+{
+"title": "Clayton Scott Monument, Front ",
+"guid": "b12f9b6a675243f78257bb7bc0db0fac.12",
+"latlng": "47.485256,-122.212997"
+},
+{
+"title": "National Geodetic Survey Marker",
+"guid": "c90727aaabef4580a8dcf8f0c289e63c.16",
+"latlng": "47.485178,-122.21519"
+},
+{
+"title": "Clarence Williams Memorial",
+"guid": "31d67be5e433475f880a03ef987d899c.16",
+"latlng": "47.48813,-122.209082"
+},
+{
+"title": "Tobin's Sawmill 1853",
+"guid": "aa2fdbe8263f42bba7e22e68f5c8e9dc.16",
+"latlng": "47.483966,-122.217099"
+},
+{
+"title": "Church of Grace",
+"guid": "0ef37ba4c01b449aa57d129d5cb1a74c.16",
+"latlng": "47.485016,-122.219792"
+},
+{
+"title": "Azlans Homerun",
+"guid": "68e0ca79dcfe4d44836ae214132f1af1.16",
+"latlng": "47.484747,-122.210682"
+},
+{
+"title": "Blair Barnes Dedication Plaque",
+"guid": "d1b3c648a1414814bd091cb1cf51c506.16",
+"latlng": "47.487895,-122.210766"
+},
+{
+"title": "Cedar River Trail of Renton",
+"guid": "ffe55436b3b14538b8c9ab334dada7a7.16",
+"latlng": "47.486416,-122.209129"
+},
+{
+"title": "Cedar River Trail 1/4 Mile Marker",
+"guid": "0e2435e2bbbd4b769d47685f466e93ca.16",
+"latlng": "47.486793,-122.209859"
+},
+{
+"title": "In Memory of Scott R. Spengler",
+"guid": "fe80f01f108d4598bcf66a46b9456ed5.16",
+"latlng": "47.485413,-122.216847"
+},
+{
+"title": "Wilbert Wedenoja Dedicated Bench",
+"guid": "3f366bf09e1942258ef154a753d117c4.16",
+"latlng": "47.489704,-122.211478"
+},
+{
+"title": "Boeing Historical  Marker",
+"guid": "f128f413bff749168040cf4a374709e2.16",
+"latlng": "47.48993,-122.211538"
+},
+{
+"title": "Cedar River Trail Etiquette",
+"guid": "d93d4c53e7674868b37bf88bebc2563d.16",
+"latlng": "47.488338,-122.210954"
+},
+{
+"title": "Lullabyland Memorial",
+"guid": "8bd8aa38bdf24d5d9486420edea7f678.16",
+"latlng": "47.486297,-122.172124"
+},
+{
+"title": "All to Myself I Think of You Memorial",
+"guid": "72366c69a9004a1c8086ea65217c3b08.16",
+"latlng": "47.486764,-122.170208"
+},
+{
+"title": "Garden of Harmony",
+"guid": "fa67200b17c34a38a17b50a6f9c90453.16",
+"latlng": "47.486712,-122.173687"
+},
+{
+"title": "Metamorphosis",
+"guid": "1caf28a8dc7040f0bd5ae272b153255b.16",
+"latlng": "47.48793,-122.173166"
+},
+{
+"title": "Time Enough",
+"guid": "bf099bc0367a4b508691ae6aafdc5eb5.16",
+"latlng": "47.486537,-122.174261"
+},
+{
+"title": "Iu-Mienh Community Memorial ",
+"guid": "b130f28bc5634c45a0405680e35c25d7.16",
+"latlng": "47.48535,-122.174513"
+},
+{
+"title": "Renton Aerie No 1722 F.O.E.",
+"guid": "c27f113e47a14941bee221b37a2341ca.16",
+"latlng": "47.488222,-122.171616"
+},
+{
+"title": "Memories Fountain",
+"guid": "c23d58817f454ce2aef0dd95945b641d.16",
+"latlng": "47.485701,-122.172339"
+},
+{
+"title": "Yeah Yeah Thanks Puddin",
+"guid": "7cd14f47dc4a41d5bff70174c4b96b28.16",
+"latlng": "47.488086,-122.174574"
+},
+{
+"title": "Hurricane Katrina Memorial",
+"guid": "c2b32b1c9a944701bc57c9ad155c52bf.16",
+"latlng": "47.485937,-122.17432"
+},
+{
+"title": "Fish Fountain",
+"guid": "b0912bc0b68049e4892b08e03897c002.16",
+"latlng": "47.486199,-122.173564"
+},
+{
+"title": "Garden of Eternal Peace Pagoda",
+"guid": "2327a393e34a4b1aa0914f1182b27f24.16",
+"latlng": "47.48619,-122.174287"
+},
+{
+"title": "Greenwood Memorial Geometrical Fountain ",
+"guid": "0e97ad3a95da44938898eef25f733a7d.16",
+"latlng": "47.487722,-122.170559"
+},
+{
+"title": "Garden of Friends Bench",
+"guid": "f1c552ce6d9448519f7184f77a16b470.16",
+"latlng": "47.488083,-122.169903"
+},
+{
+"title": "Sun Dial",
+"guid": "721500f064644c69847c8f2f86cf0bcf.16",
+"latlng": "47.486194,-122.171397"
+},
+{
+"title": "Jimi Hendrix Memorial",
+"guid": "8bc08af55f64419bb099d826550d1beb.12",
+"latlng": "47.486514,-122.173947"
+},
+{
+"title": "Pastor Lee Arthur Dennis Memorial Bench",
+"guid": "49ca64d3a78c46eb93199d07dc7f443b.16",
+"latlng": "47.486706,-122.172068"
+},
+{
+"title": "Together Forever Bench",
+"guid": "a84d9b260e4f4509ab8c1efa16c57500.16",
+"latlng": "47.48524,-122.171777"
+},
+{
+"title": "Remembered Forever",
+"guid": "17cbb13c1e0f4db6be88538fdcd58d36.16",
+"latlng": "47.487686,-122.173709"
+},
+{
+"title": "Vietnamese National Feature Columbarium",
+"guid": "2a1330a3d29e4e3798fa836432471f0e.16",
+"latlng": "47.485744,-122.174095"
+},
+{
+"title": "Forever Together Memorial",
+"guid": "a3f3ef644cc241a590824bfb904c3f77.16",
+"latlng": "47.486846,-122.172553"
+},
+{
+"title": "East Memorial Wall",
+"guid": "73fcb6a9a4384778931aafb5ae1f9f4c.16",
+"latlng": "47.488078,-122.169664"
+},
+{
+"title": "Love Forever Headstone",
+"guid": "df1e0ae4843e4221ac301331aedfb129.16",
+"latlng": "47.48752,-122.172903"
+},
+{
+"title": "Dragon Fountain",
+"guid": "3057b4738a3443b49d115229ef90d1cf.16",
+"latlng": "47.485676,-122.173525"
+},
+{
+"title": "Memorial Fountain",
+"guid": "4a2ffcfa3af142bdaac3e50036ebd740.16",
+"latlng": "47.486942,-122.171348"
+},
+{
+"title": "Gazebo Memorial",
+"guid": "39b6e55744c84b7cad9cb1e920532400.16",
+"latlng": "47.487901,-122.173749"
+},
+{
+"title": "Neoclassic Pillar",
+"guid": "be836c86ca2c4031949afc21c62bd153.16",
+"latlng": "47.488107,-122.172259"
+},
+{
+"title": "Yui-Mien Community of Washington",
+"guid": "52db81fef66a4775a98665aa234fb3f2.16",
+"latlng": "47.487657,-122.172384"
+},
+{
+"title": "South Lawn Memorial",
+"guid": "44223eeb69b74293aad74abd2a6086c4.16",
+"latlng": "47.485165,-122.172433"
+},
+{
+"title": "Fountain of Youth",
+"guid": "572e008622d745f38999d5402801fc6c.16",
+"latlng": "47.486378,-122.174457"
+},
+{
+"title": "Prisoner of War Memorial",
+"guid": "1ef0630e7f3644989e0a2bd6027b840f.16",
+"latlng": "47.486325,-122.172827"
+},
+{
+"title": "Sempre nel nostro cuore..Con amure bench",
+"guid": "c89f546ac11c4117ace1017557b6af69.16",
+"latlng": "47.487944,-122.170096"
+},
+{
+"title": "Cedar View Memorial",
+"guid": "cd2f34d0a9d14319a4009265c0270b6e.16",
+"latlng": "47.488451,-122.169666"
+},
+{
+"title": "Renton Memorial Stadium",
+"guid": "bc0207d98f774f61ac5b2a05a793a00e.16",
+"latlng": "47.488014,-122.208414"
+},
+{
+"title": "Seed of Abraham Pentecostal",
+"guid": "79ffc8a58b2446db8162a65500befb43.16",
+"latlng": "47.486572,-122.204357"
+},
+{
+"title": "The Muybridge",
+"guid": "f844737c12444d339cc65ee6995ad579.16",
+"latlng": "47.484522,-122.206426"
+},
+{
+"title": "Dog And Pony Alehouse",
+"guid": "7661570a99df409a8f5881cb9614b2c2.16",
+"latlng": "47.48827,-122.202548"
+},
+{
+"title": "Seattle Car and Manufacturing - 1908",
+"guid": "362ca2f95a4145a68b6c8ecc98f51efa.16",
+"latlng": "47.488558,-122.198303"
+},
+{
+"title": "Blue Star Memorial",
+"guid": "0db14c4b64714102aabd60f58a51cd94.16",
+"latlng": "47.48614,-122.20729"
+},
+{
+"title": "We're All In This Boat Together",
+"guid": "4fcf29c159cc41b7be1bf0b5e5ade4a1.11",
+"latlng": "47.485703,-122.208535"
+},
+{
+"title": "Around Here NW Bus Stop Art Installation",
+"guid": "7e10d8b8c4664f77b5e3e61c589c6ec5.16",
+"latlng": "47.48871,-122.202055"
+},
+{
+"title": "Renton Historic Bridge Marker ",
+"guid": "a52e102fe56a4a3393ea2cf8813cd950.16",
+"latlng": "47.48529,-122.208648"
+},
+{
+"title": "The Salvation Army Renton Corps",
+"guid": "d4cf2b8b58444c4096804178b0c9b5e7.16",
+"latlng": "47.483912,-122.20676"
+},
+{
+"title": "Wolves at Indian Baskets",
+"guid": "4c793f232440405ba7245fb019803686.11",
+"latlng": "47.484777,-122.207681"
+},
+{
+"title": "St. Luke's Historical Church",
+"guid": "ac33fa03463d49738b9e45967040e03b.16",
+"latlng": "47.483145,-122.2056"
+},
+{
+"title": "Community Garden",
+"guid": "9525ceb2e48c46fa8c9153d595825c71.16",
+"latlng": "47.484984,-122.206252"
+},
+{
+"title": "Walk In Love",
+"guid": "ce453275a36d4da9945f32e09c804400.16",
+"latlng": "47.485462,-122.208068"
+},
+{
+"title": "Jones Park",
+"guid": "9f99a9efdc1a456d913b3147ef9addf9.16",
+"latlng": "47.483253,-122.205272"
+},
+{
+"title": "Renton Tech Collage",
+"guid": "ba14ca39924b4cafb5edbff8391629e8.16",
+"latlng": "47.489363,-122.177949"
+},
+{
+"title": "Welcome to the Renton Highlands",
+"guid": "5fa666c2c12b4edc9d72992c1e35682c.16",
+"latlng": "47.488357,-122.177957"
+},
+{
+"title": "Metal Sculpture",
+"guid": "c772d8fff0dc4c58bd3c4f6bac092715.16",
+"latlng": "47.489824,-122.176998"
+},
+{
+"title": "Renton History Museum",
+"guid": "513948a9438449f59b1e02d301bc9a10.12",
+"latlng": "47.480125,-122.203342"
+},
+{
+"title": "Renton Time Piece",
+"guid": "b9e96fdbcbb248e8956675f2c7ff7fc8.16",
+"latlng": "47.480547,-122.207775"
+},
+{
+"title": "Renton Hill",
+"guid": "ee6b6e950e894bcf9f5e0472287de842.12",
+"latlng": "47.479667,-122.203002"
+},
+{
+"title": "Renton Clay Works - 1901",
+"guid": "c554d7a59a484322917f59341a0900b0.16",
+"latlng": "47.47953,-122.197791"
+},
+{
+"title": "The Jazz Club Mural",
+"guid": "fb703169255e4c9ca7501d90a909d917.16",
+"latlng": "47.479307,-122.208257"
+},
+{
+"title": "Central School - 1892",
+"guid": "0c5225874bdd4f6a9615b5a7f5fc0ef0.16",
+"latlng": "47.476701,-122.204429"
+},
+{
+"title": "JP Williams Ave Pub",
+"guid": "4a19aafa567c4eceb515f17749c5a1dc.16",
+"latlng": "47.480622,-122.206457"
+},
+{
+"title": "The B&W",
+"guid": "9ffc6e614f4b4270a22929f6df9f88ea.16",
+"latlng": "47.480055,-122.205834"
+},
+{
+"title": "Common Ground",
+"guid": "8a02a7c408454a92bb9c9e146e24ed84.16",
+"latlng": "47.479763,-122.205362"
+},
+{
+"title": "Pioneer Residence Marker, Renton",
+"guid": "6d8a4c5c8d404628aa8a59c1ba801a79.11",
+"latlng": "47.480018,-122.208463"
+},
+{
+"title": "Liberty Park Community Building",
+"guid": "6dba27e19d4c4eeabcd2909b3cf200c4.16",
+"latlng": "47.482739,-122.201659"
+},
+{
+"title": "Tonkin Park Stage",
+"guid": "4ee44926ff244f3482d83009933c7a65.11",
+"latlng": "47.478291,-122.207239"
+},
+{
+"title": "Doctor Bronson's Hospital - 1911",
+"guid": "279d7d5ecb104e72931e679f78359bdb.16",
+"latlng": "47.481106,-122.204063"
+},
+{
+"title": "4 Sisters Watchful Owl",
+"guid": "92d11a1ac5a4464295695585de5be49f.16",
+"latlng": "47.47957,-122.205146"
+},
+{
+"title": "Edward Aliment Memorial Bench",
+"guid": "1b156479e607487496f1e306b3e79bd6.16",
+"latlng": "47.478395,-122.206975"
+},
+{
+"title": "Reading Boy 'Homework Comes First'",
+"guid": "56c1dba365534b6c9185c474463fc577.11",
+"latlng": "47.481474,-122.20213"
+},
+{
+"title": "Carnegie Library: Renton Centennial Marker #18 ",
+"guid": "30faf34b9f42482996eb972a9b4f5b4f.16",
+"latlng": "47.482693,-122.201065"
+},
+{
+"title": "Tree and Bench in Memory of Carrie Trimnel",
+"guid": "73f3ee594bb74b67a3c957704709484b.16",
+"latlng": "47.481034,-122.198168"
+},
+{
+"title": "First Presbyterian Church 1885",
+"guid": "7508dc342553484d828f6fcad587e624.16",
+"latlng": "47.479588,-122.20276"
+},
+{
+"title": "Nature Scenes Playground At Burnett Linear Park",
+"guid": "2f9d6ccec809420181aa9461a17614a4.16",
+"latlng": "47.47602,-122.208012"
+},
+{
+"title": "Bluebottle Wall, Renton",
+"guid": "71c3d4245e6748d3809117b09a15bb45.11",
+"latlng": "47.477781,-122.20778"
+},
+{
+"title": "Orca Mural",
+"guid": "84cb1f02796546bd927e6a199dbe2d7b.16",
+"latlng": "47.481489,-122.206726"
+},
+{
+"title": "The Potheads Of Renton",
+"guid": "414fd2897b1044c7b2196dd6363168dd.16",
+"latlng": "47.479355,-122.205776"
+},
+{
+"title": "National Geodetic Survey Marker  ",
+"guid": "46170eb343414baa8a9243cfe11abf90.16",
+"latlng": "47.480016,-122.198807"
+},
+{
+"title": "Renton Hill Coal Mines Tribute",
+"guid": "0dfde0815b4f43d5b3bb661706e8c3cb.16",
+"latlng": "47.480974,-122.201758"
+},
+{
+"title": "Untitled Fountain By Glen Hunt",
+"guid": "7759caa2bbfe4ab99db9ba0d11fe2648.16",
+"latlng": "47.481031,-122.202774"
+},
+{
+"title": "Historic Renton Hill Sign.",
+"guid": "81588461bf0b46cc86ad665bba83e9a7.16",
+"latlng": "47.478184,-122.203997"
+},
+{
+"title": "Stone Man",
+"guid": "c8e95cf8dcae43c5872d09266e0b2900.16",
+"latlng": "47.481788,-122.205578"
+},
+{
+"title": "Cedar River Trailhead Marker",
+"guid": "4d6eea2215aa472ca74744c0ef05af63.16",
+"latlng": "47.48278,-122.208537"
+},
+{
+"title": "Curious Eyes",
+"guid": "fb6193deb5e4447491fa34ab5caa8606.16",
+"latlng": "47.481582,-122.202909"
+},
+{
+"title": "Whistle Stop Ale House",
+"guid": "bcafcb4ed18d44b0a7dee2922f32254e.16",
+"latlng": "47.477928,-122.20626"
+},
+{
+"title": "S&WW Railroad Centennial Marker #9",
+"guid": "7e523de187084882a653de183b077220.16",
+"latlng": "47.478131,-122.208148"
+},
+{
+"title": "Bicycle Bike Rack",
+"guid": "cef9b392b0f34d1fa76096cbd82ae83a.16",
+"latlng": "47.481809,-122.201731"
+},
+{
+"title": "Renton's Veterans Memorial Park",
+"guid": "ce65a41fbb8a4a81a042492b9d7a34cf.12",
+"latlng": "47.479887,-122.203905"
+},
+{
+"title": "Liberty Park Playground",
+"guid": "312de49b7e21440e9abd755b23a44a95.16",
+"latlng": "47.481849,-122.201051"
+},
+{
+"title": "Renton Brick Plant Tribute",
+"guid": "2a37e53dab5346719fc72cdb4313e0d4.16",
+"latlng": "47.480053,-122.201956"
+},
+{
+"title": "Comic Hut",
+"guid": "97131eb95a6c4baeb1990e1b94ebbb99.16",
+"latlng": "47.479755,-122.205801"
+},
+{
+"title": "Grand Theatre 1916",
+"guid": "86d1739e943a41e682b50eef68f4fe10.16",
+"latlng": "47.480319,-122.205316"
+},
+{
+"title": "Before Everything",
+"guid": "a4f91ac29964440f897c9bbdcef0ef18.16",
+"latlng": "47.48055,-122.208211"
+},
+{
+"title": "8-Bit Arcade-Bar",
+"guid": "19cd4bb8a92549e4ac80637d246218b5.16",
+"latlng": "47.479732,-122.204959"
+},
+{
+"title": "Stiltwalker",
+"guid": "97169d2c37db448ebd5bad72f09ff40c.12",
+"latlng": "47.482124,-122.20162"
+},
+{
+"title": "Renton Skate Park",
+"guid": "b5f1edc5d10c495cb9bec39685a65f44.16",
+"latlng": "47.481473,-122.200042"
+},
+{
+"title": "Cedar River Trail and Dog Park Entry Sign",
+"guid": "47d890459eb849e6988d0da2d6a04e45.16",
+"latlng": "47.47969,-122.202338"
+},
+{
+"title": "Melrose",
+"guid": "6ee439aa790c40acb6d8b9f4211dca61.16",
+"latlng": "47.47885,-122.205603"
+},
+{
+"title": "VFW",
+"guid": "7e6b99f98a8843a58988038619517293.16",
+"latlng": "47.477517,-122.207758"
+},
+{
+"title": "Jones Park Memorial",
+"guid": "20508b15ea42400792f6368f9ebd4623.16",
+"latlng": "47.482704,-122.204957"
+},
+{
+"title": "Chief Seattle in Renton",
+"guid": "0d061b2ca4db45618bd40a9b2211ac96.16",
+"latlng": "47.480286,-122.203131"
+},
+{
+"title": "Diamond Tattoo Mural",
+"guid": "e9fcb1536273425e9dee03b253d5ef40.16",
+"latlng": "47.481607,-122.203544"
+},
+{
+"title": "Ahead Of The Curve",
+"guid": "f5b0ceaadbf1445a958cb08553295d57.16",
+"latlng": "47.481299,-122.200691"
+},
+{
+"title": "Renton Piazza Fountain",
+"guid": "ad4b633e54454fa782c3362c18f0edc3.11",
+"latlng": "47.479993,-122.208197"
+},
+{
+"title": "Seattle at Night Bus Stop Mural",
+"guid": "976c160f7c7d4b3f865650703acda181.16",
+"latlng": "47.477863,-122.204402"
+},
+{
+"title": "Who's Who Cedar River Style",
+"guid": "5b868944c78e42428aaf33aeeaf48ce9.16",
+"latlng": "47.480825,-122.198997"
+},
+{
+"title": "Dragon Say What?",
+"guid": "fe69d0c16a184cfd8e65169eda268960.16",
+"latlng": "47.482928,-122.204881"
+},
+{
+"title": "Renton Clock Tower",
+"guid": "8ed88c23258d49e4a0c819f7f375f1c9.11",
+"latlng": "47.479594,-122.208153"
+},
+{
+"title": "Snoqualmie Falls Power Co. Substation",
+"guid": "195ca5e9bb524d7aa984cfc857c99b8d.16",
+"latlng": "47.479459,-122.203707"
+},
+{
+"title": "Whimsical Train Mural",
+"guid": "deab11e6755d4b579f844ff34d45ec09.16",
+"latlng": "47.478066,-122.205746"
+},
+{
+"title": "Liberty Park Pavilion",
+"guid": "7364ff38c19d40158cac1ae3ace4b09c.16",
+"latlng": "47.481614,-122.201076"
+},
+{
+"title": "Renton Skateboard Park",
+"guid": "277d3c07a8e84540b5ae7c8ef4253fd4.16",
+"latlng": "47.481691,-122.200322"
+},
+{
+"title": "Fountain of Youth",
+"guid": "e0b4b0fb640a492f99fe778c3ad012f7.16",
+"latlng": "47.478135,-122.208453"
+},
+{
+"title": "Shuga Jazz Bistro",
+"guid": "3ba4e7608ef24684a7d73b2428077849.16",
+"latlng": "47.478907,-122.204814"
+},
+{
+"title": "Burnett Linear Park",
+"guid": "9d703f16dba54b4a9e7a0a9c2cd31c0a.16",
+"latlng": "47.476491,-122.208042"
+},
+{
+"title": "Cedar River Trail",
+"guid": "cfaaca7baad64d1abac9226af013a21c.16",
+"latlng": "47.480981,-122.199569"
+},
+{
+"title": "Renton City Hall - 1908",
+"guid": "797882bccb0a496da10d51e65bd03d6b.16",
+"latlng": "47.480166,-122.20552"
+},
+{
+"title": "The Firebird",
+"guid": "44bd6085076f42909edee9d48e77fdd8.16",
+"latlng": "47.479828,-122.206976"
+},
+{
+"title": "Cedar River Trail Centennial Plaza",
+"guid": "e251cbd0ec4c4246bb12f548d6b24357.16",
+"latlng": "47.481424,-122.208041"
+},
+{
+"title": "Renton Parks Information Kiosk",
+"guid": "ce73762de1f54773b004ade1320c899b.16",
+"latlng": "47.480295,-122.199137"
+},
+{
+"title": "Saint Andrews Masonic Lodge",
+"guid": "612736ddd2a4448f994875f0821d4d03.16",
+"latlng": "47.476462,-122.206853"
+},
+{
+"title": "Sewing Woman",
+"guid": "0ba43ae558094ac99ca801745fde36c1.16",
+"latlng": "47.479137,-122.20477"
+},
+{
+"title": "Donkey Run Away from the Mines",
+"guid": "42b67e93dd2e4244ae5c9e67f2cd1d17.11",
+"latlng": "47.478326,-122.206879"
+},
+{
+"title": "Whales on Williams",
+"guid": "1d94f1d5181444c7a3856b88f46f37bf.16",
+"latlng": "47.481952,-122.206714"
+},
+{
+"title": "Jamal Crawford Court",
+"guid": "464eb7daf66c4e9b85b5a82c5c7a2dc8.16",
+"latlng": "47.482527,-122.1997"
+},
+{
+"title": "The Disconnect",
+"guid": "2727da4266214168b99cce7bc18596d3.16",
+"latlng": "47.480322,-122.203409"
+},
+{
+"title": "Our Adopted Community",
+"guid": "1b04617095674cddaecd17f5bf890a58.16",
+"latlng": "47.48071,-122.208558"
+},
+{
+"title": "Renton Fire Department Headqua",
+"guid": "f6f6fc87c8094363b0b908729b135ac0.12",
+"latlng": "47.480906,-122.203358"
+},
+{
+"title": "Renton Library",
+"guid": "fdcd92f78da04dc3a6d9cbee25d5216c.12",
+"latlng": "47.481917,-122.202103"
+},
+{
+"title": "Charlotte's Rail Web",
+"guid": "8c306f8c58844b4b98a0862cd13d6c8d.16",
+"latlng": "47.481884,-122.20138"
+},
+{
+"title": "Sockeye Salmon Life Cycle",
+"guid": "9aaa61c9c5144245b9a2c952e1b9f8af.16",
+"latlng": "47.481634,-122.20193"
+},
+{
+"title": "US Post Office",
+"guid": "cd94cc8cf6e14d05ac3c081da16058b0.12",
+"latlng": "47.479091,-122.206341"
+},
+{
+"title": "Alki Saloon",
+"guid": "8b3f5f5655534821bee14761812275e6.16",
+"latlng": "47.479589,-122.204335"
+},
+{
+"title": "Chateau De Ville Fountain",
+"guid": "16848e8ac99e423d898ca456ded5529f.16",
+"latlng": "47.482396,-122.206361"
+},
+{
+"title": "Old Renton Photo Utility Box",
+"guid": "26e84659414a4d12b488605c10d3fe28.16",
+"latlng": "47.47958,-122.206573"
+},
+{
+"title": "Ich Bin Ein Berliner",
+"guid": "5d51e09674b545679ad07a2edf4e6f1b.16",
+"latlng": "47.48045,-122.204354"
+},
+{
+"title": "Jones Park",
+"guid": "3434fbdcd0564c7c9a7c96a0531aafc2.11",
+"latlng": "47.48271,-122.204449"
+},
+{
+"title": "Philip Arnold Park - Pump Humps - Silk Worm Trail",
+"guid": "c0dde9902c8a4c39a90e2750c84cebc2.16",
+"latlng": "47.470289,-122.19336"
+},
+{
+"title": "Philip Arnold Park",
+"guid": "5a725799f01640b68fdb337a66f906e1.16",
+"latlng": "47.472654,-122.195353"
+},
+{
+"title": "Philip Arnold Park",
+"guid": "ea6db9f8201b4758b29bed81adb4ff02.16",
+"latlng": "47.473689,-122.196571"
+},
+{
+"title": "Philip Arnold Playground",
+"guid": "18f2bffc771645e6bec6a4aa69874b2b.16",
+"latlng": "47.472168,-122.196168"
+},
+{
+"title": "Earlington Park",
+"guid": "9485bee5c0e549759be2f4724eecd096.16",
+"latlng": "47.480786,-122.227892"
+},
+{
+"title": "Earlington Hill Community",
+"guid": "8ce819c5ff2e4eb280b35acfc335675b.16",
+"latlng": "47.479963,-122.220207"
+},
+{
+"title": "Mural at Cedar River Market",
+"guid": "c63ab5400e2f4dacb8fcaa4b310d0e5a.16",
+"latlng": "47.475164,-122.172671"
+},
+{
+"title": "Home to Champions",
+"guid": "a447a92c16d846ceaf6bd0bc9d2675ef.16",
+"latlng": "47.474787,-122.205188"
+},
+{
+"title": "Waterline Surfer Bus Stop Art Installation",
+"guid": "a990d55336df456dba33ca77133d3703.16",
+"latlng": "47.473034,-122.208239"
+},
+{
+"title": "Equi Structure",
+"guid": "328f26e70c89433baeee8487e9384071.16",
+"latlng": "47.473898,-122.20869"
+},
+{
+"title": "Renton City Hall",
+"guid": "44752a93cc1744c696987e81efbfd316.16",
+"latlng": "47.47452,-122.205581"
+},
+{
+"title": "Renton Coal Company",
+"guid": "2592603bdb594c49a1ceaf66b883526d.16",
+"latlng": "47.47238,-122.205163"
+},
+{
+"title": "Jimmy Mac's Roadhouse",
+"guid": "3e1ccd239ac740b2b0cbcda3c5670cf4.11",
+"latlng": "47.473523,-122.219097"
+},
+{
+"title": "Welcome To South Renton Pond",
+"guid": "83500e01ee5f4157b7e0f8e21bd822bd.16",
+"latlng": "47.473507,-122.213099"
+},
+{
+"title": "Bus Stop Art",
+"guid": "42f6b63141c3424ebec14ebf1834be19.16",
+"latlng": "47.473347,-122.216979"
+},
+{
+"title": "Renton City Wave",
+"guid": "5baabff90fab46848a7e2c9dc209487f.16",
+"latlng": "47.471007,-122.217581"
+},
+{
+"title": "Uwajimaya Glass Mural",
+"guid": "58cfd78a96704495a100b37d755cea59.16",
+"latlng": "47.470035,-122.21253"
+},
+{
+"title": "Renton Brown Bear",
+"guid": "3e90d46b14a146aeabd5ebdb37e76fe6.11",
+"latlng": "47.473377,-122.209078"
+},
+{
+"title": "Momma Bear And Three Little Bears",
+"guid": "2ec6cb41b0fd49a2976370dabd04edc3.16",
+"latlng": "47.473115,-122.208754"
+},
+{
+"title": "Uwajimaya Dragon",
+"guid": "28ed03ff89764851ab2d316b2432bd2c.16",
+"latlng": "47.470172,-122.213251"
+},
+{
+"title": "Renton Washington Monument",
+"guid": "f193548ecb914a7a976050c699f2596d.16",
+"latlng": "47.482609,-122.188789"
+},
+{
+"title": "Wood Grave",
+"guid": "9c84ad0099024dbe9f4f02b309933078.16",
+"latlng": "47.48283,-122.188359"
+},
+{
+"title": "Brick Faces",
+"guid": "65f62c22b4084d2b8c1fa9c84c412bbd.16",
+"latlng": "47.480835,-122.196942"
+},
+{
+"title": "Shrine of the Virgin Mary",
+"guid": "c683db7bb9a84903a8142c8d87ad837c.16",
+"latlng": "47.482214,-122.187631"
+},
+{
+"title": "Untitled Mural by Bonnie Branson 1989",
+"guid": "99e1357c7f0c4110a4a0550643adf725.16",
+"latlng": "47.481489,-122.196868"
+},
+{
+"title": "Mt Olivet Columbarium #1",
+"guid": "b9463233764640cd955cc03613d75ce6.16",
+"latlng": "47.482037,-122.188803"
+},
+{
+"title": "'Emerging' by Hai Ying Wu",
+"guid": "3036905f58a84fbcaab90393b668a7f4.16",
+"latlng": "47.48079,-122.19648"
+},
+{
+"title": "The Duwamish People - Doug Kyes",
+"guid": "85b06fcaa47844b9a5558f315465639e.16",
+"latlng": "47.481448,-122.1954"
+},
+{
+"title": "Cedar River Dog Park",
+"guid": "cf821ad28f0e4a25be23701e45b98fe8.16",
+"latlng": "47.478488,-122.19624"
+},
+{
+"title": "Dolphin - Fred Meyer Donation",
+"guid": "1930f9cd54e8493b97e508c9fc461c6d.16",
+"latlng": "47.48156,-122.195065"
+},
+{
+"title": "Renton Community Center",
+"guid": "4782c1cd8fcf4e5a987fd62f20e3f02e.16",
+"latlng": "47.481197,-122.197153"
+},
+{
+"title": "Gillespie Brothers Memorial Bench",
+"guid": "a45a8c5e96784316810283f3e9f04cf9.16",
+"latlng": "47.478858,-122.1948"
+},
+{
+"title": "Leo & Riley Memorial Bench",
+"guid": "77d3e64929624a0dbc3d92f6e7df63ca.16",
+"latlng": "47.477951,-122.195838"
+},
+{
+"title": "Origin of the Cedar River Trail Information Board",
+"guid": "34756da2c91c4a7b95b7401e5e250205.16",
+"latlng": "47.479212,-122.196967"
+},
+{
+"title": "Henry Moses Aquatic Center",
+"guid": "9c15a48792604ab2a5cd4d93a61525a4.16",
+"latlng": "47.481702,-122.19572"
+},
+{
+"title": "Mt Olivet Chapel",
+"guid": "d484ae9bec2a47e49e9d89cc6e188d40.16",
+"latlng": "47.482906,-122.186785"
+},
+{
+"title": "Winged Angel Statute",
+"guid": "49f02787438d4674868bea623928d884.16",
+"latlng": "47.482611,-122.186839"
+},
+{
+"title": "Cedar River Trail",
+"guid": "abd38a81bcaf45a6aea6a6e74d2bf3b8.16",
+"latlng": "47.475887,-122.180996"
+},
+{
+"title": "Cedar River Trail Public Gazebo",
+"guid": "bbf0ae0ef71740d290e4b076d9c0df44.16",
+"latlng": "47.476165,-122.179815"
+},
+{
+"title": "Riverview Park Sign",
+"guid": "9c46e07848724021a8591dab55c8c9f0.11",
+"latlng": "47.476982,-122.17957"
+},
+{
+"title": "Cedar River Trail Riverview",
+"guid": "43621fa20e02474a9f92c1ad20a8b4ea.11",
+"latlng": "47.475775,-122.182033"
+},
+{
+"title": "Weeping Angel",
+"guid": "996e19674b41476f8aadcec33c09e44b.16",
+"latlng": "47.482214,-122.185629"
+},
+{
+"title": "Life Cycle of the Sockeye Salmon",
+"guid": "c98510d924cc49d48614f663373f1f75.16",
+"latlng": "47.476509,-122.180107"
+},
+{
+"title": "For Those Souls Lost At Sea",
+"guid": "57726dc6a66e4434ac320486ab51a43b.16",
+"latlng": "47.485751,-122.20826"
+},
+{
+"title": "Renton Senior Activity Center",
+"guid": "2bf547dd2b8f4e4c845ad4a27df215ea.11",
+"latlng": "47.485868,-122.208031"
+},
+{
+"title": "Maplewood Park",
+"guid": "2968ffc87ffb4734aed3cda4c23054ea.16",
+"latlng": "47.475442,-122.173444"
+},
+{
+"title": "Dragon Sentinels",
+"guid": "06160963cb5f4c6f85a8ce709ab3d638.16",
+"latlng": "47.482629,-122.21701"
+},
+{
+"title": "Renton Bruce Lee Mural",
+"guid": "4ea3dd66c90c435a8b6776ef47ccc127.16",
+"latlng": "47.479454,-122.211689"
+},
+{
+"title": "Renton Civic Theatre",
+"guid": "23f3b6fc96e84e77a6bc3ac6942e7429.16",
+"latlng": "47.479642,-122.210194"
+},
+{
+"title": "Smoking Monkey Pizza",
+"guid": "b7eab745358747008e27a62607df9097.16",
+"latlng": "47.479636,-122.208789"
+},
+{
+"title": "Daystar Baptist Church",
+"guid": "7f58c51cae224da480d06c1c7a9eee85.16",
+"latlng": "47.478747,-122.209228"
+},
+{
+"title": "St. Francis & Fawn Statues",
+"guid": "76675ed13b2c4d54a48ea4ae6fb3b264.16",
+"latlng": "47.478545,-122.211759"
+},
+{
+"title": "Sleepless Coffee",
+"guid": "d5355c5e7fdc42f48a4fda5828ec58ad.16",
+"latlng": "47.47942,-122.215875"
+},
+{
+"title": "Gentle Stream Tile Mosaic",
+"guid": "521b2fe241384cf38371aff011052bb2.16",
+"latlng": "47.479424,-122.212415"
+},
+{
+"title": "Follow the Yellow Brick Road, Renton",
+"guid": "5d85a1cc290c4e2590a073d0769d0e40.16",
+"latlng": "47.479929,-122.209467"
+},
+{
+"title": "Rutherford's Triple XXX Barrel 1930",
+"guid": "28ef92e5b14e4e22b1c754c04dba7783.16",
+"latlng": "47.480165,-122.217433"
+},
+{
+"title": "Faith Temple Community Church",
+"guid": "ba6822e1525d4e55816d0163d35bd2e9.16",
+"latlng": "47.479831,-122.213145"
+},
+{
+"title": "Medieval Portico, Renton",
+"guid": "2c1f40f6f55947c39b572d7f14b557e6.11",
+"latlng": "47.480356,-122.211784"
+},
+{
+"title": "Renton Raven",
+"guid": "3648c3f22d914397aeced2c8a2ed89aa.16",
+"latlng": "47.479396,-122.212112"
+},
+{
+"title": "Old Milwaukee Substation",
+"guid": "f01137de633e455d839e0567ba8adbe4.16",
+"latlng": "47.476987,-122.213171"
+},
+{
+"title": "Pushing Forward Together, Renton",
+"guid": "e78db47feeb4437098799fb57ab93ea1.11",
+"latlng": "47.480197,-122.212395"
+},
+{
+"title": "Kings Chapel",
+"guid": "f3e407526a144a6186084f144eb74ec1.16",
+"latlng": "47.479761,-122.210401"
+},
+{
+"title": "Smithers' Homestead 1856",
+"guid": "b25aa871c3f5466c9f5ca6d7f3468831.16",
+"latlng": "47.478175,-122.216749"
+},
+{
+"title": "Renton Chamber of Commerce",
+"guid": "084a2fd2af0b4daab736584627d25bbc.16",
+"latlng": "47.477796,-122.20882"
+},
+{
+"title": "Escape",
+"guid": "abf99ac0ba7540cebac793a6d32b4f89.16",
+"latlng": "47.479484,-122.218743"
+},
+{
+"title": "Summer Breeze Statue",
+"guid": "1b9d9b7d18634edda3e353f92a2b1e04.16",
+"latlng": "47.479838,-122.20883"
+},
+{
+"title": "Lion Guardian 2",
+"guid": "f41876f1ba0c4bb9882675f4e40bbe4f.16",
+"latlng": "47.47935,-122.215386"
+},
+{
+"title": "Ikea Performing Arts Center",
+"guid": "e10b028551d240e18d44d9bcf1591f71.16",
+"latlng": "47.481528,-122.210939"
+},
+{
+"title": "Donation Land Claim Act Plaque",
+"guid": "56653c8ef2214782be0abc1cd42fe0c5.16",
+"latlng": "47.479738,-122.209077"
+},
+{
+"title": "Sons Of Haiti ",
+"guid": "50dab075aea34624a1ef9ad9867b9b67.16",
+"latlng": "47.479475,-122.213145"
+},
+{
+"title": "Renton Welcomes You",
+"guid": "b3048ad0ea64430ba7311bd50d9687a2.16",
+"latlng": "47.479884,-122.21692"
+},
+{
+"title": "El Kiosko",
+"guid": "efb9d81ebecd466a899752ed4918c5b7.16",
+"latlng": "47.481463,-122.209263"
+},
+{
+"title": "Black River Bridge Plaque",
+"guid": "89c085f1c08e4ac591e0c6b5b35ed044.16",
+"latlng": "47.47959,-122.217323"
+},
+{
+"title": "Pilgrim Rest Baptist Church",
+"guid": "a9bfee8cdb104cb6b4295bb15a3ccd29.16",
+"latlng": "47.479816,-122.211782"
+},
+{
+"title": "'River' Richard C. Elliott",
+"guid": "2343fab9f34e45fc929d8976083e1947.16",
+"latlng": "47.480739,-122.208973"
+},
+{
+"title": "Luther's Table ",
+"guid": "690f5cfa1387467dbc381db17770459b.16",
+"latlng": "47.48104,-122.210859"
+},
+{
+"title": "City View Church",
+"guid": "e9f4c34f237f4641aebc1f0a553cefb6.16",
+"latlng": "47.479835,-122.219822"
+},
+{
+"title": "Harambee",
+"guid": "3162d5a607a14e729652ca413cac3b50.16",
+"latlng": "47.479848,-122.21229"
+},
+{
+"title": "Henry Moses Honoring Pole",
+"guid": "f1b49e81ce2241b58dbb76ad6e5761e7.16",
+"latlng": "47.47838,-122.219237"
+},
+{
+"title": "I Heart Renton",
+"guid": "ebc9fbf4cd9a41e8ac551ed6d6e5f1e8.16",
+"latlng": "47.479487,-122.209923"
+},
+{
+"title": "Black River School Centennial Marker",
+"guid": "621863e0cc804121b1f227b35c26c5f8.16",
+"latlng": "47.478957,-122.219754"
+},
+{
+"title": "St. Anthony's Church",
+"guid": "659faae4f4554978932a5143fde19de8.16",
+"latlng": "47.478284,-122.211115"
+},
+{
+"title": "Maplewood Roadside Park",
+"guid": "703ba87252644ed8b2baa3ec3c767b41.11",
+"latlng": "47.47533,-122.175708"
+},
+{
+"title": "Cedar River Trail Etiquette",
+"guid": "899deca9caaa4d30bb9d506e9caf90f3.16",
+"latlng": "47.474847,-122.175991"
+}]
