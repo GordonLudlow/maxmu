@@ -72,6 +72,29 @@ function pointInTriangle(point, triangle) {
     return u>=0 && v>=0 && (u+v < 1)
 }
 
+function GetURLParameter(sParam)
+{
+    let sPageURL = window.location.search.substring(1);
+    let sURLVariables = sPageURL.split('&');
+    for (let i = 0; i < sURLVariables.length; i++)
+    {
+        let sParameterName = sURLVariables[i].split('=');
+        if (sParameterName[0] == sParam)
+        {
+            return sParameterName[1];
+        }
+    }
+}
+
+function PlsArgToArray(plsArg) {
+    if (plsArg.includes("_")) {
+        return plsArg.split("_").map(function(e) {
+            return e.split(",").map(Number);
+        });
+    }
+    return plsArg.split(",").map(Number);
+}
+
 var triangleCount = 0;
 var maxLayers = 9999;
 var keysRequired = {};
@@ -173,6 +196,15 @@ function FindLargestInnerTriangle(triangle, portal) {
     return FindLargestInnerTriangle(innerTriangle, portal) + logString;
 }
 
+function FindIndex(portal, latlng) {
+    for (let i=0; i<portal.length; i++) {
+        if (portal[i].lat == latlng[0] && portal[i].lng == latlng[1]) {
+            return i;
+        }
+    }
+    console.log(`Error: Specified portal not found.  latlng = ${latlng[0]}, ${latlng[1]}`);
+}
+
 var map;
 var mapInitialized = false;
 function initializeMap()
@@ -192,7 +224,7 @@ function initializeMap()
         $.ajaxSetup({
             cache:false
         });          
-        $.getJSON('seattlecenter.json', function (data) {
+        $.getJSON('smallcougar.json', function (data) {
             portal = data;
             for (let i=0; i<portal.length; i++) {
                 let latlngArray = portal[i].latlng.split(',');
@@ -218,36 +250,51 @@ function initializeMap()
             }
   
             // TODO: Move all the math to a web worker
-            // Find largest triangle
-            let maxArea = 0;
             let triangle = [];
-            let hull = convexHull(portal);
-            for (let a=0; a<hull.length-2; a++) {
-                for (let b=a+1; b<hull.length-1; b++) {
-                    for (let c=b+1; c<hull.length; c++) {
-                        // Find twice the area of the triangle abc
-                        let area = Math.abs(
-                              (hull[a].x * (hull[b].y-hull[c].y))
-                            + (hull[b].x * (hull[c].y-hull[a].y))
-                            + (hull[c].x * (hull[a].y-hull[b].y))
-                            );
-                        if (area > maxArea) {
-                            maxArea = area;
-                            triangle = [hull[a], hull[b], hull[c]];
+            
+            let bounds = GetURLParameter("pls");
+            if (typeof bounds != "undefined") {
+                bounds = PlsArgToArray(bounds);
+                let indices = [];
+                for (let seg=0; seg<bounds.length; seg++) {
+                    let index = FindIndex(portal, bounds[seg].slice(0,2));
+                    if (!indices.includes(index)) indices.push(index);
+                    index = FindIndex(portal, bounds[seg].slice(2,4));
+                    if (!indices.includes(index)) indices.push(index);
+                }
+                triangle = [portal[indices[0]], portal[indices[1]], portal[indices[2]]];
+            }
+            else {
+                // Find largest triangle
+                let maxArea = 0;
+                let hull = convexHull(portal);
+                for (let a=0; a<hull.length-2; a++) {
+                    for (let b=a+1; b<hull.length-1; b++) {
+                        for (let c=b+1; c<hull.length; c++) {
+                            // Find twice the area of the triangle abc
+                            let area = Math.abs(
+                                (hull[a].x * (hull[b].y-hull[c].y))
+                                + (hull[b].x * (hull[c].y-hull[a].y))
+                                + (hull[c].x * (hull[a].y-hull[b].y))
+                                );
+                            if (area > maxArea) {
+                                maxArea = area;
+                                triangle = [hull[a], hull[b], hull[c]];
+                            }
                         }
                     }
                 }
+                // Draw the triangle
+                let polygon = new google.maps.Polygon({
+                    paths: triangle,
+                    strokeColor: '#0000FF',
+                    strokeOpacity: 1,
+                    strokeWeight: 2,
+                    fillColor: '#0000FF',
+                    fillOpacity: 0.1,
+                    map: map
+                });
             }
-            // Draw the triangle
-            let polygon = new google.maps.Polygon({
-                paths: triangle,
-                strokeColor: '#0000FF',
-                strokeOpacity: 1,
-                strokeWeight: 2,
-                fillColor: '#0000FF',
-                fillOpacity: 0.1,
-                map: map
-            });
             
             triangleCount++;
             logString = FindLargestInnerTriangle(triangle, portal) + "Outermost triangle:\n" +
@@ -270,17 +317,21 @@ function initializeMap()
             
             console.log(logString);
             
+            let center = {};
+            center.lat = (triangle[0].lat + triangle[1].lat + triangle[2].lat)/3;
+            center.lng = (triangle[0].lng + triangle[1].lng + triangle[2].lng)/3;
+            map.setCenter(new google.maps.LatLng(center));
+            
             // The stock intel page errors out with more than a dozen triangles.  So let's just do the outermost
             logString = "https://intel.ingress.com/intel?ll=";
-            logString += (triangle[0].lat + triangle[1].lat + triangle[2].lat)/3;
+            logString += center.lat;
             logString += ",";
-            logString += (triangle[0].lng + triangle[1].lng + triangle[2].lng)/3;
+            logString += center.lng;
             logString += "&pls=";
             logString += triangle[0].lat + "," + triangle[0].lng + "," + triangle[1].lat + "," + triangle[1].lng;
             logString += "_" + triangle[0].lat + "," + triangle[0].lng + "," + triangle[2].lat + "," + triangle[2].lng;
             logString += "_" + triangle[1].lat + "," + triangle[1].lng + "," + triangle[2].lat + "," + triangle[2].lng;
             console.log(logString);
-
                   
         })
         .fail(function(jqXHR, textStatus, errorThrown) { 
