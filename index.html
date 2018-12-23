@@ -10,6 +10,9 @@
 <style type="text/css">
 html { height: 100% }
 body { height: 100%; margin: 0; padding: 0 }
+#map_canvas {width:100%; height:90%}
+#results {width:100%; height:10%; overflow:auto; position: absolute; bottom: 0;}
+#results:before {content: " "; background-color: #ccc; position: absolute; top: 0; height: 4px; width: 100%; cursor: ns-resize;}
 </style>
 
 <script type="text/javascript">
@@ -224,7 +227,7 @@ function initializeMap()
         $.ajaxSetup({
             cache:false
         });          
-        $.getJSON('smallcougar.json', function (data) {
+        $.getJSON('portals.json', function (data) {
             portal = data;
             for (let i=0; i<portal.length; i++) {
                 let latlngArray = portal[i].latlng.split(',');
@@ -297,25 +300,23 @@ function initializeMap()
             }
             
             triangleCount++;
-            logString = FindLargestInnerTriangle(triangle, portal) + "Outermost triangle:\n" +
-                triangle[0].title + " https://intel.ingress.com/intel?pll=" + triangle[0].lat + "," + triangle[0].lng + "\n" +
-                triangle[1].title + " https://intel.ingress.com/intel?pll=" + triangle[1].lat + "," + triangle[1].lng + "\n" +
-                triangle[2].title + " https://intel.ingress.com/intel?pll=" + triangle[2].lat + "," + triangle[2].lng + "\n";
-            console.log(triangleCount + " layers");
+            let links = FindLargestInnerTriangle(triangle, portal);
+            let results_text = "<p>" + (triangleCount * 2 - 1) + " layers</p>";
             
-            console.log("\nKeys required:\n");
+            results_text += ("<p>Keys required:</p><ul>");
             let sortedKeys = [];
             for (let key in keysRequired) {
                 if (keysRequired.hasOwnProperty(key)) {
                     sortedKeys.push(("    " + keysRequired[key].count).slice(-4) + " " + keysRequired[key].title +" https://intel.ingress.com/intel?pll=" + keysRequired[key].lat + "," + keysRequired[key].lng + "\n");
                 }
             }
-            sortedKeys.sort();
+            sortedKeys.sort().reverse();
             for (let key in sortedKeys) {
-                console.log(sortedKeys[key]);
+                results_text += "<li>" + sortedKeys[key] + "</li>";
             }
+            results_text += "</ul>";
             
-            console.log(logString);
+            results_text += "<p>Links:</p>" + links;
             
             let center = {};
             center.lat = (triangle[0].lat + triangle[1].lat + triangle[2].lat)/3;
@@ -323,15 +324,43 @@ function initializeMap()
             map.setCenter(new google.maps.LatLng(center));
             
             // The stock intel page errors out with more than a dozen triangles.  So let's just do the outermost
-            logString = "https://intel.ingress.com/intel?ll=";
-            logString += center.lat;
-            logString += ",";
-            logString += center.lng;
-            logString += "&pls=";
-            logString += triangle[0].lat + "," + triangle[0].lng + "," + triangle[1].lat + "," + triangle[1].lng;
-            logString += "_" + triangle[0].lat + "," + triangle[0].lng + "," + triangle[2].lat + "," + triangle[2].lng;
-            logString += "_" + triangle[1].lat + "," + triangle[1].lng + "," + triangle[2].lat + "," + triangle[2].lng;
-            console.log(logString);
+            results_text += "<p><a href=";
+            results_text += "https://intel.ingress.com/intel?ll=";
+            results_text += center.lat;
+            results_text += ",";
+            results_text += center.lng;
+            results_text += "&pls=";
+            results_text += triangle[0].lat + "," + triangle[0].lng + "," + triangle[1].lat + "," + triangle[1].lng;
+            results_text += "_" + triangle[0].lat + "," + triangle[0].lng + "," + triangle[2].lat + "," + triangle[2].lng;
+            results_text += "_" + triangle[1].lat + "," + triangle[1].lng + "," + triangle[2].lat + "," + triangle[2].lng;
+            
+            results_text += ">Outer triangle</a></p>";
+            $("#results").html(results_text);
+
+
+            // Div resizing - see https://stackoverflow.com/a/53220241
+            const BORDER_SIZE = 4;
+            const panel = document.getElementById("results");
+            const map_div = document.getElementById("map_canvas");
+
+            let m_pos;
+            function resize(e){
+                const dy = m_pos - e.y;
+                m_pos = e.y;
+                panel.style.height = (parseInt(getComputedStyle(panel, '').height) + dy) + "px";
+                map_div.style.height = (parseInt(getComputedStyle(map_div, '').height) - dy) + "px";
+            }
+
+            panel.addEventListener("mousedown", function(e){
+                if (e.offsetY < BORDER_SIZE) {
+                    m_pos = e.y;
+                    document.addEventListener("mousemove", resize, false);
+                }
+            }, false);
+            
+            document.addEventListener("mouseup", function(){
+                document.removeEventListener("mousemove", resize, false);
+            }, false);
                   
         })
         .fail(function(jqXHR, textStatus, errorThrown) { 
@@ -340,7 +369,7 @@ function initializeMap()
         });
     } 
 }
-    
+
 </script>
 </head>
 
@@ -359,5 +388,6 @@ function initializeMap()
     });
 </script>
 <div id="map_canvas" style="width:100%; height:90%"></div>
+<div id="results" style="width:100%; height:10%; overflow:auto"></div>
 </body>
 </html>
