@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Select Max Mu bounds</title>
+<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+<style type="text/css">
+</style>
+
+<script type="text/javascript">
+</script>
+</head>
+
+<body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script>
+function GetURLParameter(url, sParam)
+{
+    let sURLVariables = url.split('&');
+    for (let i = 0; i < sURLVariables.length; i++)
+    {
+        let sParameterName = sURLVariables[i].split('=');
+        if (sParameterName[0] == sParam)
+        {
+            return sParameterName[1];
+        }
+    }
+}
+function userDataEntered() {
+    let bounds = GetURLParameter($('#link').val(), "pls");
+    if (typeof bounds != "undefined") {
+        window.location.replace("./index.html?pls=" + bounds);
+    }
+    else {
+        $("#error").html("Error: invalid link format.  Use a triangle from the link planning tool.");
+    }
+}
+</script>
+Use the <a href="https://support.ingress.com/hc/en-us/articles/360002062667-Intel-Map-Link-Planning">link planning tool</a> in the Ingress <a href="https://intel.ingress.com/intel" target="_blank">intel map</a> to draw the outer triangle for the field and paste the link here.
+<textarea id='link' rows='1' cols='80'></textarea>
+<button onclick='userDataEntered();'>Find fields</button>
+<br />
+<div id="error"></div>
+</body>
+</html>

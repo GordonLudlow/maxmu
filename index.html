@@ -269,6 +269,9 @@ function initializeMap()
                 triangle = [portal[indices[0]], portal[indices[1]], portal[indices[2]]];
             }
             else {
+                // Make them pick a triangle
+                window.location.replace("./select_triangle.html");
+                /*
                 // Find largest triangle
                 let maxArea = 0;
                 let hull = convexHull(portal);
@@ -298,6 +301,7 @@ function initializeMap()
                     fillOpacity: 0.1,
                     map: map
                 });
+                */
             }
             
             triangleCount++;
