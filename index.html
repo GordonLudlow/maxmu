@@ -207,6 +207,8 @@ function FindIndex(portal, latlng) {
         }
     }
     console.log(`Error: Specified portal not found.  latlng = ${latlng[0]}, ${latlng[1]}`);
+    $("#results").append(`<p><font color="red">ERROR</font>&nbsp;<a href="https://intel.ingress.com/intel?pll=${latlng[0]},${latlng[1]}" target="_blank">Unknown portal</a></p>`);
+
 }
 
 var map;
