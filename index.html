@@ -111,7 +111,7 @@ function IncrementKeyCount(portal, count) {
         keysRequired[portal.guid].count += count;
     }
     else {
-        keysRequired[portal.guid] = {count: count, title: portal.title, lat: portal.lat, lng: portal.lng};
+        keysRequired[portal.guid] = {guid: portal.guid, count: count, title: portal.title, lat: portal.lat, lng: portal.lng};
     }
 }
 
@@ -214,8 +214,35 @@ function FindIndex(portal, latlng) {
 
 }
 
+function SanitizeGuid(guid) {
+    // Convert the guid into a string that can be used as an ID for a DOM element
+    const reservedCharacters = "!\"#$%&'()*+,-./:;<=>?@[\\]^`{|}~";
+    let sanitized = "";
+    if (guid[0] >= '0' && guid[0] <= '9') {
+        sanitized = "g";
+    }
+    for (let i=0; i<guid.length; i++) {
+        if (reservedCharacters.includes(guid[i])) {
+            sanitized += "_";
+        }
+        else {
+            sanitized += guid[i];
+        }
+    }
+    return sanitized;
+}
+
 var map;
 var mapInitialized = false;
+
+var db = false; // IndexedDB database of which checkboxes are checked
+
+// Two tables in the DB.  One for keys needed, the other for links thrown.
+// keyStore: guid => guid, count, title, lat, lng, checked
+var keyStore;
+// linkStore: source guid => source guid, title, lat, lng, [{target guid, title, lat, lng, checked}, ...]
+var linkStore;
+
 function initializeMap()
 {
     if (!mapInitialized)
@@ -243,6 +270,7 @@ function initializeMap()
                 portal[i].lng = lng;
                 portal[i].x = lng; // convexHull function wants x,y
                 portal[i].y = lat;
+                portal[i].guid = SanitizeGuid(portal[i].guid);
                 
                 let marker = new google.maps.Marker({
                   position: new google.maps.LatLng(lat, lng),
@@ -308,29 +336,33 @@ function initializeMap()
                 });
                 */
             }
-            
+                  
             triangleCount++;
-            let links = FindLargestInnerTriangle(triangle, portal);
-            let results_text = "<p>" + (triangleCount * 2 - 1) + " layers</p>";
+            let links = FindLargestInnerTriangle(triangle, portal); // Recursively find all the triangles
             
-            results_text += ("<p>Keys required:</p><ul class=\"no_bullet\">");
+            $("#layer_count").html((triangleCount * 2 - 1) + " layers");
+            
             let sortedKeys = [];
             for (let key in keysRequired) {
                 if (keysRequired.hasOwnProperty(key)) {
-                    sortedKeys.push(
-                        ("    " + keysRequired[key].count).slice(-4)
-                        + " <a href="
-                        + `"https://intel.ingress.com/intel?pll=${keysRequired[key].lat},${keysRequired[key].lng}" target="_blank">`
-                        + `${keysRequired[key].title}</a>`);
+                    sortedKeys.push(keysRequired[key]);
                 }
             }
-            sortedKeys.sort().reverse();
+            sortedKeys.sort((a, b) => b.count - a.count);
             for (let key in sortedKeys) {
-                results_text += "<li class=\"unchecked\">" + sortedKeys[key] + "</li>";
+                $("#keys_required").append("<li class=\"unchecked\" id=\""
+                    + sortedKeys[key].guid
+                    + "\">"
+                    + ("    " + sortedKeys[key].count).slice(-4)
+                    + " <a href="
+                    + `"https://intel.ingress.com/intel?pll=${sortedKeys[key].lat},${sortedKeys[key].lng}" target="_blank">`
+                    + `${sortedKeys[key].title}</a>`
+                    + "</li>");
+                $("#"+sortedKeys[key].guid).data("value", sortedKeys[key]);
             }
-            results_text += "</ul>";
             
-            results_text += "<p>Links:</p>" + links;
+            // Links will be like keys required.  Maybe FindLargestInnerTriangle will modify the DOM instead of returning a string.
+            //results_text += "<p>Links:</p>" + links;
             
             let center = {};
             center.lat = (triangle[0].lat + triangle[1].lat + triangle[2].lat)/3;
@@ -338,20 +370,76 @@ function initializeMap()
             map.setCenter(new google.maps.LatLng(center));
             
             // The stock intel page errors out with more than a dozen triangles.  So let's just do the outermost
-            results_text += "<p><a href=";
-            results_text += "https://intel.ingress.com/intel?ll=";
-            results_text += center.lat;
-            results_text += ",";
-            results_text += center.lng;
-            results_text += "&pls=";
-            results_text += triangle[0].lat + "," + triangle[0].lng + "," + triangle[1].lat + "," + triangle[1].lng;
-            results_text += "_" + triangle[0].lat + "," + triangle[0].lng + "," + triangle[2].lat + "," + triangle[2].lng;
-            results_text += "_" + triangle[1].lat + "," + triangle[1].lng + "," + triangle[2].lat + "," + triangle[2].lng;
+            $("#outer_triangle").attr('href',
+                "https://intel.ingress.com/intel?ll="
+                + center.lat
+                + ","
+                + center.lng
+                + "&pls="
+                + triangle[0].lat + "," + triangle[0].lng + "," + triangle[1].lat + "," + triangle[1].lng
+                + "_" + triangle[0].lat + "," + triangle[0].lng + "," + triangle[2].lat + "," + triangle[2].lng
+                + "_" + triangle[1].lat + "," + triangle[1].lng + "," + triangle[2].lat + "," + triangle[2].lng);
+
+            // Open the IndexedDB containing which checkboxes should be checked
+            let guids = [triangle[0].guid, triangle[1].guid, triangle[2].guid];
+            guids.sort();
+            let request = window.indexedDB.open("MaxMu" + guids[0] + "_" + guids[1] + "_" + guids[2], 1);
+            request.onerror = function(event) {
+                console.error("openDb:", event.target.errorCode);
+                db = false;
+            };
+            request.onsuccess = function(event) {
+                db = event.target.result;
+                let store = db.transaction(['keys'],'readonly').objectStore('keys');
+                store.getAll().onsuccess = function(e) {
+                    if (e.target.result) {
+                        let result = e.target.result;
+                        result.forEach(function(keyEntry) {
+                            // change the checkedness of the element using it's id/guid to look it up.
+                            let checkBox = $("#"+keyEntry.guid);
+                            checkBox.data("value", keyEntry);
+                            if (keyEntry.checked) {
+                                checkBox.addClass("checked");
+                                checkBox.removeClass("unchecked");
+                            }
+                        });
+                    }
+                };
+            };
+            request.onupgradeneeded = function(event) {
+                db = event.target.result;
+                keyStore = db.createObjectStore("keys", { keyPath: "guid" });
+                linkStore = db.createObjectStore("links", { keyPath: "sourceGuid" });
+            }
+
+            // Check box toggling
+            $("li").on("click", function(event) {
+                if (event.target === event.currentTarget) { // only consume clicks on the bullet.  The content of the li is a link.
+                    $(this).toggleClass("unchecked");
+                    $(this).toggleClass("checked");
+                    if (db) {
+                        let objectStore = db.transaction(['keys'],'readwrite').objectStore('keys');
+                        let guid = $(this).attr('id');
+                        let req = objectStore.openCursor(guid);
+                        let checked = $(this).hasClass("checked");
+                        let dataValue = $(this).data("value");
+                        req.onsuccess = function(e) {
+                            let cursor = e.target.result;
+                            if (cursor) { // key already exists
+                                const updateData = cursor.value;
+                                updateData.checked = checked;
+                                cursor.update(updateData);
+                            } else { // key does not exist
+                                console.log(dataValue);
+                                objectStore.add(dataValue);
+                            }
+                        };
+                    }
+                    return false;
+                }
+                return true;
+            });
             
-            results_text += ">Outer triangle</a></p>";
-            $("#results").html(results_text);
-
-
             // Div resizing
             const map_div = document.getElementById("map_canvas");
             const border = document.getElementById("border");
@@ -373,17 +461,6 @@ function initializeMap()
             document.addEventListener("mouseup", function(){
                 document.removeEventListener("mousemove", resize, false);
             }, false);
-            
-            // Check box toggling
-            $("li").on("click", function(event) {
-                if (event.target === event.currentTarget) {
-                    $(this).toggleClass("unchecked");
-                    $(this).toggleClass("checked");
-                    return false;
-                }
-                return true;
-            });
-                  
         })
         .fail(function(jqXHR, textStatus, errorThrown) { 
             console.log('getJSON request failed! ' + textStatus); 
@@ -412,7 +489,12 @@ function initializeMap()
 <div class="container">
     <div id="map_canvas"></div>
     <div id="border"></div>
-    <div id="results"></div>
+    <div id="results">
+        <p id="layer_count"></p>
+        <p>Keys required:</p><ul id="keys_required" class="no_bullet"></ul>
+        <p>Links:</p><ul id="links" class="no_bullet"></ul>
+        <p><a id="outer_triangle" href="">Outer triangle</a></p>
+    </div>
 </div>
 </body>
 </html>
