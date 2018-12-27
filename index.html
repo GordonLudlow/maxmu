@@ -107,6 +107,8 @@ var maxLayers = 9999;
 var keysRequired = {};
 
 function IncrementKeyCount(portal, count) {
+    // We're using this portal for the field, change its icon
+    markers[portal.marker].setIcon({url: './images/hum_reso_08.png', scaledSize: new google.maps.Size(20, 20), anchor: new google.maps.Point(10,10)});
     if (keysRequired.hasOwnProperty(portal.guid)) {
         keysRequired[portal.guid].count += count;
     }
@@ -144,6 +146,7 @@ function FindLargestInnerTriangle(triangle, portal) {
             }
             return bCount - aCount;
         });
+        IncrementKeyCount(triangle[0], 0);
         IncrementKeyCount(triangle[1], 1);
         IncrementKeyCount(triangle[2], 2);
         
@@ -227,6 +230,7 @@ function FindLargestInnerTriangle(triangle, portal) {
                     map: map
     });
     
+    IncrementKeyCount(previousPoint, 0);
     IncrementKeyCount(innerTriangle[0], 1);
     IncrementKeyCount(innerTriangle[1], 1);
     IncrementKeyCount(innerTriangle[2], 1);
@@ -294,6 +298,8 @@ var db = false; // IndexedDB database of which checkboxes are checked
 // One table in the DB.
 // checkboxStore: guid => guid, checked
 
+var markers = [];
+
 function initializeMap()
 {
     if (!mapInitialized)
@@ -312,42 +318,52 @@ function initializeMap()
             cache:false
         });          
         $.getJSON('portals.json', function (data) {
-            ignore = data.ignore;
-            portal = data.portals;
-            for (let i=0; i<portal.length; i++) {
-                let latlngArray = portal[i].latlng.split(',');
+            let ignore = data.ignore;
+            let portal = [];
+            for (let i=0; i<data.portals.length; i++) {
+                let latlngArray = data.portals[i].latlng.split(',');
                 let lat = parseFloat(latlngArray[0]);
                 let lng = parseFloat(latlngArray[1]);
                 
-                if (ignore.some(e => e.guid === portal[i].guid)) {
-                    console.log("Skipping " + portal[i].title);
+                if (ignore.some(e => e.guid === data.portals[i].guid)) {
+                    console.log("Skipping " + data.portals[i].title);
                     let marker = new google.maps.Marker({
                         position: new google.maps.LatLng(lat, lng),
                         map: map,
                         icon: {url: './images/neutral.png', scaledSize: new google.maps.Size(20, 20), anchor: new google.maps.Point(10,10)},
-                        title: portal[i].title + " " + portal[i].latlng
+                        title: data.portals[i].title + " " + data.portals[i].latlng
+                    });
+                    let infoWindow = new google.maps.InfoWindow({
+                        content: data.portals[i].title + " " + data.portals[i].latlng
+                    });
+                    google.maps.event.addListener(marker, 'click', function () {
+                        infoWindow.open(map, marker);
                     });
                     continue;
                 }
 
-                portal[i].lat = lat;
-                portal[i].lng = lng;
-                portal[i].x = lng; // convexHull function wants x,y
-                portal[i].y = lat;
-                portal[i].guid = SanitizeGuid(portal[i].guid);
+                data.portals[i].lat = lat;
+                data.portals[i].lng = lng;
+                data.portals[i].x = lng; // convexHull function wants x,y
+                data.portals[i].y = lat;
+                data.portals[i].guid = SanitizeGuid(data.portals[i].guid);
                 
                 let marker = new google.maps.Marker({
                   position: new google.maps.LatLng(lat, lng),
                   map: map,
-                  icon: {url: './images/hum_reso_08.png', scaledSize: new google.maps.Size(20, 20), anchor: new google.maps.Point(10,10)},
-                  title: portal[i].title + " " + portal[i].latlng
+                  icon: {url: './images/enl_reso_01.png', scaledSize: new google.maps.Size(20, 20), anchor: new google.maps.Point(10,10)},
+                  title: data.portals[i].title + " " + data.portals[i].latlng
                 });
                 let infoWindow = new google.maps.InfoWindow({
-                    content: portal[i].title + " " + portal[i].latlng
+                    content: data.portals[i].title + " " + data.portals[i].latlng
                 });
                 google.maps.event.addListener(marker, 'click', function () {
                     infoWindow.open(map, marker);
-                });                
+                });
+                
+                data.portals[i].marker = markers.push(marker) - 1;
+                
+                portal.push(data.portals[i]);
             }
   
             // TODO: Move all the math to a web worker.  Also, move the javascript and css out of index.html.
@@ -404,8 +420,9 @@ function initializeMap()
                   
             triangleCount++;
             FindLargestInnerTriangle(triangle, portal); // Recursively find all the triangles
+            $("#links_heading").html("Links:");
             
-            $("#layer_count").html((triangleCount * 2 - 1) + " layers");
+            $("#layer_count").html(triangleCount + " layers");
             
             let sortedKeys = [];
             for (let key in keysRequired) {
@@ -425,6 +442,10 @@ function initializeMap()
                     + "</li>");
                 $("#"+sortedKeys[key].guid).data("checked", false);
             }
+            $("#keys_heading").html(function(items, prop){
+                return items.reduce( function(a, b){
+                    return a + b[prop];
+                }, 0)}(sortedKeys, "count") + " keys required:");
                   
             let center = {};
             center.lat = (triangle[0].lat + triangle[1].lat + triangle[2].lat)/3;
@@ -441,6 +462,7 @@ function initializeMap()
                 + triangle[0].lat + "," + triangle[0].lng + "," + triangle[1].lat + "," + triangle[1].lng
                 + "_" + triangle[0].lat + "," + triangle[0].lng + "," + triangle[2].lat + "," + triangle[2].lng
                 + "_" + triangle[1].lat + "," + triangle[1].lng + "," + triangle[2].lat + "," + triangle[2].lng);
+            $("#outer_triangle").html("Outer triangle");
 
             // Open the IndexedDB containing which checkboxes should be checked
             let guids = [triangle[0].guid, triangle[1].guid, triangle[2].guid];
@@ -551,9 +573,9 @@ function initializeMap()
     <div id="border"></div>
     <div id="results">
         <p id="layer_count"></p>
-        <p>Keys required:</p><ul id="keys_required" class="no_bullet"></ul>
-        <p>Links:</p><ul id="links" class="no_bullet"></ul>
-        <p><a id="outer_triangle" href="">Outer triangle</a></p>
+        <p id="keys_heading"></p><ul id="keys_required" class="no_bullet"></ul>
+        <p id="links_heading"></p><ul id="links" class="no_bullet"></ul>
+        <p><a id="outer_triangle" href=""></a></p>
     </div>
 </div>
 </body>
