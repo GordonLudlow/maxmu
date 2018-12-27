@@ -15,8 +15,8 @@ body { height: 100%; margin: 0; padding: 0; }
 #border {width: 100%; height: 1%; min-height: 5px; background-color: #0078B5; cursor: ns-resize;}
 #results {width:100%; height:49%; overflow:auto; min-height: 100px;}
 ul.no_bullet {list-style-type: none; padding: 0; margin: 0; }
-li.checked {background: url('./images/checked.png') no-repeat left top; height: 48px; padding-left: 36px; padding-top: 8px;}
-li.unchecked {background: url('./images/unchecked.png') no-repeat left top;; height: 48px; padding-left: 36px; padding-top: 8px;}
+li.checked {background: url('./images/checked.png') no-repeat left top; padding-left: 36px; padding-top: 4px; line-height: 1.5em; height:auto}
+li.unchecked {background: url('./images/unchecked.png') no-repeat left top; padding-left: 36px; padding-top: 4px; line-height: 1.5em; height:auto}
 </style>
 
 <script type="text/javascript">
@@ -116,8 +116,6 @@ function IncrementKeyCount(portal, count) {
 }
 
 function FindLargestInnerTriangle(triangle, portal) {
-    let logString="";
-    
     // Cull points not strictly in the triangle
     for (let i=0; i<portal.length; ) {
         if (portal[i] == triangle[0]
@@ -132,14 +130,52 @@ function FindLargestInnerTriangle(triangle, portal) {
     }
     
     if (!portal.length || triangleCount == maxLayers) {
-        // We're at the end which is really the beginning
-        IncrementKeyCount(triangle[1], 2);
-        IncrementKeyCount(triangle[2], 1);
-        return "Link "  + triangle[0].title + " https://intel.ingress.com/intel?pll=" + triangle[0].lat + "," + triangle[0].lng +
-               " to "   + triangle[1].title + " https://intel.ingress.com/intel?pll=" + triangle[1].lat + "," + triangle[1].lng +
-               " and "  + triangle[2].title + " https://intel.ingress.com/intel?pll=" + triangle[2].lat + "," + triangle[2].lng + "\n" +
-               " Link " + triangle[2].title + " https://intel.ingress.com/intel?pll=" + triangle[2].lat + "," + triangle[2].lng +
-               " to "   + triangle[1].title + " https://intel.ingress.com/intel?pll=" + triangle[1].lat + "," + triangle[1].lng + "\n";
+        // We're at the end which is really the beginning.
+        // The throws don't matter on this inner triangle.  One portal needs no keys, one needs a key and the third needs 2 keys.
+        // So pick the one with the most keys already required to thow from so we don't increase it's count any more.
+        triangle.sort((a,b) => {
+            let aCount = 0;
+            let bCount = 0;
+            if (keysRequired.hasOwnProperty(a.guid)) {
+                aCount = keysRequired[a.guid].count
+            }
+            if (keysRequired.hasOwnProperty(b.guid)) {
+                bCount = keysRequired[b.guid].count
+            }
+            return bCount - aCount;
+        });
+        IncrementKeyCount(triangle[1], 1);
+        IncrementKeyCount(triangle[2], 2);
+        
+        let compositeGuid = triangle[0].guid + "_" + triangle[1].guid + "_" + triangle[2].guid;
+        $("#links").append("<li class=\"unchecked\" id=\""
+            + compositeGuid
+            + "\">"
+            + "Link <a href="
+            + `"https://intel.ingress.com/intel?pll=${triangle[0].lat},${triangle[0].lng}" target="_blank">`
+            + `${triangle[0].title}</a>`
+            + " to <br /> <a href="
+            + `"https://intel.ingress.com/intel?pll=${triangle[1].lat},${triangle[1].lng}" target="_blank">`
+            + `${triangle[1].title}</a>`
+            + " and <br /> <a href="
+            + `"https://intel.ingress.com/intel?pll=${triangle[2].lat},${triangle[2].lng}" target="_blank">`
+            + `${triangle[2].title}</a>`
+            + "</li>");
+        $("#"+compositeGuid).data("checked", false);
+        
+        compositeGuid = triangle[1].guid + "_" + triangle[2].guid;
+        $("#links").append("<li class=\"unchecked\" id=\""
+            + compositeGuid
+            + "\">"
+            + "Link <a href="
+            + `"https://intel.ingress.com/intel?pll=${triangle[1].lat},${triangle[1].lng}" target="_blank">`
+            + `${triangle[1].title}</a>`
+            + " to <br /> <a href="
+            + `"https://intel.ingress.com/intel?pll=${triangle[2].lat},${triangle[2].lng}" target="_blank">`
+            + `${triangle[2].title}</a>`
+            + "</li>");
+        
+        return;
     }
     
     triangleCount++;
@@ -195,12 +231,31 @@ function FindLargestInnerTriangle(triangle, portal) {
     IncrementKeyCount(innerTriangle[1], 1);
     IncrementKeyCount(innerTriangle[2], 1);
     
-    logString = "Link "         +   previousPoint.title + " https://intel.ingress.com/intel?pll=" +    previousPoint.lat + "," +    previousPoint.lng +
-                " to "          + innerTriangle[1].title + " https://intel.ingress.com/intel?pll=" + innerTriangle[1].lat + "," + innerTriangle[1].lng +
-                " and "         + innerTriangle[2].title + " https://intel.ingress.com/intel?pll=" + innerTriangle[2].lat + "," + innerTriangle[2].lng +
-                " and then to " + innerTriangle[0].title + " https://intel.ingress.com/intel?pll=" + innerTriangle[0].lat + "," + innerTriangle[0].lng + "\n";
+    //logString = "Link "         +   previousPoint.title + " https://intel.ingress.com/intel?pll=" +    previousPoint.lat + "," +    previousPoint.lng +
+    //            " to "          + innerTriangle[1].title + " https://intel.ingress.com/intel?pll=" + innerTriangle[1].lat + "," + innerTriangle[1].lng +
+    //            " and "         + innerTriangle[2].title + " https://intel.ingress.com/intel?pll=" + innerTriangle[2].lat + "," + innerTriangle[2].lng +
+    //            " and then to " + innerTriangle[0].title + " https://intel.ingress.com/intel?pll=" + innerTriangle[0].lat + "," + innerTriangle[0].lng + "\n";
 
-    return FindLargestInnerTriangle(innerTriangle, portal) + logString;
+    FindLargestInnerTriangle(innerTriangle, portal);
+    
+    let compositeGuid = previousPoint.guid + "_" + innerTriangle[1].guid + "_" + innerTriangle[2].guid + "_" + innerTriangle[0].guid;
+    $("#links").append("<li class=\"unchecked\" id=\""
+        + compositeGuid
+        + "\">"
+        + "Link <a href="
+        + `"https://intel.ingress.com/intel?pll=${previousPoint.lat},${previousPoint.lng}" target="_blank">`
+        + `${previousPoint.title}</a>`
+        + " to <br /> <a href="
+        + `"https://intel.ingress.com/intel?pll=${innerTriangle[1].lat},${innerTriangle[1].lng}" target="_blank">`
+        + `${innerTriangle[1].title}</a>`
+        + " and <br /> <a href="
+        + `"https://intel.ingress.com/intel?pll=${innerTriangle[2].lat},${innerTriangle[2].lng}" target="_blank">`
+        + `${innerTriangle[2].title}</a>`
+        + " and then to <br /> <a href="
+        + `"https://intel.ingress.com/intel?pll=${innerTriangle[0].lat},${innerTriangle[0].lng}" target="_blank">`
+        + `${innerTriangle[0].title}</a>`
+        + "</li>");
+    $("#"+compositeGuid).data("checked", false);
 }
 
 function FindIndex(portal, latlng) {
@@ -236,12 +291,8 @@ var map;
 var mapInitialized = false;
 
 var db = false; // IndexedDB database of which checkboxes are checked
-
-// Two tables in the DB.  One for keys needed, the other for links thrown.
-// keyStore: guid => guid, count, title, lat, lng, checked
-var keyStore;
-// linkStore: source guid => source guid, title, lat, lng, [{target guid, title, lat, lng, checked}, ...]
-var linkStore;
+// One table in the DB.
+// checkboxStore: guid => guid, checked
 
 function initializeMap()
 {
@@ -286,7 +337,7 @@ function initializeMap()
                 });                
             }
   
-            // TODO: Move all the math to a web worker
+            // TODO: Move all the math to a web worker.  Also, move the javascript and css out of index.html.
             let triangle = [];
             
             let bounds = GetURLParameter("pls");
@@ -324,21 +375,22 @@ function initializeMap()
                         }
                     }
                 }
-                // Draw the triangle
-                let polygon = new google.maps.Polygon({
-                    paths: triangle,
-                    strokeColor: '#0000FF',
-                    strokeOpacity: 1,
-                    strokeWeight: 2,
-                    fillColor: '#0000FF',
-                    fillOpacity: 0.1,
-                    map: map
-                });
                 */
             }
+            
+            // Draw the triangle
+            let polygon = new google.maps.Polygon({
+                paths: triangle,
+                strokeColor: '#0000FF',
+                strokeOpacity: 1,
+                strokeWeight: 2,
+                fillColor: '#0000FF',
+                fillOpacity: 0.1,
+                map: map
+            });
                   
             triangleCount++;
-            let links = FindLargestInnerTriangle(triangle, portal); // Recursively find all the triangles
+            FindLargestInnerTriangle(triangle, portal); // Recursively find all the triangles
             
             $("#layer_count").html((triangleCount * 2 - 1) + " layers");
             
@@ -358,12 +410,9 @@ function initializeMap()
                     + `"https://intel.ingress.com/intel?pll=${sortedKeys[key].lat},${sortedKeys[key].lng}" target="_blank">`
                     + `${sortedKeys[key].title}</a>`
                     + "</li>");
-                $("#"+sortedKeys[key].guid).data("value", sortedKeys[key]);
+                $("#"+sortedKeys[key].guid).data("checked", false);
             }
-            
-            // Links will be like keys required.  Maybe FindLargestInnerTriangle will modify the DOM instead of returning a string.
-            //results_text += "<p>Links:</p>" + links;
-            
+                  
             let center = {};
             center.lat = (triangle[0].lat + triangle[1].lat + triangle[2].lat)/3;
             center.lng = (triangle[0].lng + triangle[1].lng + triangle[2].lng)/3;
@@ -390,15 +439,16 @@ function initializeMap()
             };
             request.onsuccess = function(event) {
                 db = event.target.result;
-                let store = db.transaction(['keys'],'readonly').objectStore('keys');
+                let store = db.transaction(['checkboxes'],'readonly').objectStore('checkboxes');
                 store.getAll().onsuccess = function(e) {
                     if (e.target.result) {
                         let result = e.target.result;
-                        result.forEach(function(keyEntry) {
+                        result.forEach(function(checkBoxRecord) {
                             // change the checkedness of the element using it's id/guid to look it up.
-                            let checkBox = $("#"+keyEntry.guid);
-                            checkBox.data("value", keyEntry);
-                            if (keyEntry.checked) {
+                            if (checkBoxRecord.checked) { // we default to unchecked, so only have to change it if it's checked
+                                let checkBox = $("#"+checkBoxRecord.guid);
+                                checkBox.data("checked", true);
+
                                 checkBox.addClass("checked");
                                 checkBox.removeClass("unchecked");
                             }
@@ -408,8 +458,7 @@ function initializeMap()
             };
             request.onupgradeneeded = function(event) {
                 db = event.target.result;
-                keyStore = db.createObjectStore("keys", { keyPath: "guid" });
-                linkStore = db.createObjectStore("links", { keyPath: "sourceGuid" });
+                keyStore = db.createObjectStore("checkboxes", { keyPath: "guid" });
             }
 
             // Check box toggling
@@ -418,11 +467,10 @@ function initializeMap()
                     $(this).toggleClass("unchecked");
                     $(this).toggleClass("checked");
                     if (db) {
-                        let objectStore = db.transaction(['keys'],'readwrite').objectStore('keys');
+                        let objectStore = db.transaction(['checkboxes'],'readwrite').objectStore('checkboxes');
                         let guid = $(this).attr('id');
-                        let req = objectStore.openCursor(guid);
                         let checked = $(this).hasClass("checked");
-                        let dataValue = $(this).data("value");
+                        let req = objectStore.openCursor(guid);
                         req.onsuccess = function(e) {
                             let cursor = e.target.result;
                             if (cursor) { // key already exists
@@ -430,8 +478,7 @@ function initializeMap()
                                 updateData.checked = checked;
                                 cursor.update(updateData);
                             } else { // key does not exist
-                                console.log(dataValue);
-                                objectStore.add(dataValue);
+                                objectStore.add({guid: guid, checked: checked});
                             }
                         };
                     }
