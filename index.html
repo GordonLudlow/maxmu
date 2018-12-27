@@ -312,11 +312,24 @@ function initializeMap()
             cache:false
         });          
         $.getJSON('portals.json', function (data) {
-            portal = data;
+            ignore = data.ignore;
+            portal = data.portals;
             for (let i=0; i<portal.length; i++) {
                 let latlngArray = portal[i].latlng.split(',');
                 let lat = parseFloat(latlngArray[0]);
                 let lng = parseFloat(latlngArray[1]);
+                
+                if (ignore.some(e => e.guid === portal[i].guid)) {
+                    console.log("Skipping " + portal[i].title);
+                    let marker = new google.maps.Marker({
+                        position: new google.maps.LatLng(lat, lng),
+                        map: map,
+                        icon: {url: './images/neutral.png', scaledSize: new google.maps.Size(20, 20), anchor: new google.maps.Point(10,10)},
+                        title: portal[i].title + " " + portal[i].latlng
+                    });
+                    continue;
+                }
+
                 portal[i].lat = lat;
                 portal[i].lng = lng;
                 portal[i].x = lng; // convexHull function wants x,y
@@ -326,7 +339,7 @@ function initializeMap()
                 let marker = new google.maps.Marker({
                   position: new google.maps.LatLng(lat, lng),
                   map: map,
-                  icon: {url: 'hum_reso_08.png', scaledSize: new google.maps.Size(20, 20), anchor: new google.maps.Point(10,10)},
+                  icon: {url: './images/hum_reso_08.png', scaledSize: new google.maps.Size(20, 20), anchor: new google.maps.Point(10,10)},
                   title: portal[i].title + " " + portal[i].latlng
                 });
                 let infoWindow = new google.maps.InfoWindow({
