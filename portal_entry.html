@@ -26,6 +26,48 @@ var markers = [];
 var ignore = [];
 var portal = [];
 
+function makeMarker(p, iconUrl, lat, lng) {
+    let name = p.title + " " + p.latlng;
+    let marker = new google.maps.Marker({
+        position: new google.maps.LatLng(lat, lng),
+        map: map,
+        icon: {url: iconUrl, scaledSize: new google.maps.Size(20, 20), anchor: new google.maps.Point(10,10)},
+        title: name
+    });
+    
+    let div = document.createElement('div');
+    div.innerHTML = name;
+    jQuery.data(div, "guid", p.guid);
+    div.onclick = function(){
+        // Is it ignored?
+        let guid = jQuery.data(this, "guid");
+        let iIgnore = ignore.findIndex(e => e.guid === guid);
+        let iPortal = portal.findIndex(e => e.guid === guid);
+        if (iIgnore > -1) {
+            ignore.splice(iIgnore,1);
+            markers[portal[iPortal].marker].setIcon({url: './images/hum_reso_08.png', scaledSize: new google.maps.Size(20, 20), anchor: new google.maps.Point(10,10)});
+        }
+        else {
+            ignore.push(portal[iPortal]);
+            markers[portal[iPortal].marker].setIcon({url: './images/neutral.png', scaledSize: new google.maps.Size(20, 20), anchor: new google.maps.Point(10,10)});
+        }
+        $("#portals").val(JSON.stringify({"ignore": ignore, "portals": portal}));
+        let infoWindow = jQuery.data(this, "infoWindow");
+        infoWindow.close();
+    };
+
+    let infoWindow = new google.maps.InfoWindow({
+        content: div
+    });
+    jQuery.data(div, "infoWindow", infoWindow);
+
+    google.maps.event.addListener(marker, 'click', function () {
+        infoWindow.open(map, marker);
+    });
+
+    return markers.push(marker) - 1;;
+}
+
 function initializeMap()
 {
     if (!mapInitialized)
@@ -69,33 +111,13 @@ function initializeMap()
                 if (lng > maxLng) {
                     maxLng = lng;
                 }
-                let marker;
                 if (ignore.some(e => e.guid === portal[i].guid)) {
-                    marker = new google.maps.Marker({
-                        position: new google.maps.LatLng(lat, lng),
-                        map: map,
-                        icon: {url: './images/neutral.png', scaledSize: new google.maps.Size(20, 20), anchor: new google.maps.Point(10,10)},
-                        title: portal[i].title + " " + portal[i].latlng
-                    });
+                    portal[i].marker = makeMarker(portal[i], './images/neutral.png', lat, lng);
                 }
                 else {
-                    marker = new google.maps.Marker({
-                        position: new google.maps.LatLng(lat, lng),
-                        map: map,
-                        icon: {url: './images/hum_reso_08.png', scaledSize: new google.maps.Size(20, 20), anchor: new google.maps.Point(10,10)},
-                        title: portal[i].title + " " + portal[i].latlng
-                    });
+                    portal[i].marker = makeMarker(portal[i], './images/hum_reso_08.png', lat, lng);
                 }
                 
-
-                let infoWindow = new google.maps.InfoWindow({
-                    content: portal[i].title + " " + portal[i].latlng
-                });
-                google.maps.event.addListener(marker, 'click', function () {
-                    infoWindow.open(map, marker);
-                });
-                
-                portal[i].marker = markers.push(marker) - 1;
             }
   
                   
@@ -182,21 +204,8 @@ function userDataEntered() {
             let latlngArray = newPortals[i].latlng.split(',');
             let lat = parseFloat(latlngArray[0]);
             let lng = parseFloat(latlngArray[1]);
-            let marker = new google.maps.Marker({
-                position: new google.maps.LatLng(lat, lng),
-                map: map,
-                icon: {url: './images/enl_reso_01.png', scaledSize: new google.maps.Size(20, 20), anchor: new google.maps.Point(10,10)},
-                title: newPortals[i].title + " " + newPortals[i].latlng
-            });
-            
-            let infoWindow = new google.maps.InfoWindow({
-                content: newPortals[i].title + " " + newPortals[i].latlng
-            });
-            google.maps.event.addListener(marker, 'click', function () {
-                infoWindow.open(map, marker);
-            });
                 
-            newPortals[i].marker = markers.push(marker) - 1;
+            newPortals[i].marker = makeMarker(newPortals[i], './images/enl_reso_01.png', lat, lng);
             
             portal.push(newPortals[i]);
         }
