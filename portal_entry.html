@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<title>Max Mu Portal Entry</title>
+<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+<style type="text/css">
+html { height: 100%; }
+body { height: 100%; margin: 0; padding: 0; }
+.container {display: flex; height: 100%; flex-direction: column;}
+#map_canvas {width:100%; height:50%; min-height: 200px;}
+#border {width: 100%; height: 1%; min-height: 5px; background-color: #0078B5; cursor: ns-resize;}
+#results {width:100%; height:49%; overflow:auto; min-height: 100px;}
+ul.no_bullet {list-style-type: none; padding: 0; margin: 0; }
+li.checked {background: url('./images/checked.png') no-repeat left top; padding-left: 36px; padding-top: 4px; line-height: 1.5em; height:auto}
+li.unchecked {background: url('./images/unchecked.png') no-repeat left top; padding-left: 36px; padding-top: 4px; line-height: 1.5em; height:auto}
+</style>
+
+<script type="text/javascript">
+
+var map;
+var mapInitialized = false;
+
+var markers = [];
+
+var ignore = [];
+var portal = [];
+
+function initializeMap()
+{
+    if (!mapInitialized)
+    {
+        // Default map options
+        var mapOptions = { center: new google.maps.LatLng(47.488451,-122.169666),
+                            zoom: 10,
+                            mapTypeId: google.maps.MapTypeId.ROADMAP };
+        
+        map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions);
+        mapInitialized=true;
+
+        // Load the portal coordinates
+        // [{"title":"Title", "guid":"guid", "latlng":"lat,lng"},...]
+        $.ajaxSetup({
+            cache:false
+        });          
+        $.getJSON('portals.json', function (data) {
+            ignore = data.ignore;
+            portal = data.portals;
+            
+            $("#portals").val(JSON.stringify(data));
+            
+            let minLat = 9000;
+            let minLng = 9000;
+            let maxLat = -9000;
+            let maxLng = -9000;
+            for (let i=0; i<portal.length; i++) {
+                let latlngArray = portal[i].latlng.split(',');
+                let lat = parseFloat(latlngArray[0]);
+                let lng = parseFloat(latlngArray[1]);
+                if (lat < minLat) {
+                    minLat = lat;
+                }
+                if (lat > maxLat) {
+                    maxLat = lat;
+                }
+                if (lng < minLng) {
+                    minLng = lng;
+                }
+                if (lng > maxLng) {
+                    maxLng = lng;
+                }
+                let marker;
+                if (ignore.some(e => e.guid === portal[i].guid)) {
+                    marker = new google.maps.Marker({
+                        position: new google.maps.LatLng(lat, lng),
+                        map: map,
+                        icon: {url: './images/neutral.png', scaledSize: new google.maps.Size(20, 20), anchor: new google.maps.Point(10,10)},
+                        title: portal[i].title + " " + portal[i].latlng
+                    });
+                }
+                else {
+                    marker = new google.maps.Marker({
+                        position: new google.maps.LatLng(lat, lng),
+                        map: map,
+                        icon: {url: './images/hum_reso_08.png', scaledSize: new google.maps.Size(20, 20), anchor: new google.maps.Point(10,10)},
+                        title: portal[i].title + " " + portal[i].latlng
+                    });
+                }
+                
+
+                let infoWindow = new google.maps.InfoWindow({
+                    content: portal[i].title + " " + portal[i].latlng
+                });
+                google.maps.event.addListener(marker, 'click', function () {
+                    infoWindow.open(map, marker);
+                });
+                
+                portal[i].marker = markers.push(marker) - 1;
+            }
+  
+                  
+            let center = {};
+            center.lat = (minLat + maxLat)/2;
+            center.lng = (minLng + maxLng)/2;
+            map.setCenter(new google.maps.LatLng(center));
+            
+            // Div resizing
+            const map_div = document.getElementById("map_canvas");
+            const border = document.getElementById("border");
+            const panel = document.getElementById("results");
+            
+            let m_pos;
+            function resize(e){
+                const dy = m_pos - e.y;
+                m_pos = e.y;
+                panel.style.height = (parseInt(getComputedStyle(panel, '').height) + dy) + "px";
+                map_div.style.height = (parseInt(getComputedStyle(map_div, '').height) - dy) + "px";
+            }
+
+            border.addEventListener("mousedown", function(e){
+                m_pos = e.y;
+                document.addEventListener("mousemove", resize, false);
+            }, false);
+            
+            document.addEventListener("mouseup", function(){
+                document.removeEventListener("mousemove", resize, false);
+            }, false);
+        })
+        .fail(function(jqXHR, textStatus, errorThrown) { 
+            console.log('getJSON request failed! ' + textStatus); 
+            console.log("incoming Text " + jqXHR.responseText);
+        });
+    } 
+}
+
+function userDataEntered() {
+    let rawText = $('#input').val();
+    let cleanText = "";
+    for (let i=0; i<rawText.length; i++) {
+        if (rawText.slice(i, i+10) == '"title": "') {
+            // title starts at i+9 (opening quote mark there)
+            // title ends before the "," before the next "guid": "
+            // This assumes that the format of the input is as:
+            //{
+            //    "title": "Newcastle Cow Sculpture",
+            //    "guid": "2b98c2ab2efb4228aedb17aa1d291e4f.16",
+            //    "latlng": "47.522963,-122.165612"
+            //},
+            //{
+            //    "title": "Welcome to "Radar Park"",
+            //    "guid": "ec383ca7d7e24985a2bc00c4d1045862.16",
+            //    "latlng": "47.541287,-122.096988"
+            //},
+            // without making assumptions about newline character(s)
+            // NOTE: the above is not valid json because the quotes aren't escaped
+            let j = rawText.indexOf('"guid": "', i+11);
+            while (rawText[j] != ',') j--;
+            console.log(rawText.slice(i+9, j));
+            
+            cleanText += '"title": "';
+            i += 10;
+            
+            // Copy everything between the quotes converting " to “
+            for (;i<j-1;i++) {
+                if (rawText[i] == '"')
+                    cleanText += "“";
+                else
+                    cleanText += rawText[i];
+            }
+            i--; // prevent double increment
+
+        }
+        else {
+            cleanText += rawText[i];
+        }
+    }
+    let dirty = false;
+    let newPortals = JSON.parse(cleanText);
+    for (let i=0; i<newPortals.length; i++) {
+        if (!portal.some(e => e.guid === newPortals[i].guid)) {
+            dirty = true;
+            let latlngArray = newPortals[i].latlng.split(',');
+            let lat = parseFloat(latlngArray[0]);
+            let lng = parseFloat(latlngArray[1]);
+            let marker = new google.maps.Marker({
+                position: new google.maps.LatLng(lat, lng),
+                map: map,
+                icon: {url: './images/enl_reso_01.png', scaledSize: new google.maps.Size(20, 20), anchor: new google.maps.Point(10,10)},
+                title: newPortals[i].title + " " + newPortals[i].latlng
+            });
+            
+            let infoWindow = new google.maps.InfoWindow({
+                content: newPortals[i].title + " " + newPortals[i].latlng
+            });
+            google.maps.event.addListener(marker, 'click', function () {
+                infoWindow.open(map, marker);
+            });
+                
+            newPortals[i].marker = markers.push(marker) - 1;
+            
+            portal.push(newPortals[i]);
+        }
+    }
+    if (dirty) {
+        $("#portals").val(JSON.stringify({"ignore": ignore, "portals": portal}));
+    }
+}
+
+</script>
+</head>
+
+<body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script>
+    $.getJSON('apikey.json', function (data) {
+        var s = document.createElement("script");
+        s.type = "text/javascript";
+        s.src = "http://maps.googleapis.com/maps/api/js?key=" + data.key + "&callback=initializeMap";
+        $("head").append(s);
+    })
+    .fail(function(jqXHR, textStatus, errorThrown) { 
+        console.log('getJSON request failed! ' + textStatus); 
+        console.log("incoming Text " + jqXHR.responseText);
+    });
+</script>
+<div class="container">
+    <div id="map_canvas"></div>
+    <div id="border"></div>
+    <div id="results">
+        <label for="input">Multi Export JSON</label>
+        <textarea id="input" rows='8' cols='80'></textarea>
+        <button onclick='userDataEntered();'>Add portals</button>
+        <p />
+        <label for="portals">portals.json</label>
+        <textarea id='portals' rows='8' cols='80'></textarea>
+    </div>
+</div>
+</body>
+</html>
