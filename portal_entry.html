@@ -21,7 +21,7 @@ li.unchecked {background: url('./images/unchecked.png') no-repeat left top; padd
 var map;
 var mapInitialized = false;
 
-var markers = [];
+var markers = {};
 
 var ignore = [];
 var portal = [];
@@ -45,11 +45,11 @@ function makeMarker(p, iconUrl, lat, lng) {
         let iPortal = portal.findIndex(e => e.guid === guid);
         if (iIgnore > -1) {
             ignore.splice(iIgnore,1);
-            markers[portal[iPortal].marker].setIcon({url: './images/hum_reso_08.png', scaledSize: new google.maps.Size(20, 20), anchor: new google.maps.Point(10,10)});
+            markers[portal[iPortal].guid].setIcon({url: './images/hum_reso_08.png', scaledSize: new google.maps.Size(20, 20), anchor: new google.maps.Point(10,10)});
         }
         else {
             ignore.push(portal[iPortal]);
-            markers[portal[iPortal].marker].setIcon({url: './images/neutral.png', scaledSize: new google.maps.Size(20, 20), anchor: new google.maps.Point(10,10)});
+            markers[portal[iPortal].guid].setIcon({url: './images/neutral.png', scaledSize: new google.maps.Size(20, 20), anchor: new google.maps.Point(10,10)});
         }
         $("#portals").val(JSON.stringify({"ignore": ignore, "portals": portal}));
         let infoWindow = jQuery.data(this, "infoWindow");
@@ -65,7 +65,7 @@ function makeMarker(p, iconUrl, lat, lng) {
         infoWindow.open(map, marker);
     });
 
-    return markers.push(marker) - 1;;
+    markers[p.guid] = marker;
 }
 
 function initializeMap()
@@ -112,10 +112,10 @@ function initializeMap()
                     maxLng = lng;
                 }
                 if (ignore.some(e => e.guid === portal[i].guid)) {
-                    portal[i].marker = makeMarker(portal[i], './images/neutral.png', lat, lng);
+                    makeMarker(portal[i], './images/neutral.png', lat, lng);
                 }
                 else {
-                    portal[i].marker = makeMarker(portal[i], './images/hum_reso_08.png', lat, lng);
+                    makeMarker(portal[i], './images/hum_reso_08.png', lat, lng);
                 }
                 
             }
@@ -205,7 +205,7 @@ function userDataEntered() {
             let lat = parseFloat(latlngArray[0]);
             let lng = parseFloat(latlngArray[1]);
                 
-            newPortals[i].marker = makeMarker(newPortals[i], './images/enl_reso_01.png', lat, lng);
+            makeMarker(newPortals[i], './images/enl_reso_01.png', lat, lng);
             
             portal.push(newPortals[i]);
         }
@@ -237,11 +237,11 @@ function userDataEntered() {
     <div id="border"></div>
     <div id="results">
         <label for="input">Multi Export JSON</label>
-        <textarea id="input" rows='8' cols='80'></textarea>
+        <textarea id="input" rows='8' style="width:90%"></textarea>
         <button onclick='userDataEntered();'>Add portals</button>
         <p />
         <label for="portals">portals.json</label>
-        <textarea id='portals' rows='8' cols='80'></textarea>
+        <textarea id='portals' rows='8' style="width:90%"></textarea>
     </div>
 </div>
 </body>
