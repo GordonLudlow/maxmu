@@ -117,6 +117,23 @@ function IncrementKeyCount(portal, count) {
     }
 }
 
+function FormatTriangle(p0,p1,p2) {
+    return "pls="
+              + p0.lat + "," + p0.lng + "," + p1.lat + "," + p1.lng
+        + "_" + p0.lat + "," + p0.lng + "," + p2.lat + "," + p2.lng
+        + "_" + p1.lat + "," + p1.lng + "," + p2.lat + "," + p2.lng;
+}
+function FormatTriangleAndBackLink(p0,p1,p2,bl) {
+    return "pls="
+              + p0.lat + "," + p0.lng + "," + p1.lat + "," + p1.lng
+        + "_" + p0.lat + "," + p0.lng + "," + p2.lat + "," + p2.lng
+        + "_" + p1.lat + "," + p1.lng + "," + p2.lat + "," + p2.lng
+        + "_" + p0.lat + "," + p0.lng + "," + bl.lat + "," + bl.lng;
+}
+function FormatPortal(p) {
+    return `pll=${p.lat},${p.lng}`;
+}
+
 function FindLargestInnerTriangle(triangle, portal) {
     // Cull points not strictly in the triangle
     for (let i=0; i<portal.length; ) {
@@ -135,7 +152,9 @@ function FindLargestInnerTriangle(triangle, portal) {
         // We're at the end which is really the beginning.
         // The throws don't matter on this inner triangle.  One portal needs no keys, one needs a key and the third needs 2 keys.
         // So pick the one with the most keys already required to thow from so we don't increase it's count any more.
-        triangle.sort((a,b) => {
+        // NOTE: We need to preserve the order of the vertices of the triangle so as not to break the first back link.  So we sort a copy.
+        let copy = triangle.slice();
+        copy.sort((a,b) => {
             let aCount = 0;
             let bCount = 0;
             if (keysRequired.hasOwnProperty(a.guid)) {
@@ -146,36 +165,41 @@ function FindLargestInnerTriangle(triangle, portal) {
             }
             return bCount - aCount;
         });
-        IncrementKeyCount(triangle[0], 0);
-        IncrementKeyCount(triangle[1], 1);
-        IncrementKeyCount(triangle[2], 2);
+        IncrementKeyCount(copy[0], 0);
+        IncrementKeyCount(copy[1], 1);
+        IncrementKeyCount(copy[2], 2);
         
-        let compositeGuid = triangle[0].guid + "_" + triangle[1].guid + "_" + triangle[2].guid;
+        let compositeGuid = copy[0].guid + "_" + copy[1].guid + "_" + copy[2].guid;
         $("#links").append("<li class=\"unchecked\" id=\""
             + compositeGuid
             + "\">"
-            + "Link <a href="
-            + `"https://intel.ingress.com/intel?pll=${triangle[0].lat},${triangle[0].lng}" target="_blank">`
-            + `${triangle[0].title}</a>`
-            + " to <br /> <a href="
-            + `"https://intel.ingress.com/intel?pll=${triangle[1].lat},${triangle[1].lng}" target="_blank">`
-            + `${triangle[1].title}</a>`
-            + " and <br /> <a href="
-            + `"https://intel.ingress.com/intel?pll=${triangle[2].lat},${triangle[2].lng}" target="_blank">`
-            + `${triangle[2].title}</a>`
+            + "Link <a href=\"https://intel.ingress.com/intel?"
+            + FormatTriangle(copy[0], copy[1], copy[2])
+            + "&" + FormatPortal(copy[0]) + "\" target=\"_blank\">"
+            + `${copy[0].title}</a>`
+            + " to <br /> <a href=\"https://intel.ingress.com/intel?"
+            + FormatTriangle(copy[0], copy[1], copy[2])
+            + "&" + FormatPortal(copy[1]) + "\" target=\"_blank\">"
+            + `${copy[1].title}</a>`
+            + " and <br /> <a href=\"https://intel.ingress.com/intel?"
+            + FormatTriangle(copy[0], copy[1], copy[2])
+            + "&" + FormatPortal(copy[2]) + "\" target=\"_blank\">"
+            + `${copy[2].title}</a>`
             + "</li>");
         $("#"+compositeGuid).data("checked", false);
         
-        compositeGuid = triangle[1].guid + "_" + triangle[2].guid;
+        compositeGuid = copy[1].guid + "_" + copy[2].guid;
         $("#links").append("<li class=\"unchecked\" id=\""
             + compositeGuid
             + "\">"
-            + "Link <a href="
-            + `"https://intel.ingress.com/intel?pll=${triangle[1].lat},${triangle[1].lng}" target="_blank">`
-            + `${triangle[1].title}</a>`
-            + " to <br /> <a href="
-            + `"https://intel.ingress.com/intel?pll=${triangle[2].lat},${triangle[2].lng}" target="_blank">`
-            + `${triangle[2].title}</a>`
+            + "Link <a href=\"https://intel.ingress.com/intel?"
+            + FormatTriangle(copy[0], copy[1], copy[2])
+            + "&" + FormatPortal(copy[1]) + "\" target=\"_blank\">"
+            + `${copy[1].title}</a>`
+            + " to <br /> <a href=\"https://intel.ingress.com/intel?"
+            + FormatTriangle(copy[0], copy[1], copy[2])
+            + "&" + FormatPortal(copy[2]) + "\" target=\"_blank\">"
+            + `${copy[2].title}</a>`
             + "</li>");
         
         return;
@@ -243,21 +267,14 @@ function FindLargestInnerTriangle(triangle, portal) {
     FindLargestInnerTriangle(innerTriangle, portal);
     
     let compositeGuid = previousPoint.guid + "_" + innerTriangle[1].guid + "_" + innerTriangle[2].guid + "_" + innerTriangle[0].guid;
+    let urlPrefix = "<a href=\"https://intel.ingress.com/intel?" + FormatTriangleAndBackLink(previousPoint, innerTriangle[1], innerTriangle[2], innerTriangle[0]);
     $("#links").append("<li class=\"unchecked\" id=\""
         + compositeGuid
         + "\">"
-        + "Link <a href="
-        + `"https://intel.ingress.com/intel?pll=${previousPoint.lat},${previousPoint.lng}" target="_blank">`
-        + `${previousPoint.title}</a>`
-        + " to <br /> <a href="
-        + `"https://intel.ingress.com/intel?pll=${innerTriangle[1].lat},${innerTriangle[1].lng}" target="_blank">`
-        + `${innerTriangle[1].title}</a>`
-        + " and <br /> <a href="
-        + `"https://intel.ingress.com/intel?pll=${innerTriangle[2].lat},${innerTriangle[2].lng}" target="_blank">`
-        + `${innerTriangle[2].title}</a>`
-        + " and then to <br /> <a href="
-        + `"https://intel.ingress.com/intel?pll=${innerTriangle[0].lat},${innerTriangle[0].lng}" target="_blank">`
-        + `${innerTriangle[0].title}</a>`
+        + "Link "                + urlPrefix + "&" + FormatPortal(previousPoint)    + "\" target=\"_blank\">" + `${previousPoint.title}</a>`
+        + " to <br /> "          + urlPrefix + "&" + FormatPortal(innerTriangle[1]) + "\" target=\"_blank\">" + `${innerTriangle[1].title}</a>`
+        + " and <br /> "         + urlPrefix + "&" + FormatPortal(innerTriangle[2]) + "\" target=\"_blank\">" + `${innerTriangle[2].title}</a>`
+        + " and then to <br /> " + urlPrefix + "&" + FormatPortal(innerTriangle[0]) + "\" target=\"_blank\">" + `${innerTriangle[0].title}</a>`
         + "</li>");
     $("#"+compositeGuid).data("checked", false);
 }
@@ -458,10 +475,7 @@ function initializeMap()
                 + center.lat
                 + ","
                 + center.lng
-                + "&pls="
-                + triangle[0].lat + "," + triangle[0].lng + "," + triangle[1].lat + "," + triangle[1].lng
-                + "_" + triangle[0].lat + "," + triangle[0].lng + "," + triangle[2].lat + "," + triangle[2].lng
-                + "_" + triangle[1].lat + "," + triangle[1].lng + "," + triangle[2].lat + "," + triangle[2].lng);
+                + "&" + FormatTriangle(triangle[0], triangle[1], triangle[2]));
             $("#outer_triangle").html("Outer triangle");
 
             // Open the IndexedDB containing which checkboxes should be checked
@@ -575,7 +589,7 @@ function initializeMap()
         <p id="layer_count"></p>
         <p id="keys_heading"></p><ul id="keys_required" class="no_bullet"></ul>
         <p id="links_heading"></p><ul id="links" class="no_bullet"></ul>
-        <p><a id="outer_triangle" href=""></a></p>
+        <p><a id="outer_triangle" href="" target="_blank"></a></p>
     </div>
 </div>
 </body>
