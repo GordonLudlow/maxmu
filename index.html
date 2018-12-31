@@ -11,9 +11,16 @@
 html { height: 100%; }
 body { height: 100%; margin: 0; padding: 0; }
 .container {display: flex; height: 100%; flex-direction: column;}
+/* TODO use a smaller font for high res small screen devices to make the selection list easier to click
+Media queries have "in" for inches, but it's a lie because it really means 96 pixels and smart phones are much higher dpi than that.
+So I think it'll take a block of media queries for all the diffent dpi possibilities.
+I mean, it'd be neat if you could easily say, "use a bigger font if the screen is less than 8 inches."  But css predates iPhones and Androids, so there you go.
+#playbox {font-size: 2em;}
+*/
 #map_canvas {width:100%; height:50%; min-height: 200px;}
 #border {width: 100%; height: 1%; min-height: 5px; background-color: #0078B5; cursor: ns-resize;}
 #results {width:100%; height:49%; overflow:auto; min-height: 100px;}
+#prompt {text-align: center;}
 ul.no_bullet {list-style-type: none; padding: 0; margin: 0; }
 li.checked {background: url('./images/checked.png') no-repeat left top; padding-left: 36px; padding-top: 4px; line-height: 1.5em; height:auto}
 li.unchecked {background: url('./images/unchecked.png') no-repeat left top; padding-left: 36px; padding-top: 4px; line-height: 1.5em; height:auto}
@@ -106,9 +113,36 @@ var triangleCount = 0;
 var maxLayers = 9999;
 var keysRequired = {};
 
+function ResetFieldState() {
+    triangleCount = 0;
+    keysRequired = {};
+
+    // Remove dom elements that were dynamically added
+    $("#keys_required").empty();
+    $("#links").empty();
+    
+    // Turn all the portals back to green (= not needed)
+    for (marker in markers) {
+        if (markers[marker].getIcon().url == './images/hum_reso_08.png') {
+            markers[marker].setIcon({url: './images/enl_reso_01.png', scaledSize: new google.maps.Size(20, 20), anchor: new google.maps.Point(10,10)});
+        }
+    }
+    
+    // Remove all per-field map elements
+    for (element in fieldSpecificMapElements) {
+        fieldSpecificMapElements[element].setMap(null);
+    }
+    
+    // Remove field related text content
+    $("#layer_count").html("");
+    $("#keys_heading").html("");
+    $("#links_heading").html("");
+    $("#outer_triangle").html("");
+}
+
 function IncrementKeyCount(portal, count) {
     // We're using this portal for the field, change its icon
-    markers[portal.marker].setIcon({url: './images/hum_reso_08.png', scaledSize: new google.maps.Size(20, 20), anchor: new google.maps.Point(10,10)});
+    markers[portal.guid].setIcon({url: './images/hum_reso_08.png', scaledSize: new google.maps.Size(20, 20), anchor: new google.maps.Point(10,10)});
     if (keysRequired.hasOwnProperty(portal.guid)) {
         keysRequired[portal.guid].count += count;
     }
@@ -123,6 +157,7 @@ function FormatTriangle(p0,p1,p2) {
         + "_" + p0.lat + "," + p0.lng + "," + p2.lat + "," + p2.lng
         + "_" + p1.lat + "," + p1.lng + "," + p2.lat + "," + p2.lng;
 }
+
 function FormatTriangleAndBackLink(p0,p1,p2,bl) {
     return "pls="
               + p0.lat + "," + p0.lng + "," + p1.lat + "," + p1.lng
@@ -130,8 +165,43 @@ function FormatTriangleAndBackLink(p0,p1,p2,bl) {
         + "_" + p1.lat + "," + p1.lng + "," + p2.lat + "," + p2.lng
         + "_" + p0.lat + "," + p0.lng + "," + bl.lat + "," + bl.lng;
 }
+
 function FormatPortal(p) {
     return `pll=${p.lat},${p.lng}`;
+}
+
+function FieldGuid(triangle) {
+    let guids = [triangle[0].guid, triangle[1].guid, triangle[2].guid];
+    guids.sort();
+    return guids[0] + "_" + guids[1] + "_" + guids[2];
+}
+
+function FieldTitle(triangle) {
+    return triangle[0].title + "->" + triangle[1].title + "-> "+ triangle[2].title;
+}
+
+function SelectFieldInDropDown(triangle) {
+    let fieldGuid = FieldGuid(triangle);
+
+    let exists = false;
+    $('#playbox option').each(function(){
+        if (this.value == fieldGuid) {
+            exists = true;
+            return false;
+        }
+    });
+    if (!exists) {
+        // Add it
+        let fieldTitle = FieldTitle(triangle);
+        $('#playbox').append($('<option>', {
+            value: fieldGuid,
+            text : fieldTitle
+        }));
+                  
+        let objectStore = fieldDB.transaction(['fields'],'readwrite').objectStore('fields');
+        objectStore.add({"guid": fieldGuid, "title": fieldTitle, "triangle": triangle});
+    }
+    $("#playbox").val(fieldGuid); // Select it
 }
 
 function FindLargestInnerTriangle(triangle, portal) {
@@ -243,6 +313,7 @@ function FindLargestInnerTriangle(triangle, portal) {
         fillOpacity: 0.05,
         map: map
     });
+    fieldSpecificMapElements.push(polygon);
     
     // Draw the spine segment
     polyLine = new google.maps.Polyline({
@@ -253,6 +324,7 @@ function FindLargestInnerTriangle(triangle, portal) {
                     strokeWeight: 2,
                     map: map
     });
+    fieldSpecificMapElements.push(polyLine);
     
     IncrementKeyCount(previousPoint, 0);
     IncrementKeyCount(innerTriangle[0], 1);
@@ -310,12 +382,136 @@ function SanitizeGuid(guid) {
 
 var map;
 var mapInitialized = false;
+var fieldSpecificMapElements = [];
 
-var db = false; // IndexedDB database of which checkboxes are checked
-// One table in the DB.
-// checkboxStore: guid => guid, checked
+var fieldDB = false; // IndexedDB database of field parameters
+var checkboxDB = false; // IndexedDB database of which checkboxes are checked for a field
+// One table in the each DB.
+// fields: guid => guid, title, triangle
+// checkboxes: guid => guid, checked
 
-var markers = [];
+var markers = {};
+
+var selectingPortals = false;
+var selectedPortals = [];
+
+function BuildField(portal, triangle) {
+    // TODO: Move all the math to a web worker.  Also, move the javascript and css out of index.html.
+            
+    // Draw the triangle
+    let polygon = new google.maps.Polygon({
+        paths: triangle,
+        strokeColor: '#0000FF',
+        strokeOpacity: 1,
+        strokeWeight: 2,
+        fillColor: '#0000FF',
+        fillOpacity: 0.1,
+        map: map
+    });
+    fieldSpecificMapElements.push(polygon);
+                  
+    triangleCount++;
+    FindLargestInnerTriangle(triangle, portal); // Recursively find all the triangles
+    $("#links_heading").html("Links:");
+            
+    $("#layer_count").html(triangleCount + " layers");
+            
+    let sortedKeys = [];
+    for (let key in keysRequired) {
+        if (keysRequired.hasOwnProperty(key)) {
+            sortedKeys.push(keysRequired[key]);
+        }
+    }
+    sortedKeys.sort((a, b) => b.count - a.count);
+    for (let key in sortedKeys) {
+        $("#keys_required").append("<li class=\"unchecked\" id=\""
+            + sortedKeys[key].guid
+            + "\">"
+            + ("    " + sortedKeys[key].count).slice(-4)
+            + " <a href="
+            + `"https://intel.ingress.com/intel?pll=${sortedKeys[key].lat},${sortedKeys[key].lng}" target="_blank">`
+            + `${sortedKeys[key].title}</a>`
+            + "</li>");
+        $("#"+sortedKeys[key].guid).data("checked", false);
+    }
+    $("#keys_heading").html(function(items, prop){
+        return items.reduce( function(a, b){
+            return a + b[prop];
+        }, 0)
+    }(sortedKeys, "count") + " keys required:");
+                  
+    let center = {};
+    center.lat = (triangle[0].lat + triangle[1].lat + triangle[2].lat)/3;
+    center.lng = (triangle[0].lng + triangle[1].lng + triangle[2].lng)/3;
+    map.setCenter(new google.maps.LatLng(center));
+            
+    // The stock intel page errors out with more than a dozen triangles.  So let's just do the outermost
+    $("#outer_triangle").attr('href',
+        "https://intel.ingress.com/intel?ll="
+        + center.lat
+        + ","
+        + center.lng
+        + "&" + FormatTriangle(triangle[0], triangle[1], triangle[2]));
+    $("#outer_triangle").html("Outer triangle");
+
+    // Open the IndexedDB containing which checkboxes should be checked
+    let request = window.indexedDB.open("MaxMu" + FieldGuid(triangle), 1);
+    request.onerror = function(event) {
+        console.error("openDb:", event.target.errorCode);
+        checkboxDB = false;
+    };
+    request.onsuccess = function(event) {
+        checkboxDB = event.target.result;
+        let store = checkboxDB.transaction(['checkboxes'],'readonly').objectStore('checkboxes');
+        store.getAll().onsuccess = function(e) {
+            if (e.target.result) {
+                let result = e.target.result;
+                result.forEach(function(checkBoxRecord) {
+                    // change the checkedness of the element using it's id/guid to look it up.
+                    if (checkBoxRecord.checked) { // we default to unchecked, so only have to change it if it's checked
+                        let checkBox = $("#"+checkBoxRecord.guid);
+                        checkBox.data("checked", true);
+
+                        checkBox.addClass("checked");
+                        checkBox.removeClass("unchecked");
+                    }
+                });
+            }
+        };
+    };
+    request.onupgradeneeded = function(event) {
+        checkboxDB = event.target.result;
+        keyStore = checkboxDB.createObjectStore("checkboxes", { keyPath: "guid" });
+    }
+
+    // Check box toggling
+    $("li").on("click", function(event) {
+        if (event.target === event.currentTarget) { // only consume clicks on the bullet.  The content of the li is a link.
+            $(this).toggleClass("unchecked");
+            $(this).toggleClass("checked");
+            if (checkboxDB) {
+                let objectStore = checkboxDB.transaction(['checkboxes'],'readwrite').objectStore('checkboxes');
+                let guid = $(this).attr('id');
+                let checked = $(this).hasClass("checked");
+                let req = objectStore.openCursor(guid);
+                req.onsuccess = function(e) {
+                    let cursor = e.target.result;
+                    if (cursor) { // key already exists
+                        const updateData = cursor.value;
+                        updateData.checked = checked;
+                        cursor.update(updateData);
+                    } else { // key does not exist
+                        objectStore.add({guid: guid, checked: checked});
+                    }
+                };
+            }
+            return false;
+        }
+        return true;
+    });
+}
+
+var allPortals = []; // array of all known portals
 
 function initializeMap()
 {
@@ -336,7 +532,6 @@ function initializeMap()
         });          
         $.getJSON('portals.json', function (data) {
             let ignore = data.ignore;
-            let portal = [];
             for (let i=0; i<data.portals.length; i++) {
                 let latlngArray = data.portals[i].latlng.split(',');
                 let lat = parseFloat(latlngArray[0]);
@@ -365,176 +560,163 @@ function initializeMap()
                 data.portals[i].y = lat;
                 data.portals[i].guid = SanitizeGuid(data.portals[i].guid);
                 
+                let name = data.portals[i].title + " " + data.portals[i].latlng;
+                let guid = data.portals[i].guid;
                 let marker = new google.maps.Marker({
-                  position: new google.maps.LatLng(lat, lng),
-                  map: map,
-                  icon: {url: './images/enl_reso_01.png', scaledSize: new google.maps.Size(20, 20), anchor: new google.maps.Point(10,10)},
-                  title: data.portals[i].title + " " + data.portals[i].latlng
+                    position: new google.maps.LatLng(lat, lng),
+                    map: map,
+                    icon: {url: './images/enl_reso_01.png', scaledSize: new google.maps.Size(20, 20), anchor: new google.maps.Point(10,10)},
+                    title: name
                 });
+                
+                let div = document.createElement('div');
+                div.innerHTML = name;
+                jQuery.data(div, "portal", data.portals[i]);
+                div.onclick = function(){
+                    if (selectingPortals) {
+                        let portal = jQuery.data(this, "portal");
+                        let selectedIndex = selectedPortals.indexOf(portal);
+                        if (selectedIndex > -1) {
+                            // Unselect it
+                            markers[portal.guid].setIcon({url: './images/enl_reso_01.png', scaledSize: new google.maps.Size(20, 20), anchor: new google.maps.Point(10,10)});
+                            // Remove any yellow line we may have drawn
+                            if (selectedPortals.length == 2) {
+                                for (element in fieldSpecificMapElements) {
+                                    fieldSpecificMapElements[element].setMap(null);
+                                }
+                            }
+                            selectedPortals.splice(selectedIndex, 1);
+                        }
+                        else {
+                            if (selectedPortals.length == 2) {
+                                // This is the third point.  Exit selection mode and generate the field.
+                                let triangle = [selectedPortals[0], selectedPortals[1], portal].slice();
+                                selectedPortals = [];
+                                selectingPortals = false;
+                  
+                                ResetFieldState();
+                                BuildField(allPortals.slice(), triangle);
+                  
+                                SelectFieldInDropDown(triangle);
+
+                                // Restore DOM state
+                                $("#results").show();
+                                $("#border").show();
+                                const map_div = document.getElementById("map_canvas");
+                                map_div.style.height = "50%";
+                                $("#prompt").html("");
+                            }
+                            else {
+                                // Select it
+                                markers[portal.guid].setIcon({url: './images/hum_reso_08.png', scaledSize: new google.maps.Size(20, 20), anchor: new google.maps.Point(10,10)});
+                                if (selectedPortals.length == 1) {
+                                    polyLine = new google.maps.Polyline({
+                                        path: [new google.maps.LatLng(portal),
+                                               new google.maps.LatLng(selectedPortals[0])],
+                                        strokeColor: '#FFFF00',
+                                        strokeOpacity: 1.0,
+                                        strokeWeight: 2,
+                                        map: map
+                                    });
+                                    fieldSpecificMapElements.push(polyLine);
+                                }
+                                selectedPortals.push(portal);
+                            }
+                        }
+                  
+                        let infoWindow = jQuery.data(this, "infoWindow");
+                        infoWindow.close();
+                    }
+                };
+
                 let infoWindow = new google.maps.InfoWindow({
-                    content: data.portals[i].title + " " + data.portals[i].latlng
+                    content: div
                 });
+                jQuery.data(div, "infoWindow", infoWindow);
+
                 google.maps.event.addListener(marker, 'click', function () {
                     infoWindow.open(map, marker);
                 });
-                
-                data.portals[i].marker = markers.push(marker) - 1;
-                
-                portal.push(data.portals[i]);
-            }
-  
-            // TODO: Move all the math to a web worker.  Also, move the javascript and css out of index.html.
-            let triangle = [];
-            
-            let bounds = GetURLParameter("pls");
-            if (typeof bounds != "undefined") {
-                bounds = PlsArgToArray(bounds);
-                let indices = [];
-                for (let seg=0; seg<bounds.length; seg++) {
-                    let index = FindIndex(portal, bounds[seg].slice(0,2));
-                    if (!indices.includes(index)) indices.push(index);
-                    index = FindIndex(portal, bounds[seg].slice(2,4));
-                    if (!indices.includes(index)) indices.push(index);
-                }
-                triangle = [portal[indices[0]], portal[indices[1]], portal[indices[2]]];
-            }
-            else {
-                // Make them pick a triangle
-                window.location.replace("./select_triangle.html");
-                /*
-                // Find largest triangle
-                let maxArea = 0;
-                let hull = convexHull(portal);
-                for (let a=0; a<hull.length-2; a++) {
-                    for (let b=a+1; b<hull.length-1; b++) {
-                        for (let c=b+1; c<hull.length; c++) {
-                            // Find twice the area of the triangle abc
-                            let area = Math.abs(
-                                (hull[a].x * (hull[b].y-hull[c].y))
-                                + (hull[b].x * (hull[c].y-hull[a].y))
-                                + (hull[c].x * (hull[a].y-hull[b].y))
-                                );
-                            if (area > maxArea) {
-                                maxArea = area;
-                                triangle = [hull[a], hull[b], hull[c]];
-                            }
-                        }
-                    }
-                }
-                */
-            }
-            
-            // Draw the triangle
-            let polygon = new google.maps.Polygon({
-                paths: triangle,
-                strokeColor: '#0000FF',
-                strokeOpacity: 1,
-                strokeWeight: 2,
-                fillColor: '#0000FF',
-                fillOpacity: 0.1,
-                map: map
-            });
-                  
-            triangleCount++;
-            FindLargestInnerTriangle(triangle, portal); // Recursively find all the triangles
-            $("#links_heading").html("Links:");
-            
-            $("#layer_count").html(triangleCount + " layers");
-            
-            let sortedKeys = [];
-            for (let key in keysRequired) {
-                if (keysRequired.hasOwnProperty(key)) {
-                    sortedKeys.push(keysRequired[key]);
-                }
-            }
-            sortedKeys.sort((a, b) => b.count - a.count);
-            for (let key in sortedKeys) {
-                $("#keys_required").append("<li class=\"unchecked\" id=\""
-                    + sortedKeys[key].guid
-                    + "\">"
-                    + ("    " + sortedKeys[key].count).slice(-4)
-                    + " <a href="
-                    + `"https://intel.ingress.com/intel?pll=${sortedKeys[key].lat},${sortedKeys[key].lng}" target="_blank">`
-                    + `${sortedKeys[key].title}</a>`
-                    + "</li>");
-                $("#"+sortedKeys[key].guid).data("checked", false);
-            }
-            $("#keys_heading").html(function(items, prop){
-                return items.reduce( function(a, b){
-                    return a + b[prop];
-                }, 0)}(sortedKeys, "count") + " keys required:");
-                  
-            let center = {};
-            center.lat = (triangle[0].lat + triangle[1].lat + triangle[2].lat)/3;
-            center.lng = (triangle[0].lng + triangle[1].lng + triangle[2].lng)/3;
-            map.setCenter(new google.maps.LatLng(center));
-            
-            // The stock intel page errors out with more than a dozen triangles.  So let's just do the outermost
-            $("#outer_triangle").attr('href',
-                "https://intel.ingress.com/intel?ll="
-                + center.lat
-                + ","
-                + center.lng
-                + "&" + FormatTriangle(triangle[0], triangle[1], triangle[2]));
-            $("#outer_triangle").html("Outer triangle");
 
-            // Open the IndexedDB containing which checkboxes should be checked
-            let guids = [triangle[0].guid, triangle[1].guid, triangle[2].guid];
-            guids.sort();
-            let request = window.indexedDB.open("MaxMu" + guids[0] + "_" + guids[1] + "_" + guids[2], 1);
+                markers[guid] = marker;
+                
+                allPortals.push(data.portals[i]);
+            }
+            
+            // Load the previously entered field parameters from Indexed DB
+            let request = window.indexedDB.open("Fields", 1);
             request.onerror = function(event) {
-                console.error("openDb:", event.target.errorCode);
-                db = false;
+                console.error("openDB:", event.target.errorCode);
+                fieldDB = false;
             };
             request.onsuccess = function(event) {
-                db = event.target.result;
-                let store = db.transaction(['checkboxes'],'readonly').objectStore('checkboxes');
+                fieldDB = event.target.result;
+                let store = fieldDB.transaction(['fields'],'readonly').objectStore('fields');
                 store.getAll().onsuccess = function(e) {
                     if (e.target.result) {
                         let result = e.target.result;
-                        result.forEach(function(checkBoxRecord) {
-                            // change the checkedness of the element using it's id/guid to look it up.
-                            if (checkBoxRecord.checked) { // we default to unchecked, so only have to change it if it's checked
-                                let checkBox = $("#"+checkBoxRecord.guid);
-                                checkBox.data("checked", true);
-
-                                checkBox.addClass("checked");
-                                checkBox.removeClass("unchecked");
-                            }
+                        result.forEach(function(field) {
+                            $('#playbox').append($('<option>', {
+                                value: field.guid,
+                                text : field.title
+                            }));
                         });
                     }
-                };
-            };
-            request.onupgradeneeded = function(event) {
-                db = event.target.result;
-                keyStore = db.createObjectStore("checkboxes", { keyPath: "guid" });
+                  
+                    let bounds = GetURLParameter("pls");
+                    if (typeof bounds != "undefined") {
+                        bounds = PlsArgToArray(bounds);
+                        let indices = [];
+                        for (let seg=0; seg<bounds.length; seg++) {
+                            let index = FindIndex(allPortals, bounds[seg].slice(0,2));
+                            if (!indices.includes(index)) indices.push(index);
+                            index = FindIndex(allPortals, bounds[seg].slice(2,4));
+                            if (!indices.includes(index)) indices.push(index);
+                        }
+                  
+                        // If it's a field we already know about, select it.  Otherwise add it & select it.
+                        let triangle = [allPortals[indices[0]], allPortals[indices[1]], allPortals[indices[2]]];
+                        SelectFieldInDropDown(triangle);
+                  
+                        BuildField(allPortals.slice(), triangle);
+                    }
+                }
             }
-
-            // Check box toggling
-            $("li").on("click", function(event) {
-                if (event.target === event.currentTarget) { // only consume clicks on the bullet.  The content of the li is a link.
-                    $(this).toggleClass("unchecked");
-                    $(this).toggleClass("checked");
-                    if (db) {
-                        let objectStore = db.transaction(['checkboxes'],'readwrite').objectStore('checkboxes');
-                        let guid = $(this).attr('id');
-                        let checked = $(this).hasClass("checked");
-                        let req = objectStore.openCursor(guid);
+            request.onupgradeneeded = function(event) {
+                fieldDB = event.target.result;
+                keyStore = fieldDB.createObjectStore("fields", { keyPath: "guid" });
+            }
+            
+            // Field selection
+            $('#playbox').change(function () {
+                var optionSelected = $(this).find("option:selected");
+                var valueSelected  = optionSelected.val();
+                if (valueSelected=="New") {
+                    // Clickity clickity
+                    ResetFieldState(); // clear the map
+                    // maximize the map
+                    $("#results").hide();
+                    $("#border").hide();
+                    const map_div = document.getElementById("map_canvas");
+                    map_div.style.height = "100%";
+                    $("#prompt").html("<p>Select portals by clicking on the portal and then on it's name.</p>");
+                    selectingPortals = true;
+                }
+                else if (valueSelected != "Select") {
+                    // valueSelected is a FieldGuid
+                    if (fieldDB) {
+                        let objectStore = fieldDB.transaction(['fields'],'readonly').objectStore('fields');
+                        let req = objectStore.openCursor(valueSelected);
                         req.onsuccess = function(e) {
                             let cursor = e.target.result;
-                            if (cursor) { // key already exists
-                                const updateData = cursor.value;
-                                updateData.checked = checked;
-                                cursor.update(updateData);
-                            } else { // key does not exist
-                                objectStore.add({guid: guid, checked: checked});
-                            }
-                        };
+                            const triangle = cursor.value.triangle;
+                            ResetFieldState();
+                            BuildField(allPortals.slice(), triangle);
+                        }
                     }
-                    return false;
                 }
-                return true;
-            });
+             });
+            
             
             // Div resizing
             const map_div = document.getElementById("map_canvas");
@@ -583,6 +765,13 @@ function initializeMap()
     });
 </script>
 <div class="container">
+    <div id="menu">
+        <select id="playbox">
+            <option value="Select"><i>Select field...</i></option>
+            <option value="New">&lt;New...&gt;</option>
+        </select>
+        <div id="prompt"></div>
+    </div>
     <div id="map_canvas"></div>
     <div id="border"></div>
     <div id="results">
