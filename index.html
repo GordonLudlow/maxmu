@@ -111,6 +111,9 @@ function PlsArgToArray(plsArg) {
 
 var triangleCount = 0;
 var maxLayers = 9999;
+var maxKeys = 9999;
+var maxKeysPerPortal = 9999;
+var continuousSpine = false;
 var keysRequired = {};
 
 function ResetFieldState() {
@@ -138,6 +141,7 @@ function ResetFieldState() {
     $("#keys_heading").html("");
     $("#links_heading").html("");
     $("#outer_triangle").html("");
+    $("#share").html("");
 }
 
 function IncrementKeyCount(portal, count) {
@@ -173,11 +177,66 @@ function FormatPortal(p) {
 function FieldGuid(triangle) {
     let guids = [triangle[0].guid, triangle[1].guid, triangle[2].guid];
     guids.sort();
-    return guids[0] + "_" + guids[1] + "_" + guids[2];
+    return guids[0] + "___" + guids[1] + "___" + guids[2];
+}
+
+function ExtendedFieldGuid(triangle) {
+    let guid = FieldGuid(triangle);
+    if (maxLayers < 9999) {
+        guid += "__L" + maxLayers;
+    }
+    if (maxKeys < 9999) {
+        guid += "__K" + maxKeys;
+    }
+    if (maxKeysPerPortal < 9999) {
+        guid += "__P" + maxKeysPerPortal;
+    }
+    if (continuousSpine) {
+        guid += "__C";
+    }
+
+    return guid;
+}
+
+function ParseExtendedFieldGuid(guid) {
+    // At the end of the guid, any user entered overrides will be encoded as:
+    // __L<maxLayers>
+    // __K<maxKeys>
+    // __P<maxKeysPerPortal>
+    // __C for continuous spine
+
+    let portalGuids = guid.split(/___/g);
+    let overrides = portalGuids[2].split(/__/g);
+    portalGuids[2] = overrides[0];
+    
+    for (let override = 1; override < overrides.length; override++) {
+        switch (overrides[override][0]) {
+            case "L":
+                maxLayers = parseInt(overrides[override].slice(1), 10);
+                break;
+            case "K":
+                maxKeys = parseInt(overrides[override].slice(1), 10);
+                break;
+            case "P":
+                maxKeysPerPortal = parseInt(overrides[override].slice(1), 10);
+                break;
+            case "C":
+                continuousSpine = true;
+                break;
+        }
+    }
+
+    let triangle = [];
+    for (let i in portalGuids) {
+        triangle[i] = allPortals.find(p => p.guid == portalGuids[i]);
+    }
+    
+    return triangle;
 }
 
 function FieldTitle(triangle) {
     return triangle[0].title + "->" + triangle[1].title + "-> "+ triangle[2].title;
+    return title;
 }
 
 function SelectFieldInDropDown(triangle) {
@@ -204,7 +263,7 @@ function SelectFieldInDropDown(triangle) {
     $("#playbox").val(fieldGuid); // Select it
 }
 
-function FindLargestInnerTriangle(triangle, portal) {
+function FindLargestInnerTriangle(triangle, portal, spine, stealth) {
     // Cull points not strictly in the triangle
     for (let i=0; i<portal.length; ) {
         if (portal[i] == triangle[0]
@@ -218,61 +277,78 @@ function FindLargestInnerTriangle(triangle, portal) {
         }
     }
     
-    if (!portal.length || triangleCount == maxLayers) {
+    let mkpp = 0;
+    for (let key in keysRequired) {
+        if (keysRequired[key].count > mkpp)
+            mkpp = keysRequired[key].count;
+    }
+
+    if (!portal.length || triangleCount == maxLayers || (triangleCount+1)*3 > maxKeys || (mkpp >= maxKeysPerPortal)) {
         // We're at the end which is really the beginning.
         // The throws don't matter on this inner triangle.  One portal needs no keys, one needs a key and the third needs 2 keys.
         // So pick the one with the most keys already required to thow from so we don't increase it's count any more.
         // NOTE: We need to preserve the order of the vertices of the triangle so as not to break the first back link.  So we sort a copy.
         let copy = triangle.slice();
-        copy.sort((a,b) => {
-            let aCount = 0;
-            let bCount = 0;
-            if (keysRequired.hasOwnProperty(a.guid)) {
-                aCount = keysRequired[a.guid].count
-            }
-            if (keysRequired.hasOwnProperty(b.guid)) {
-                bCount = keysRequired[b.guid].count
-            }
-            return bCount - aCount;
-        });
+        if (!continuousSpine) {
+            copy.sort((a,b) => {
+                let aCount = 0;
+                let bCount = 0;
+                if (keysRequired.hasOwnProperty(a.guid)) {
+                    aCount = keysRequired[a.guid].count
+                }
+                if (keysRequired.hasOwnProperty(b.guid)) {
+                    bCount = keysRequired[b.guid].count
+                }
+                return bCount - aCount;
+            });
+        }
         IncrementKeyCount(copy[0], 0);
         IncrementKeyCount(copy[1], 1);
         IncrementKeyCount(copy[2], 2);
         
-        let compositeGuid = copy[0].guid + "_" + copy[1].guid + "_" + copy[2].guid;
-        $("#links").append("<li class=\"unchecked\" id=\""
-            + compositeGuid
-            + "\">"
-            + "Link <a href=\"https://intel.ingress.com/intel?"
-            + FormatTriangle(copy[0], copy[1], copy[2])
-            + "&" + FormatPortal(copy[0]) + "\" target=\"_blank\">"
-            + `${copy[0].title}</a>`
-            + " to <br /> <a href=\"https://intel.ingress.com/intel?"
-            + FormatTriangle(copy[0], copy[1], copy[2])
-            + "&" + FormatPortal(copy[1]) + "\" target=\"_blank\">"
-            + `${copy[1].title}</a>`
-            + " and <br /> <a href=\"https://intel.ingress.com/intel?"
-            + FormatTriangle(copy[0], copy[1], copy[2])
-            + "&" + FormatPortal(copy[2]) + "\" target=\"_blank\">"
-            + `${copy[2].title}</a>`
-            + "</li>");
-        $("#"+compositeGuid).data("checked", false);
+        if (!stealth) {
+            let compositeGuid = copy[0].guid + "_" + copy[1].guid + "_" + copy[2].guid;
+            $("#links").append("<li class=\"unchecked\" id=\""
+                + compositeGuid
+                + "\">"
+                + "Link <a href=\"https://intel.ingress.com/intel?"
+                + FormatTriangle(copy[0], copy[1], copy[2])
+                + "&" + FormatPortal(copy[0]) + "\" target=\"_blank\">"
+                + `${copy[0].title}</a>`
+                + " to <br /> <a href=\"https://intel.ingress.com/intel?"
+                + FormatTriangle(copy[0], copy[1], copy[2])
+                + "&" + FormatPortal(copy[1]) + "\" target=\"_blank\">"
+                + `${copy[1].title}</a>`
+                + " and <br /> <a href=\"https://intel.ingress.com/intel?"
+                + FormatTriangle(copy[0], copy[1], copy[2])
+                + "&" + FormatPortal(copy[2]) + "\" target=\"_blank\">"
+                + `${copy[2].title}</a>`
+                + "</li>");
+            $("#"+compositeGuid).data("checked", false);
         
-        compositeGuid = copy[1].guid + "_" + copy[2].guid;
-        $("#links").append("<li class=\"unchecked\" id=\""
-            + compositeGuid
-            + "\">"
-            + "Link <a href=\"https://intel.ingress.com/intel?"
-            + FormatTriangle(copy[0], copy[1], copy[2])
-            + "&" + FormatPortal(copy[1]) + "\" target=\"_blank\">"
-            + `${copy[1].title}</a>`
-            + " to <br /> <a href=\"https://intel.ingress.com/intel?"
-            + FormatTriangle(copy[0], copy[1], copy[2])
-            + "&" + FormatPortal(copy[2]) + "\" target=\"_blank\">"
-            + `${copy[2].title}</a>`
-            + "</li>");
+            compositeGuid = copy[1].guid + "_" + copy[2].guid;
+            $("#links").append("<li class=\"unchecked\" id=\""
+                + compositeGuid
+                + "\">"
+                + "Link <a href=\"https://intel.ingress.com/intel?"
+                + FormatTriangle(copy[0], copy[1], copy[2])
+                + "&" + FormatPortal(copy[1]) + "\" target=\"_blank\">"
+                + `${copy[1].title}</a>`
+                + " to <br /> <a href=\"https://intel.ingress.com/intel?"
+                + FormatTriangle(copy[0], copy[1], copy[2])
+                + "&" + FormatPortal(copy[2]) + "\" target=\"_blank\">"
+                + `${copy[2].title}</a>`
+                + "</li>");
+        }
         
-        return;
+        let a = copy[0];
+        let b = copy[1];
+        let c = copy[2];
+        return Math.abs(
+              (a.x * (b.y-c.y))
+            + (b.x * (c.y-a.y))
+            + (c.x * (a.y-b.y))
+        );
     }
     
     triangleCount++;
@@ -280,16 +356,20 @@ function FindLargestInnerTriangle(triangle, portal) {
     let maxArea = 0;
     let innerTriangle = [];
     let previousPoint = {};
+
+    let b,c;
+    if (continuousSpine) {
+        let tempTri = JSON.parse(JSON.stringify(triangle));
+        previousPoint = JSON.parse(JSON.stringify(tempTri[spine]));
+        tempTri.splice(spine,1);
+            
+        b = tempTri[0];
+        c = tempTri[1];
+    }
+
     for (let i=0; i<portal.length; i++) {
         let a = portal[i];
-        for (let exclude=0; exclude<3; exclude++) {
-            let tempTri = JSON.parse(JSON.stringify(triangle));
-            let excluded = JSON.parse(JSON.stringify(tempTri[exclude]));
-            tempTri.splice(exclude,1);
-            
-            let b = tempTri[0];
-            let c = tempTri[1];
-
+        if (continuousSpine) {
             let area = Math.abs(
                 (a.x * (b.y-c.y))
                 + (b.x * (c.y-a.y))
@@ -298,57 +378,78 @@ function FindLargestInnerTriangle(triangle, portal) {
             if (area > maxArea) {
                 maxArea = area;
                 innerTriangle = [a, b, c];
-                previousPoint = excluded;
+            }
+        }
+        else {
+            for (let exclude=0; exclude<3; exclude++) {
+                let tempTri = JSON.parse(JSON.stringify(triangle));
+                let excluded = JSON.parse(JSON.stringify(tempTri[exclude]));
+                tempTri.splice(exclude,1);
+            
+                b = tempTri[0];
+                c = tempTri[1];
+
+                let area = Math.abs(
+                    (a.x * (b.y-c.y))
+                    + (b.x * (c.y-a.y))
+                    + (c.x * (a.y-b.y))
+                );
+                if (area > maxArea) {
+                    maxArea = area;
+                    innerTriangle = [a, b, c];
+                    previousPoint = excluded;
+                }
             }
         }
     }
     
-    // Draw the inner triangle
-    let polygon = new google.maps.Polygon({
-        paths: innerTriangle,
-        strokeColor: '#0000FF',
-        strokeOpacity: 1,
-        strokeWeight: 2,
-        fillColor: '#0000FF',
-        fillOpacity: 0.05,
-        map: map
-    });
-    fieldSpecificMapElements.push(polygon);
+    if (!stealth) {
+        // Draw the inner triangle
+        let polygon = new google.maps.Polygon({
+            paths: innerTriangle,
+            strokeColor: '#0000FF',
+            strokeOpacity: 1,
+            strokeWeight: 2,
+            fillColor: '#0000FF',
+            fillOpacity: 0.05,
+            map: map
+        });
+        fieldSpecificMapElements.push(polygon);
     
-    // Draw the spine segment
-    polyLine = new google.maps.Polyline({
-                path: [new google.maps.LatLng(innerTriangle[0]),
-                       new google.maps.LatLng(previousPoint)],
-                    strokeColor: '#FF0000',//lineColors[to],
-                    strokeOpacity: 1.0,
-                    strokeWeight: 2,
-                    map: map
-    });
-    fieldSpecificMapElements.push(polyLine);
+        // Draw the spine segment
+        polyLine = new google.maps.Polyline({
+                    path: [new google.maps.LatLng(innerTriangle[0]),
+                        new google.maps.LatLng(previousPoint)],
+                        strokeColor: '#FF0000',//lineColors[to],
+                        strokeOpacity: 1.0,
+                        strokeWeight: 2,
+                        map: map
+        });
+        fieldSpecificMapElements.push(polyLine);
+    }
     
     IncrementKeyCount(previousPoint, 0);
     IncrementKeyCount(innerTriangle[0], 1);
     IncrementKeyCount(innerTriangle[1], 1);
     IncrementKeyCount(innerTriangle[2], 1);
     
-    //logString = "Link "         +   previousPoint.title + " https://intel.ingress.com/intel?pll=" +    previousPoint.lat + "," +    previousPoint.lng +
-    //            " to "          + innerTriangle[1].title + " https://intel.ingress.com/intel?pll=" + innerTriangle[1].lat + "," + innerTriangle[1].lng +
-    //            " and "         + innerTriangle[2].title + " https://intel.ingress.com/intel?pll=" + innerTriangle[2].lat + "," + innerTriangle[2].lng +
-    //            " and then to " + innerTriangle[0].title + " https://intel.ingress.com/intel?pll=" + innerTriangle[0].lat + "," + innerTriangle[0].lng + "\n";
+    let innerArea = FindLargestInnerTriangle(innerTriangle, portal, spine, stealth);
 
-    FindLargestInnerTriangle(innerTriangle, portal);
+    if (!stealth) {
+        let compositeGuid = previousPoint.guid + "_" + innerTriangle[1].guid + "_" + innerTriangle[2].guid + "_" + innerTriangle[0].guid;
+        let urlPrefix = "<a href=\"https://intel.ingress.com/intel?" + FormatTriangleAndBackLink(previousPoint, innerTriangle[1], innerTriangle[2], innerTriangle[0]);
+        $("#links").append("<li class=\"unchecked\" id=\""
+            + compositeGuid
+            + "\">"
+            + "Link "                + urlPrefix + "&" + FormatPortal(previousPoint)    + "\" target=\"_blank\">" + `${previousPoint.title}</a>`
+            + " to <br /> "          + urlPrefix + "&" + FormatPortal(innerTriangle[1]) + "\" target=\"_blank\">" + `${innerTriangle[1].title}</a>`
+            + " and <br /> "         + urlPrefix + "&" + FormatPortal(innerTriangle[2]) + "\" target=\"_blank\">" + `${innerTriangle[2].title}</a>`
+            + " and then to <br /> " + urlPrefix + "&" + FormatPortal(innerTriangle[0]) + "\" target=\"_blank\">" + `${innerTriangle[0].title}</a>`
+            + "</li>");
+        $("#"+compositeGuid).data("checked", false);
+    }
     
-    let compositeGuid = previousPoint.guid + "_" + innerTriangle[1].guid + "_" + innerTriangle[2].guid + "_" + innerTriangle[0].guid;
-    let urlPrefix = "<a href=\"https://intel.ingress.com/intel?" + FormatTriangleAndBackLink(previousPoint, innerTriangle[1], innerTriangle[2], innerTriangle[0]);
-    $("#links").append("<li class=\"unchecked\" id=\""
-        + compositeGuid
-        + "\">"
-        + "Link "                + urlPrefix + "&" + FormatPortal(previousPoint)    + "\" target=\"_blank\">" + `${previousPoint.title}</a>`
-        + " to <br /> "          + urlPrefix + "&" + FormatPortal(innerTriangle[1]) + "\" target=\"_blank\">" + `${innerTriangle[1].title}</a>`
-        + " and <br /> "         + urlPrefix + "&" + FormatPortal(innerTriangle[2]) + "\" target=\"_blank\">" + `${innerTriangle[2].title}</a>`
-        + " and then to <br /> " + urlPrefix + "&" + FormatPortal(innerTriangle[0]) + "\" target=\"_blank\">" + `${innerTriangle[0].title}</a>`
-        + "</li>");
-    $("#"+compositeGuid).data("checked", false);
+    return maxArea + innerArea;
 }
 
 function FindIndex(portal, latlng) {
@@ -380,6 +481,64 @@ function SanitizeGuid(guid) {
     return sanitized;
 }
 
+function CapLayerCount() {
+    maxLayers = parseInt($('#triangleCap').val(), 10);
+    ResetFieldState();
+    BuildField(allPortals.slice(), $("#results").data("triangle"));
+}
+
+function UncapLayerCount() {
+    maxLayers = 9999;
+    ResetFieldState();
+    BuildField(allPortals.slice(), $("#results").data("triangle"));
+}
+
+function CapKeyCount() {
+    maxKeys = parseInt($('#keyCap').val(), 10);
+    ResetFieldState();
+    BuildField(allPortals.slice(), $("#results").data("triangle"));
+}
+
+function UncapKeyCount() {
+    maxKeys = 9999;
+    ResetFieldState();
+    BuildField(allPortals.slice(), $("#results").data("triangle"));
+}
+
+function CapKppCount() {
+    maxKeysPerPortal = parseInt($('#kppCap').val(), 10);
+    ResetFieldState();
+    BuildField(allPortals.slice(), $("#results").data("triangle"));
+}
+
+function UncapKppCount() {
+    maxKeysPerPortal = 9999;
+    ResetFieldState();
+    BuildField(allPortals.slice(), $("#results").data("triangle"));
+}
+
+function AllowDiscontinuousSpine() {
+    continuousSpine = false;
+    ResetFieldState();
+    BuildField(allPortals.slice(), $("#results").data("triangle"));
+}
+
+function RequireContinuousSpine() {
+    continuousSpine = true;
+    ResetFieldState();
+    BuildField(allPortals.slice(), $("#results").data("triangle"));
+}
+
+function ReasonableCap(count) {
+    let reasonableCap = 5;
+    if (count > 100)
+        reasonableCap = 100;
+    else if (count > 50)
+        reasonableCap = 50;
+    else if (count > 10)
+        reasonableCap = count - (count % 10);
+    return reasonableCap;
+}
 var map;
 var mapInitialized = false;
 var fieldSpecificMapElements = [];
@@ -396,8 +555,42 @@ var selectingPortals = false;
 var selectedPortals = [];
 
 function BuildField(portal, triangle) {
-    // TODO: Move all the math to a web worker.  Also, move the javascript and css out of index.html.
-            
+    // TODO: Move all the math to a web worker (or maybe not.  It's really fast).  Also, move the javascript and css out of index.html.
+
+    triangleCount = 1;
+    
+    // Recursively find all the triangles
+    if (continuousSpine) {
+        let bestSpine = 0;
+        let bestArea = FindLargestInnerTriangle(triangle, portal.slice(), 0, true);
+        ResetFieldState();
+        triangleCount = 1;
+        
+        let area = FindLargestInnerTriangle(triangle, portal.slice(), 1, true);
+        if (area > bestArea) {
+            bestArea = area;
+            bestSpine = 1;
+        }
+        ResetFieldState();
+        triangleCount = 1;
+
+        area = FindLargestInnerTriangle(triangle, portal.slice(), 2, true);
+        if (area >= bestArea) {
+            bestArea = area;
+            bestSpine = 2;
+        }
+
+        ResetFieldState();
+        triangleCount = 1;
+        FindLargestInnerTriangle(triangle, portal, bestSpine, false);
+
+        console.log("Continuous spine area " + bestArea);
+    }
+    else {
+        let bestArea = FindLargestInnerTriangle(triangle, portal, 0, false);
+        console.log("Discontinuous spine area " + bestArea);
+    }
+
     // Draw the triangle
     let polygon = new google.maps.Polygon({
         paths: triangle,
@@ -409,12 +602,27 @@ function BuildField(portal, triangle) {
         map: map
     });
     fieldSpecificMapElements.push(polygon);
-                  
-    triangleCount++;
-    FindLargestInnerTriangle(triangle, portal); // Recursively find all the triangles
+    
+    $("#results").data("triangle", triangle);
     $("#links_heading").html("Links:");
-            
-    $("#layer_count").html(triangleCount + " layers");
+    
+    let layerCountHtml = triangleCount + " layers";
+    if (maxLayers == 9999) {
+        layerCountHtml += " (<input type=\"number\" id=\"triangleCap\" name=\"triangleCap\""
+            + " value = \"7\""
+            + " min=\"1\" max=\"" + triangleCount + "\">"
+            + " <button onclick='CapLayerCount();'>cap</button>)";
+    }
+    else {
+        layerCountHtml += " (<button onclick='UncapLayerCount();'>uncap</button>)";
+    }
+    if (continuousSpine) {
+        layerCountHtml += " with a continuous spine (<button onclick='AllowDiscontinuousSpine();'>allow discontinuous</button>)";
+    }
+    else {
+        layerCountHtml += " with a discontinuous spine (<button onclick='RequireContinuousSpine();'>require continuous</button>)";
+    }
+    $("#layer_count").html(layerCountHtml);
             
     let sortedKeys = [];
     for (let key in keysRequired) {
@@ -423,22 +631,51 @@ function BuildField(portal, triangle) {
         }
     }
     sortedKeys.sort((a, b) => b.count - a.count);
+    let first=true;
     for (let key in sortedKeys) {
+        let liHtml = ("    " + sortedKeys[key].count).slice(-4)
+            + " <a href="
+            + `"https://intel.ingress.com/intel?pll=${sortedKeys[key].lat},${sortedKeys[key].lng}" target="_blank">`
+            + `${sortedKeys[key].title}</a>`;
+        if (first) {
+            first = false;
+            if (maxKeysPerPortal == 9999) {
+                if (sortedKeys[key].count > 5) {
+                    liHtml += " (<input type=\"number\" id=\"kppCap\" name=\"kppCap\""
+                        + " value = \"" + ReasonableCap(sortedKeys[key].count) + "\""
+                        + " min=\"1\" max=\"" + sortedKeys[key].count + "\">"
+                        + " <button onclick='CapKppCount();'>cap</button>)";
+                }
+            }
+            else {
+                liHtml += " (<button onclick='UncapKppCount();'>uncap</button>)";
+            }
+        }
         $("#keys_required").append("<li class=\"unchecked\" id=\""
             + sortedKeys[key].guid
             + "\">"
-            + ("    " + sortedKeys[key].count).slice(-4)
-            + " <a href="
-            + `"https://intel.ingress.com/intel?pll=${sortedKeys[key].lat},${sortedKeys[key].lng}" target="_blank">`
-            + `${sortedKeys[key].title}</a>`
+            + liHtml
             + "</li>");
         $("#"+sortedKeys[key].guid).data("checked", false);
     }
-    $("#keys_heading").html(function(items, prop){
+    let requiredKeyCount = function(items, prop){
         return items.reduce( function(a, b){
             return a + b[prop];
         }, 0)
-    }(sortedKeys, "count") + " keys required:");
+    }(sortedKeys, "count");
+    let requiredKeysHtml = requiredKeyCount + " keys required";
+    if (maxKeys == 9999) {
+        if (requiredKeyCount > 10) {
+            requiredKeysHtml += " (<input type=\"number\" id=\"keyCap\" name=\"keyCap\""
+                + " value = \"" + ReasonableCap(requiredKeyCount) + "\""
+                + " min=\"1\" max=\"" + requiredKeyCount + "\">"
+                + " <button onclick='CapKeyCount();'>cap</button>)";
+        }
+    }
+    else {
+        requiredKeysHtml += " (<button onclick='UncapKeyCount();'>uncap</button>)";
+    }
+    $("#keys_heading").html(requiredKeysHtml);
                   
     let center = {};
     center.lat = (triangle[0].lat + triangle[1].lat + triangle[2].lat)/3;
@@ -451,11 +688,18 @@ function BuildField(portal, triangle) {
         + center.lat
         + ","
         + center.lng
-        + "&" + FormatTriangle(triangle[0], triangle[1], triangle[2]));
+        + "&" + FormatTriangle(triangle[0], triangle[1], triangle[2])
+    );
     $("#outer_triangle").html("Outer triangle");
+    
+    // Link for sharing the current field
+    $("#share").attr('href',
+        window.location.origin + window.location.pathname + "?guid=" + ExtendedFieldGuid(triangle)
+    );
+    $("#share").html("Share");
 
     // Open the IndexedDB containing which checkboxes should be checked
-    let request = window.indexedDB.open("MaxMu" + FieldGuid(triangle), 1);
+    let request = window.indexedDB.open("MaxMu" + ExtendedFieldGuid(triangle), 1);
     request.onerror = function(event) {
         console.error("openDb:", event.target.errorCode);
         checkboxDB = false;
@@ -663,22 +907,30 @@ function initializeMap()
                         });
                     }
                   
-                    let bounds = GetURLParameter("pls");
-                    if (typeof bounds != "undefined") {
-                        bounds = PlsArgToArray(bounds);
-                        let indices = [];
-                        for (let seg=0; seg<bounds.length; seg++) {
-                            let index = FindIndex(allPortals, bounds[seg].slice(0,2));
-                            if (!indices.includes(index)) indices.push(index);
-                            index = FindIndex(allPortals, bounds[seg].slice(2,4));
-                            if (!indices.includes(index)) indices.push(index);
-                        }
-                  
-                        // If it's a field we already know about, select it.  Otherwise add it & select it.
-                        let triangle = [allPortals[indices[0]], allPortals[indices[1]], allPortals[indices[2]]];
+                    let guid = GetURLParameter("guid");
+                    if (typeof guid != "undefined") {
+                        let triangle = ParseExtendedFieldGuid(guid);
                         SelectFieldInDropDown(triangle);
-                  
                         BuildField(allPortals.slice(), triangle);
+                    }
+                    else {
+                        let bounds = GetURLParameter("pls");
+                        if (typeof bounds != "undefined") {
+                            bounds = PlsArgToArray(bounds);
+                            let indices = [];
+                            for (let seg=0; seg<bounds.length; seg++) {
+                                let index = FindIndex(allPortals, bounds[seg].slice(0,2));
+                                if (!indices.includes(index)) indices.push(index);
+                                index = FindIndex(allPortals, bounds[seg].slice(2,4));
+                                if (!indices.includes(index)) indices.push(index);
+                            }
+                  
+                            // If it's a field we already know about, select it.  Otherwise add it & select it.
+                            let triangle = [allPortals[indices[0]], allPortals[indices[1]], allPortals[indices[2]]];
+                            SelectFieldInDropDown(triangle);
+                  
+                            BuildField(allPortals.slice(), triangle);
+                        }
                     }
                 }
             }
@@ -779,7 +1031,15 @@ function initializeMap()
         <p id="keys_heading"></p><ul id="keys_required" class="no_bullet"></ul>
         <p id="links_heading"></p><ul id="links" class="no_bullet"></ul>
         <p><a id="outer_triangle" href="" target="_blank"></a></p>
+        <p><a id="share" href="" target="_blank"></a></p>
     </div>
 </div>
 </body>
 </html>
+<!-- 
+TODO:
+* Continuous spine option
+
+http://localhost:8080/?guid=g3d9e5c7324d74d2db15e23814af944bf_11___g4a37063c82af4c81b838ee0fbd0ac4c5_16___g870d7e2250a44a24b1b400222764df36_11
+http://localhost:8080/?guid=g3d9e5c7324d74d2db15e23814af944bf_11___g4a37063c82af4c81b838ee0fbd0ac4c5_16___g870d7e2250a44a24b1b400222764df36_11__L7
+-->
