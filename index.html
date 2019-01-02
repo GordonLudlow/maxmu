@@ -263,7 +263,7 @@ function SelectFieldInDropDown(triangle) {
     $("#playbox").val(fieldGuid); // Select it
 }
 
-function FindLargestInnerTriangle(triangle, portal, spine, stealth) {
+function FindLargestInnerTriangle(triangle, portal, stealth) {
     // Cull points not strictly in the triangle
     for (let i=0; i<portal.length; ) {
         if (portal[i] == triangle[0]
@@ -360,11 +360,10 @@ function FindLargestInnerTriangle(triangle, portal, spine, stealth) {
     let b,c;
     if (continuousSpine) {
         let tempTri = JSON.parse(JSON.stringify(triangle));
-        previousPoint = JSON.parse(JSON.stringify(tempTri[spine]));
-        tempTri.splice(spine,1);
-            
-        b = tempTri[0];
-        c = tempTri[1];
+        previousPoint = tempTri[0];
+
+        b = tempTri[1];
+        c = tempTri[2];
     }
 
     for (let i=0; i<portal.length; i++) {
@@ -433,7 +432,7 @@ function FindLargestInnerTriangle(triangle, portal, spine, stealth) {
     IncrementKeyCount(innerTriangle[1], 1);
     IncrementKeyCount(innerTriangle[2], 1);
     
-    let innerArea = FindLargestInnerTriangle(innerTriangle, portal, spine, stealth);
+    let innerArea = FindLargestInnerTriangle(innerTriangle, portal, stealth);
 
     if (!stealth) {
         let compositeGuid = previousPoint.guid + "_" + innerTriangle[1].guid + "_" + innerTriangle[2].guid + "_" + innerTriangle[0].guid;
@@ -561,12 +560,18 @@ function BuildField(portal, triangle) {
     
     // Recursively find all the triangles
     if (continuousSpine) {
+        // Triangle should be [spine, anchor, anchor] (that's what FindLargestInnerTriangle assumes)
+        let option = [];
+        option.push(triangle);
+        option.push([triangle[1], triangle[0], triangle[2]]);
+        option.push([triangle[2], triangle[0], triangle[1]]);
+    
         let bestSpine = 0;
-        let bestArea = FindLargestInnerTriangle(triangle, portal.slice(), 0, true);
+        let bestArea = FindLargestInnerTriangle(option[0], portal.slice(), true);
         ResetFieldState();
         triangleCount = 1;
         
-        let area = FindLargestInnerTriangle(triangle, portal.slice(), 1, true);
+        let area = FindLargestInnerTriangle(option[1], portal.slice(), true);
         if (area > bestArea) {
             bestArea = area;
             bestSpine = 1;
@@ -574,7 +579,7 @@ function BuildField(portal, triangle) {
         ResetFieldState();
         triangleCount = 1;
 
-        area = FindLargestInnerTriangle(triangle, portal.slice(), 2, true);
+        area = FindLargestInnerTriangle(option[2], portal.slice(), true);
         if (area >= bestArea) {
             bestArea = area;
             bestSpine = 2;
@@ -582,12 +587,12 @@ function BuildField(portal, triangle) {
 
         ResetFieldState();
         triangleCount = 1;
-        FindLargestInnerTriangle(triangle, portal, bestSpine, false);
+        FindLargestInnerTriangle(option[bestSpine], portal, false);
 
         console.log("Continuous spine area " + bestArea);
     }
     else {
-        let bestArea = FindLargestInnerTriangle(triangle, portal, 0, false);
+        let bestArea = FindLargestInnerTriangle(triangle, portal, false);
         console.log("Discontinuous spine area " + bestArea);
     }
 
@@ -606,16 +611,20 @@ function BuildField(portal, triangle) {
     $("#results").data("triangle", triangle);
     $("#links_heading").html("Links:");
     
-    let layerCountHtml = triangleCount + " layers";
+    let layerCountHtml = triangleCount + " layers"
+        + " ( <input type=\"number\" id=\"triangleCap\" name=\"triangleCap\"";
     if (maxLayers == 9999) {
-        layerCountHtml += " (<input type=\"number\" id=\"triangleCap\" name=\"triangleCap\""
-            + " value = \"7\""
-            + " min=\"1\" max=\"" + triangleCount + "\">"
-            + " <button onclick='CapLayerCount();'>cap</button>)";
+        layerCountHtml += " value = \"7\"";
     }
     else {
-        layerCountHtml += " (<button onclick='UncapLayerCount();'>uncap</button>)";
+        layerCountHtml += " value = \"" + triangleCount + "\"";
     }
+    layerCountHtml += " min=\"1\">"
+        + " <button onclick='CapLayerCount();'>cap</button> ";
+    if (maxLayers < 9999) {
+        layerCountHtml += " <button onclick='UncapLayerCount();'>uncap</button>";
+    }
+    layerCountHtml += " )";
     if (continuousSpine) {
         layerCountHtml += " with a continuous spine (<button onclick='AllowDiscontinuousSpine();'>allow discontinuous</button>)";
     }
@@ -639,16 +648,25 @@ function BuildField(portal, triangle) {
             + `${sortedKeys[key].title}</a>`;
         if (first) {
             first = false;
-            if (maxKeysPerPortal == 9999) {
-                if (sortedKeys[key].count > 5) {
-                    liHtml += " (<input type=\"number\" id=\"kppCap\" name=\"kppCap\""
-                        + " value = \"" + ReasonableCap(sortedKeys[key].count) + "\""
-                        + " min=\"1\" max=\"" + sortedKeys[key].count + "\">"
-                        + " <button onclick='CapKppCount();'>cap</button>)";
+            let capHtml = "";
+            if (sortedKeys[key].count > 5) {
+                capHtml = " <input type=\"number\" id=\"kppCap\" name=\"kppCap\""
+                        + " value = \"";
+                if (maxKeysPerPortal < 9999) {
+                    capHtml += maxKeysPerPortal;
                 }
+                else {
+                    capHtml += ReasonableCap(sortedKeys[key].count);
+                }
+                capHtml += "\""
+                        + " min=\"1\">"
+                        + " <button onclick='CapKppCount();'>cap</button> ";
             }
-            else {
-                liHtml += " (<button onclick='UncapKppCount();'>uncap</button>)";
+            if (maxKeysPerPortal < 9999) {
+                capHtml += " <button onclick='UncapKppCount();'>uncap</button> ";
+            }
+            if (capHtml.length) {
+                liHtml += " (" + capHtml + ")";
             }
         }
         $("#keys_required").append("<li class=\"unchecked\" id=\""
@@ -664,16 +682,25 @@ function BuildField(portal, triangle) {
         }, 0)
     }(sortedKeys, "count");
     let requiredKeysHtml = requiredKeyCount + " keys required";
-    if (maxKeys == 9999) {
-        if (requiredKeyCount > 10) {
-            requiredKeysHtml += " (<input type=\"number\" id=\"keyCap\" name=\"keyCap\""
-                + " value = \"" + ReasonableCap(requiredKeyCount) + "\""
-                + " min=\"1\" max=\"" + requiredKeyCount + "\">"
-                + " <button onclick='CapKeyCount();'>cap</button>)";
+    let capHtml = "";
+    if (requiredKeyCount > 10) {
+        capHtml = " <input type=\"number\" id=\"keyCap\" name=\"keyCap\""
+            + " value = \"";
+        if (maxKeys < 9999) {
+            capHtml += maxKeys;
         }
+        else {
+            capHtml += ReasonableCap(requiredKeyCount);
+        }
+        capHtml += "\""
+            + " min=\"1\">"
+            + " <button onclick='CapKeyCount();'>cap</button> ";
     }
-    else {
-        requiredKeysHtml += " (<button onclick='UncapKeyCount();'>uncap</button>)";
+    if (maxKeys < 9999) {
+        capHtml += " <button onclick='UncapKeyCount();'>uncap</button> ";
+    }
+    if (capHtml.length) {
+        requiredKeysHtml += " (" + capHtml + ")";
     }
     $("#keys_heading").html(requiredKeysHtml);
                   
@@ -1036,10 +1063,3 @@ function initializeMap()
 </div>
 </body>
 </html>
-<!-- 
-TODO:
-* Continuous spine option
-
-http://localhost:8080/?guid=g3d9e5c7324d74d2db15e23814af944bf_11___g4a37063c82af4c81b838ee0fbd0ac4c5_16___g870d7e2250a44a24b1b400222764df36_11
-http://localhost:8080/?guid=g3d9e5c7324d74d2db15e23814af944bf_11___g4a37063c82af4c81b838ee0fbd0ac4c5_16___g870d7e2250a44a24b1b400222764df36_11__L7
--->
