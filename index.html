@@ -264,16 +264,25 @@ function SelectFieldInDropDown(triangle) {
 }
 
 function FindLargestInnerTriangle(triangle, portal, stealth) {
+    if (verbose) {
+        console.log("FindLargestInnerTriangle");
+        console.log(triangle);
+        console.log(portal.length + " portals");
+        console.log(stealth? "stealth mode" : "updating map and DOM");
+    }
+
     // Cull points not strictly in the triangle
-    for (let i=0; i<portal.length; ) {
-        if (portal[i] == triangle[0]
-        || portal[i] == triangle[1]
-        || portal[i] == triangle[2]
+    let i = portal.length;
+    while (i--) {
+        if (portal[i].guid == triangle[0].guid
+        || portal[i].guid == triangle[1].guid
+        || portal[i].guid == triangle[2].guid
         || !pointInTriangle(portal[i], triangle)) {
             portal.splice(i,1);
         }
-        else {
-            i++;
+        else if (portal[i].guid == triangle[0].guid) {
+            console.log("guids are equal.  what's up?");
+            debugger;
         }
     }
     
@@ -344,11 +353,17 @@ function FindLargestInnerTriangle(triangle, portal, stealth) {
         let a = copy[0];
         let b = copy[1];
         let c = copy[2];
-        return Math.abs(
+        let innermostArea = Math.abs(
               (a.x * (b.y-c.y))
             + (b.x * (c.y-a.y))
             + (c.x * (a.y-b.y))
         );
+        if (verbose) {
+            console.log("Innermost triangle area " + innermostArea);
+            console.log(triangle);
+            console.log(copy);
+        }
+        return innermostArea;
     }
     
     triangleCount++;
@@ -400,6 +415,11 @@ function FindLargestInnerTriangle(triangle, portal, stealth) {
                 }
             }
         }
+    }
+    
+    if (verbose) {
+        console.log("Next point");
+        console.log(innerTriangle[0]);
     }
     
     if (!stealth) {
@@ -556,6 +576,11 @@ var selectedPortals = [];
 function BuildField(portal, triangle) {
     // TODO: Move all the math to a web worker (or maybe not.  It's really fast).  Also, move the javascript and css out of index.html.
 
+    if (verbose) {
+        console.log("Build Field.  " + portal.length + " portals.");
+        console.log(triangle);
+    }
+
     triangleCount = 1;
     
     // Recursively find all the triangles
@@ -566,25 +591,46 @@ function BuildField(portal, triangle) {
         option.push([triangle[1], triangle[0], triangle[2]]);
         option.push([triangle[2], triangle[0], triangle[1]]);
     
+        if (verbose) { console.log("trial0"); console.log(option[0]); }
         let bestSpine = 0;
         let bestArea = FindLargestInnerTriangle(option[0], portal.slice(), true);
+        if (verbose) {
+            console.log(option[0]);
+            console.log(" area0 " + bestArea);
+        }
         ResetFieldState();
         triangleCount = 1;
         
+        if (verbose) { console.log("trial1"); console.log(option[1]); }
         let area = FindLargestInnerTriangle(option[1], portal.slice(), true);
+        if (verbose) {
+            console.log(option[1]);
+            console.log(" area1 " + area);
+        }
         if (area > bestArea) {
+            console.log("new best");
             bestArea = area;
             bestSpine = 1;
         }
         ResetFieldState();
         triangleCount = 1;
 
+        if (verbose) { console.log("trial2"); console.log(option[1]); }
         area = FindLargestInnerTriangle(option[2], portal.slice(), true);
-        if (area >= bestArea) {
+        if (verbose) {
+            console.log(option[2]);
+            console.log(" area2 " + area);
+        }
+        if (area > bestArea) {
+            console.log("new best");
             bestArea = area;
             bestSpine = 2;
         }
 
+        if (verbose) {
+            console.log(option[bestSpine]);
+        }
+        
         ResetFieldState();
         triangleCount = 1;
         FindLargestInnerTriangle(option[bestSpine], portal, false);
@@ -619,7 +665,7 @@ function BuildField(portal, triangle) {
     else {
         layerCountHtml += " value = \"" + triangleCount + "\"";
     }
-    layerCountHtml += " min=\"1\">"
+    layerCountHtml += " min=\"1\" max=\"999\">"
         + " <button onclick='CapLayerCount();'>cap</button> ";
     if (maxLayers < 9999) {
         layerCountHtml += " <button onclick='UncapLayerCount();'>uncap</button>";
@@ -659,7 +705,7 @@ function BuildField(portal, triangle) {
                     capHtml += ReasonableCap(sortedKeys[key].count);
                 }
                 capHtml += "\""
-                        + " min=\"1\">"
+                        + " min=\"1\" max=\"999\">"
                         + " <button onclick='CapKppCount();'>cap</button> ";
             }
             if (maxKeysPerPortal < 9999) {
@@ -693,7 +739,7 @@ function BuildField(portal, triangle) {
             capHtml += ReasonableCap(requiredKeyCount);
         }
         capHtml += "\""
-            + " min=\"1\">"
+            + " min=\"1\" max=\"999\">"
             + " <button onclick='CapKeyCount();'>cap</button> ";
     }
     if (maxKeys < 9999) {
@@ -720,9 +766,11 @@ function BuildField(portal, triangle) {
     $("#outer_triangle").html("Outer triangle");
     
     // Link for sharing the current field
-    $("#share").attr('href',
-        window.location.origin + window.location.pathname + "?guid=" + ExtendedFieldGuid(triangle)
-    );
+    let shareHref = window.location.origin + window.location.pathname + "?";
+    if (verbose)
+        shareHref += "verbose=true&";
+    shareHref += "guid=" + ExtendedFieldGuid(triangle);
+    $("#share").attr('href', shareHref);
     $("#share").html("Share");
 
     // Open the IndexedDB containing which checkboxes should be checked
@@ -783,6 +831,7 @@ function BuildField(portal, triangle) {
 }
 
 var allPortals = []; // array of all known portals
+var verbose;
 
 function initializeMap()
 {
@@ -795,6 +844,8 @@ function initializeMap()
         
         map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions);
         mapInitialized=true;
+        
+        verbose = GetURLParameter("verbose");
 
         // Load the portal coordinates
         // [{"title":"Title", "guid":"guid", "latlng":"lat,lng"},...]
@@ -1019,7 +1070,7 @@ function initializeMap()
                 document.removeEventListener("mousemove", resize, false);
             }, false);
         })
-        .fail(function(jqXHR, textStatus, errorThrown) { 
+        .fail(function(jqXHR, textStatus, errorThrown) { S
             console.log('getJSON request failed! ' + textStatus); 
             console.log("incoming Text " + jqXHR.responseText);
         });
