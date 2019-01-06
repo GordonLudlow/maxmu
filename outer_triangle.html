@@ -2,7 +2,7 @@
 
 <html>
 <head>
-<title>Max Mu Portal Entry</title>
+<title>Max Mu Field Finder</title>
 <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
 <style type="text/css">
 html { height: 100%; }
@@ -120,11 +120,28 @@ function SanitizeGuid(guid) {
     return sanitized;
 }
 
-function FindLargestTriangle() {
+function FieldGuid(triangle) {
+    let guids = [triangle[0].guid, triangle[1].guid, triangle[2].guid];
+    guids.sort();
+    return guids[0] + "___" + guids[1] + "___" + guids[2];
+}
+
+function FormatPls(triangle) {
+    return      triangle[0].latlng + "," + triangle[1].latlng
+        + "_" + triangle[0].latlng + "," + triangle[2].latlng
+        + "_" + triangle[1].latlng + "," + triangle[2].latlng;
+}
+
+function ClearSolution() {
     $("#TriangleError").remove();
     $("#BuildField").remove();
+    $("#CheckIntel").remove();
     if (solutionPoly) solutionPoly.setMap(null);
+}
 
+function FindLargestTriangle() {
+    ClearSolution();
+    
     let points = playbox;
     let maxArea = 0;
     let triangle = [];
@@ -182,7 +199,9 @@ function FindLargestTriangle() {
             fillOpacity: 0.05,
             map: map
         });
-        let buildField = $('<a href="" id="BuildField">Build Field</a>');
+        let checkIntel = $('<p><a href="https://intel.ingress.com/intel?pls=' + FormatPls(triangle) + '" id="CheckIntel" target="_blank">Check Intel Map</a></p>');
+        $("#controls").append(checkIntel);
+        let buildField = $('<p><a href="./index.html?guid=' + FieldGuid(triangle) + '" id="BuildField" target="_blank">Build Field</a></p>');
         $("#controls").append(buildField);
     }
     else {
@@ -225,6 +244,7 @@ function makeMarker(p, iconUrl, lat, lng) {
         // Bounds button
         if (playbox.some(e => e.guid === guid)) {
             buttons['Remove from playbox'] = function () {
+                ClearSolution();
                 playbox.splice(playbox.findIndex(p => p.guid == guid), 1);
                 if (playboxPoly) {
                     playboxPoly.setMap(null);
@@ -256,12 +276,12 @@ function makeMarker(p, iconUrl, lat, lng) {
                     });
                 }
                 $(this).dialog('close');
-                infoWindow.close();
             };
         }
         else {
             if (!PointInPolygon(selectedPortal, playbox)) {
                 buttons['Add to playbox'] = function () {
+                    ClearSolution();
                     playbox.push(selectedPortal);
                     if (playbox.length >= 3) {
                         if (playbox.length > 3) {
@@ -296,7 +316,6 @@ function makeMarker(p, iconUrl, lat, lng) {
                             });
                     }
                     $(this).dialog('close');
-                    infoWindow.close();
                 };
             }
         }
@@ -308,11 +327,11 @@ function makeMarker(p, iconUrl, lat, lng) {
                     selectingLink = false;
                     $("#LinkPrompt").remove();
                     $(this).dialog('close');
-                    infoWindow.close();
                 };
             }
             else {
                 buttons['Link to ' + selectedLink.title] = function () {
+                    ClearSolution();
                     links.push({
                         from: selectedLink,
                         to: selectedPortal,
@@ -329,7 +348,6 @@ function makeMarker(p, iconUrl, lat, lng) {
                     selectingLink = false;
                     $("#LinkPrompt").remove();
                     $(this).dialog('close');
-                    infoWindow.close();
                 };
             }
         }
@@ -342,20 +360,19 @@ function makeMarker(p, iconUrl, lat, lng) {
                 + '</p>');
                 $("#controls").append(linkPrompt);
                 $(this).dialog('close');
-                infoWindow.close();
             }
         }
         for (link in links) {
             if (links[link].from.guid == guid || links[link].to.guid == guid) {
                 buttons['Delete link ' + links[link].from.title + " => " + links[link].to.title] = (function closure(link) { return function () {
+                    ClearSolution();
                     links[link].line.setMap(null);
                     links.splice(link,1);
                     $(this).dialog('close');
-                    infoWindow.close();
                 }})(link);
             }
         }
-        $("#dialog").dialog({buttons: buttons, title: dialogTitle});
+        $("#dialog").dialog({buttons: buttons, title: dialogTitle, close: function() {infoWindow.close();}});
     });
 
     markers[p.guid] = marker;
