@@ -116,18 +116,27 @@ var maxKeysPerPortal = 9999;
 var continuousSpine = false;
 var keysRequired = {};
 
+const ignoredPortal = './images/enl_reso_01.png';
+const unusedPortal = './images/neutral.png';
+
 function ResetFieldState() {
     triangleCount = 0;
     keysRequired = {};
+    selectingPortals = false;
+    selectedPortals = [];
 
     // Remove dom elements that were dynamically added
     $("#keys_required").empty();
     $("#links").empty();
+    $("#prompt").html("");
     
-    // Turn all the portals back to green (= not needed)
+    // Turn all the portals back to green (= not needed) and unhide hidden portals
     for (marker in markers) {
         if (markers[marker].getIcon().url == './images/hum_reso_08.png') {
-            markers[marker].setIcon({url: './images/enl_reso_01.png', scaledSize: new google.maps.Size(20, 20), anchor: new google.maps.Point(10,10)});
+            markers[marker].setIcon({url: unusedPortal, scaledSize: new google.maps.Size(20, 20), anchor: new google.maps.Point(10,10)});
+        }
+        else {
+            markers[marker].setMap(map);
         }
     }
     
@@ -749,12 +758,19 @@ function BuildField(portal, triangle) {
         requiredKeysHtml += " (" + capHtml + ")";
     }
     $("#keys_heading").html(requiredKeysHtml);
-                  
+
+    // Center the map
     let center = {};
     center.lat = (triangle[0].lat + triangle[1].lat + triangle[2].lat)/3;
     center.lng = (triangle[0].lng + triangle[1].lng + triangle[2].lng)/3;
     map.setCenter(new google.maps.LatLng(center));
-            
+    
+    // Hide unused portals
+    for (marker in markers) {
+        if (markers[marker].getIcon().url != './images/hum_reso_08.png') {
+            markers[marker].setMap(null);
+        }
+    }
     // The stock intel page errors out with more than a dozen triangles.  So let's just do the outermost
     $("#outer_triangle").attr('href',
         "https://intel.ingress.com/intel?ll="
@@ -858,15 +874,23 @@ function initializeMap()
                 let latlngArray = data.portals[i].latlng.split(',');
                 let lat = parseFloat(latlngArray[0]);
                 let lng = parseFloat(latlngArray[1]);
+                let rawGuid = data.portals[i].guid;
                 
-                if (ignore.some(e => e.guid === data.portals[i].guid)) {
+                data.portals[i].lat = lat;
+                data.portals[i].lng = lng;
+                data.portals[i].x = lng; // convexHull function wants x,y
+                data.portals[i].y = lat;
+                data.portals[i].guid = SanitizeGuid(rawGuid);
+                  
+                if (ignore.some(e => e.guid === rawGuid)) {
                     console.log("Skipping " + data.portals[i].title);
-                    let marker = new google.maps.Marker({
+                    let marker  = new google.maps.Marker({
                         position: new google.maps.LatLng(lat, lng),
                         map: map,
-                        icon: {url: './images/neutral.png', scaledSize: new google.maps.Size(20, 20), anchor: new google.maps.Point(10,10)},
+                        icon: {url: ignoredPortal, scaledSize: new google.maps.Size(20, 20), anchor: new google.maps.Point(10,10)},
                         title: data.portals[i].title + " " + data.portals[i].latlng
                     });
+                    markers[data.portals[i].guid] = marker;
                     let infoWindow = new google.maps.InfoWindow({
                         content: data.portals[i].title + " " + data.portals[i].latlng
                     });
@@ -875,21 +899,16 @@ function initializeMap()
                     });
                     continue;
                 }
-
-                data.portals[i].lat = lat;
-                data.portals[i].lng = lng;
-                data.portals[i].x = lng; // convexHull function wants x,y
-                data.portals[i].y = lat;
-                data.portals[i].guid = SanitizeGuid(data.portals[i].guid);
                 
                 let name = data.portals[i].title + " " + data.portals[i].latlng;
                 let guid = data.portals[i].guid;
                 let marker = new google.maps.Marker({
                     position: new google.maps.LatLng(lat, lng),
                     map: map,
-                    icon: {url: './images/enl_reso_01.png', scaledSize: new google.maps.Size(20, 20), anchor: new google.maps.Point(10,10)},
+                    icon: {url: unusedPortal, scaledSize: new google.maps.Size(20, 20), anchor: new google.maps.Point(10,10)},
                     title: name
                 });
+                markers[guid] = marker;
                 
                 let div = document.createElement('div');
                 div.innerHTML = name;
@@ -900,7 +919,7 @@ function initializeMap()
                         let selectedIndex = selectedPortals.indexOf(portal);
                         if (selectedIndex > -1) {
                             // Unselect it
-                            markers[portal.guid].setIcon({url: './images/enl_reso_01.png', scaledSize: new google.maps.Size(20, 20), anchor: new google.maps.Point(10,10)});
+                            markers[portal.guid].setIcon({url: unusedPortal, scaledSize: new google.maps.Size(20, 20), anchor: new google.maps.Point(10,10)});
                             // Remove any yellow line we may have drawn
                             if (selectedPortals.length == 2) {
                                 for (element in fieldSpecificMapElements) {
@@ -959,8 +978,6 @@ function initializeMap()
                 google.maps.event.addListener(marker, 'click', function () {
                     infoWindow.open(map, marker);
                 });
-
-                markers[guid] = marker;
                 
                 allPortals.push(data.portals[i]);
             }
