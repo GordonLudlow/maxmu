@@ -1049,6 +1049,47 @@ function initializeMap()
                     $("#prompt").html("<p>Select portals by clicking on the portal and then on it's name.</p>");
                     selectingPortals = true;
                 }
+                else if (valueSelected=="Clear") {
+                    if ($('#playbox option').length < 4) {
+                        // We only have "Select", "New", "Clear"
+                        $("#dialog").dialog({
+                            modal:true,
+                            title:'Nothing to clear.  Build some fields first.',
+                            buttons: {
+                                Ok: function() {
+                                    $( this ).dialog( "close" );
+                                }
+                            }
+                        });
+                    }
+                    else {
+                        $("#dialog").dialog({
+                            modal:true,
+                            title:'Delete all fields?',
+                            buttons: {
+                                Ok: function() {
+                                    // Clear the UI
+                                    $('#playbox option:gt(2)').remove().end();
+                                    
+                                    // Clear the DB
+                                    if (fieldDB) {
+                                        let store = fieldDB.transaction(['fields'],'readwrite').objectStore('fields');
+                                        store.clear();
+                                    }
+                                    
+                                    // Clear any field that was drawn
+                                    ResetFieldState();
+                                    
+                                    $( this ).dialog( "close" );
+                                },
+                                Cancel: function() {
+                                    $( this ).dialog( "close" );
+                                }
+
+                            }
+                        });
+                    }
+                }
                 else if (valueSelected != "Select") {
                     // valueSelected is a FieldGuid
                     if (fieldDB) {
@@ -1099,6 +1140,8 @@ function initializeMap()
 
 <body>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
 <script>
     $.getJSON('apikey.json', function (data) {
         var s = document.createElement("script");
@@ -1116,6 +1159,7 @@ function initializeMap()
         <select id="playbox">
             <option value="Select"><i>Select field...</i></option>
             <option value="New">&lt;New...&gt;</option>
+            <option value="Clear">&lt;Clear...&gt;</option>
         </select>
         <div id="prompt"></div>
     </div>
@@ -1129,5 +1173,6 @@ function initializeMap()
         <p><a id="share" href="" target="_blank"></a></p>
     </div>
 </div>
+<div id="dialog"></div>
 </body>
 </html>
