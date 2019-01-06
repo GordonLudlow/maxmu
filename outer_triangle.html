@@ -175,6 +175,16 @@ function FindLargestTriangle() {
                     }
                 }
                 if (intersects) continue;
+                
+                // if the link is entirely within the triangle, skip it.  It'll cause problems with the inner fields.
+                let testTri = [points[a], points[b], points[c]];
+                for (let link=0; link<links.length; link++) {
+                    if (PointInPolygon(links[link].from, testTri)) {
+                        intersects = true;
+                        break;
+                    }
+                }
+                if (intersects) continue;
 
                 // Find twice the area of the triangle abc
                 let area = Math.abs(
@@ -184,7 +194,7 @@ function FindLargestTriangle() {
                 );
                 if (area > maxArea) {
                     maxArea = area;
-                    triangle = [points[a], points[b], points[c]];
+                    triangle = testTri;
                 }
             }
         }
@@ -199,7 +209,16 @@ function FindLargestTriangle() {
             fillOpacity: 0.05,
             map: map
         });
-        let checkIntel = $('<p><a href="https://intel.ingress.com/intel?pls=' + FormatPls(triangle) + '" id="CheckIntel" target="_blank">Check Intel Map</a></p>');
+        
+        let center = {};
+        center.lat = (triangle[0].lat + triangle[1].lat + triangle[2].lat)/3;
+        center.lng = (triangle[0].lng + triangle[1].lng + triangle[2].lng)/3;
+
+        let checkIntel = $('<p><a href="https://intel.ingress.com/intel?ll='
+            + center.lat + "," + center.lng
+            + '&z=12'
+            + '&pls=' + FormatPls(triangle)
+            + '" id="CheckIntel" target="_blank">Check Intel Map</a></p>');
         $("#controls").append(checkIntel);
         let buildField = $('<p><a href="./index.html?guid=' + FieldGuid(triangle) + '" id="BuildField" target="_blank">Build Field</a></p>');
         $("#controls").append(buildField);
