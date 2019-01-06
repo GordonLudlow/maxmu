@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<title>Max Mu Portal Entry</title>
+<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+<style type="text/css">
+html { height: 100%; }
+body { height: 100%; margin: 0; padding: 0; }
+.container {display: flex; height: 100%; flex-direction: column;}
+#map_canvas {width:100%; height:90%; min-height: 200px;}
+ul.no_bullet {list-style-type: none; padding: 0; margin: 0; }
+li.checked {background: url('./images/checked.png') no-repeat left top; padding-left: 36px; padding-top: 4px; line-height: 1.5em; height:auto}
+li.unchecked {background: url('./images/unchecked.png') no-repeat left top; padding-left: 36px; padding-top: 4px; line-height: 1.5em; height:auto}
+</style>
+
+<script type="text/javascript">
+
+var map;
+var mapInitialized = false;
+
+var markers = {};
+
+var ignore = [];
+var portal = [];
+
+var links = [];
+var selectingLink = false;
+var selectedLink = {};
+
+var playbox = [];
+var playboxPoly = false;
+var solutionPoly = false;
+
+// https://github.com/indy256/convexhull-js/blob/master/convexhull.js
+(function () {
+ 'use strict';
+ 
+ function convexHull(points) {
+ points.sort(function (a, b) {
+             return a.x != b.x ? a.x - b.x : a.y - b.y;
+             });
+ 
+ var n = points.length;
+ var hull = [];
+ 
+ for (var i = 0; i < 2 * n; i++) {
+ var j = i < n ? i : 2 * n - 1 - i;
+ while (hull.length >= 2 && removeMiddle(hull[hull.length - 2], hull[hull.length - 1], points[j]))
+ hull.pop();
+ hull.push(points[j]);
+ }
+ 
+ hull.pop();
+ return hull;
+ }
+ 
+ function removeMiddle(a, b, c) {
+ var cross = (a.x - b.x) * (c.y - b.y) - (a.y - b.y) * (c.x - b.x);
+ var dot = (a.x - b.x) * (c.x - b.x) + (a.y - b.y) * (c.y - b.y);
+ return cross < 0 || cross == 0 && dot <= 0;
+ }
+ 
+ // export as AMD module / Node module / browser or worker variable
+ if (typeof define === 'function' && define.amd) define(function () { return convexHull; });
+ else if (typeof module !== 'undefined') module.exports = convexHull;
+ else if (typeof self !== 'undefined') self.convexHull = convexHull;
+ else window.convexHull = convexHull;
+ })();
+
+// https://github.com/substack/point-in-polygon/blob/master/index.js (modified for data format)
+function PointInPolygon(point, vs) {
+    // ray-casting algorithm based on
+    // http://www.ecse.rpi.edu/Homepages/wrf/Research/Short_Notes/pnpoly.html
+    
+    let x = point.x, y = point.y;
+    
+    let inside = false;
+    for (let i = 0, j = vs.length - 1; i < vs.length; j = i++) {
+        let xi = vs[i].x, yi = vs[i].y;
+        let xj = vs[j].x, yj = vs[j].y;
+        
+        let intersect = ((yi > y) != (yj > y))
+            && (x < (xj - xi) * (y - yi) / (yj - yi) + xi);
+        if (intersect) inside = !inside;
+    }
+    
+    return inside;
+};
+
+// https://stackoverflow.com/questions/9043805/test-if-two-lines-intersect-javascript-function
+// returns true iff the line from (a,b)->(c,d) intersects with (p,q)->(r,s)
+function Intersects(a,b,c,d,p,q,r,s) {
+  var det, gamma, lambda;
+  det = (c - a) * (s - q) - (r - p) * (d - b);
+  if (det === 0) {
+    return false;
+  } else {
+    lambda = ((s - q) * (r - a) + (p - r) * (s - b)) / det;
+    gamma = ((b - d) * (r - a) + (c - a) * (s - b)) / det;
+    return (0 < lambda && lambda < 1) && (0 < gamma && gamma < 1);
+  }
+};
+
+function SanitizeGuid(guid) {
+    // Convert the guid into a string that can be used as an ID for a DOM element
+    const reservedCharacters = "!\"#$%&'()*+,-./:;<=>?@[\\]^`{|}~";
+    let sanitized = "";
+    if (guid[0] >= '0' && guid[0] <= '9') {
+        sanitized = "g";
+    }
+    for (let i=0; i<guid.length; i++) {
+        if (reservedCharacters.includes(guid[i])) {
+            sanitized += "_";
+        }
+        else {
+            sanitized += guid[i];
+        }
+    }
+    return sanitized;
+}
+
+function FindLargestTriangle() {
+    $("#TriangleError").remove();
+    $("#BuildField").remove();
+    if (solutionPoly) solutionPoly.setMap(null);
+
+    let points = playbox;
+    let maxArea = 0;
+    let triangle = [];
+    for (let p = 0; p < portal.length; p++) {
+        if (PointInPolygon(portal[p], playbox)) {
+            points.push(portal[p]);
+        }
+    }
+    for (let a=0; a<points.length-2; a++) {
+        for (let b=a+1; b<points.length-1; b++) {
+            // if a-b intersects any link, continue
+            let intersects = false;
+            for (let link=0; link<links.length; link++) {
+                if (Intersects(points[a].x, points[a].y, points[b].x, points[b].y, links[link].from.x, links[link].from.y, links[link].to.x, links[link].to.y)) {
+                    intersects = true;
+                    break;
+                }
+            }
+            if (intersects) continue;
+            
+            for (let c=b+1; c<points.length; c++) {
+                // if a-c or b-c intersects any link, continue
+                for (let link=0; link<links.length; link++) {
+                    if (Intersects(points[a].x, points[a].y, points[c].x, points[c].y, links[link].from.x, links[link].from.y, links[link].to.x, links[link].to.y)) {
+                        intersects = true;
+                        break;
+                    }
+                    if (Intersects(points[b].x, points[b].y, points[c].x, points[c].y, links[link].from.x, links[link].from.y, links[link].to.x, links[link].to.y)) {
+                        intersects = true;
+                        break;
+                    }
+                }
+                if (intersects) continue;
+
+                // Find twice the area of the triangle abc
+                let area = Math.abs(
+                    (points[a].x * (points[b].y-points[c].y))
+                    + (points[b].x * (points[c].y-points[a].y))
+                    + (points[c].x * (points[a].y-points[b].y))
+                );
+                if (area > maxArea) {
+                    maxArea = area;
+                    triangle = [points[a], points[b], points[c]];
+                }
+            }
+        }
+    }
+    if (triangle.length) {
+        solutionPoly = new google.maps.Polygon({
+            paths: triangle,
+            strokeColor: '#0000FF',
+            strokeOpacity: 1,
+            strokeWeight: 2,
+            fillColor: '#0000FF',
+            fillOpacity: 0.05,
+            map: map
+        });
+        let buildField = $('<a href="" id="BuildField">Build Field</a>');
+        $("#controls").append(buildField);
+    }
+    else {
+        let triangleError= $('<p id="TriangleError">Error: All the triangles in the playbox intersect the links.  Try a bigger playbox.</p>');
+        $("#controls").append(triangleError);
+    }
+
+}
+
+function makeMarker(p, iconUrl, lat, lng) {
+    let name = p.title + " " + p.latlng;
+    let marker = new google.maps.Marker({
+        position: new google.maps.LatLng(lat, lng),
+        map: map,
+        icon: {url: iconUrl, scaledSize: new google.maps.Size(20, 20), anchor: new google.maps.Point(10,10)},
+        title: name
+    });
+    
+    let div = document.createElement('div');
+    div.innerHTML = name;
+    div.setAttribute("id", p.guid);
+    jQuery.data(div, "guid", p.guid);
+
+    let infoWindow = new google.maps.InfoWindow({
+        content: div
+    });
+    jQuery.data(div, "infoWindow", infoWindow);
+
+    google.maps.event.addListener(marker, 'click', function () {
+        infoWindow.open(map, marker);
+        
+        // Dialog box
+        let guid = jQuery.data(infoWindow.getContent(), "guid");
+        let selectedPortal = portal.find(p => p.guid == guid);
+        let dialogTitle = selectedPortal.title;
+        let boundsFunction;
+        let boundsText;
+        let buttons = {};
+        
+        // Bounds button
+        if (playbox.some(e => e.guid === guid)) {
+            buttons['Remove from playbox'] = function () {
+                playbox.splice(playbox.findIndex(p => p.guid == guid), 1);
+                if (playboxPoly) {
+                    playboxPoly.setMap(null);
+                }
+                if (playbox.length == 2) {
+                    $("#FindTri").remove();
+                    playboxPoly  = new google.maps.Polyline({
+                            path: playbox,
+                            strokeColor: '#0000FF',
+                            strokeOpacity: 1,
+                            strokeWeight: 2,
+                            fillColor: '#0000FF',
+                            fillOpacity: 0.05,
+                            map: map
+                        });
+                }
+                else if (playbox.length >= 3) {
+                    if (playbox.length > 3) {
+                        playbox = convexHull(playbox);
+                    }
+                    playboxPoly = new google.maps.Polygon({
+                        paths: playbox,
+                        strokeColor: '#0000FF',
+                        strokeOpacity: 1,
+                        strokeWeight: 2,
+                        fillColor: '#0000FF',
+                        fillOpacity: 0.05,
+                        map: map
+                    });
+                }
+                $(this).dialog('close');
+                infoWindow.close();
+            };
+        }
+        else {
+            if (!PointInPolygon(selectedPortal, playbox)) {
+                buttons['Add to playbox'] = function () {
+                    playbox.push(selectedPortal);
+                    if (playbox.length >= 3) {
+                        if (playbox.length > 3) {
+                            playbox = convexHull(playbox);
+                        } else {
+                            // Just added the third point.  We can find the largest unobstructed triangle now.
+                            let findTriangleButton= $('<input type="button" value="Find largest triangle" id="FindTri" onclick="FindLargestTriangle();"/>');
+                            $("#controls").append(findTriangleButton);
+                        }
+                        if (playboxPoly) {
+                            playboxPoly.setMap(null);
+                        }
+                        playboxPoly = new google.maps.Polygon({
+                            paths: playbox,
+                            strokeColor: '#0000FF',
+                            strokeOpacity: 1,
+                            strokeWeight: 2,
+                            fillColor: '#0000FF',
+                            fillOpacity: 0.05,
+                            map: map
+                        });
+                    }
+                    else if (playbox.length == 2) {
+                        playboxPoly = new google.maps.Polyline({
+                                path: playbox,
+                                strokeColor: '#0000FF',
+                                strokeOpacity: 1,
+                                strokeWeight: 2,
+                                fillColor: '#0000FF',
+                                fillOpacity: 0.05,
+                                map: map
+                            });
+                    }
+                    $(this).dialog('close');
+                    infoWindow.close();
+                };
+            }
+        }
+        
+        // Link button(s)
+        if (selectingLink) {
+            if (selectedLink.guid == guid) {
+                buttons['Cancel link'] = function () {
+                    selectingLink = false;
+                    $("#LinkPrompt").remove();
+                    $(this).dialog('close');
+                    infoWindow.close();
+                };
+            }
+            else {
+                buttons['Link to ' + selectedLink.title] = function () {
+                    links.push({
+                        from: selectedLink,
+                        to: selectedPortal,
+                        line: new google.maps.Polyline({
+                                path: [selectedLink, selectedPortal],
+                                strokeColor: '#FF0000',
+                                strokeOpacity: 1,
+                                strokeWeight: 2,
+                                fillColor: '#0000FF',
+                                fillOpacity: 0.05,
+                                map: map
+                            })
+                    });
+                    selectingLink = false;
+                    $("#LinkPrompt").remove();
+                    $(this).dialog('close');
+                    infoWindow.close();
+                };
+            }
+        }
+        else {
+            buttons['Add link'] = function () {
+                selectingLink = true;
+                selectedLink = selectedPortal;
+                let linkPrompt = $('<p id="LinkPrompt">Select portal to complete link from '
+                + selectedPortal.title
+                + '</p>');
+                $("#controls").append(linkPrompt);
+                $(this).dialog('close');
+                infoWindow.close();
+            }
+        }
+        for (link in links) {
+            if (links[link].from.guid == guid || links[link].to.guid == guid) {
+                buttons['Delete link ' + links[link].from.title + " => " + links[link].to.title] = (function closure(link) { return function () {
+                    links[link].line.setMap(null);
+                    links.splice(link,1);
+                    $(this).dialog('close');
+                    infoWindow.close();
+                }})(link);
+            }
+        }
+        $("#dialog").dialog({buttons: buttons, title: dialogTitle});
+    });
+
+    markers[p.guid] = marker;
+}
+
+function initializeMap()
+{
+    if (!mapInitialized)
+    {
+        // Default map options
+        var mapOptions = { center: new google.maps.LatLng(47.488451,-122.169666),
+                            zoom: 10,
+                            mapTypeId: google.maps.MapTypeId.ROADMAP };
+        
+        map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions);
+        mapInitialized=true;
+
+        // Load the portal coordinates
+        // [{"title":"Title", "guid":"guid", "latlng":"lat,lng"},...]
+        $.ajaxSetup({
+            cache:false
+        });          
+        $.getJSON('portals.json', function (data) {
+            ignore = data.ignore;
+            portal = data.portals;
+            
+            for (let i = 0; i < ignore.length; i++) {
+                ignore[i].guid = SanitizeGuid(ignore[i].guid);
+            }
+            for (let i = 0; i < portal.length; i++) {
+                portal[i].guid = SanitizeGuid(portal[i].guid);
+                
+                // convexHull function wants x,y
+                let latlngArray = data.portals[i].latlng.split(',');
+                let lat = parseFloat(latlngArray[0]);
+                let lng = parseFloat(latlngArray[1]);
+                data.portals[i].x = lng;
+                data.portals[i].y = lat;
+                
+                // google maps wants lat and lng
+                data.portals[i].lat = lat;
+                data.portals[i].lng = lng;
+            }
+            
+            let minLat = 9000;
+            let minLng = 9000;
+            let maxLat = -9000;
+            let maxLng = -9000;
+            for (let i=0; i<portal.length; i++) {
+                let latlngArray = portal[i].latlng.split(',');
+                let lat = parseFloat(latlngArray[0]);
+                let lng = parseFloat(latlngArray[1]);
+                if (lat < minLat) {
+                    minLat = lat;
+                }
+                if (lat > maxLat) {
+                    maxLat = lat;
+                }
+                if (lng < minLng) {
+                    minLng = lng;
+                }
+                if (lng > maxLng) {
+                    maxLng = lng;
+                }
+                if (ignore.some(e => e.guid === portal[i].guid)) {
+                    makeMarker(portal[i], './images/neutral.png', lat, lng);
+                }
+                else {
+                    makeMarker(portal[i], './images/hum_reso_08.png', lat, lng);
+                }
+                
+            }
+  
+                  
+            let center = {};
+            center.lat = (minLat + maxLat)/2;
+            center.lng = (minLng + maxLng)/2;
+            map.setCenter(new google.maps.LatLng(center));
+            
+        })
+        .fail(function(jqXHR, textStatus, errorThrown) { 
+            console.log('getJSON request failed! ' + textStatus); 
+            console.log("incoming Text " + jqXHR.responseText);
+        });
+    } 
+}
+
+</script>
+</head>
+
+<body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+<script>
+    $.getJSON('apikey.json', function (data) {
+        var s = document.createElement("script");
+        s.type = "text/javascript";
+        s.src = "http://maps.googleapis.com/maps/api/js?key=" + data.key + "&callback=initializeMap";
+        $("head").append(s);
+    })
+    .fail(function(jqXHR, textStatus, errorThrown) { 
+        console.log('getJSON request failed! ' + textStatus); 
+        console.log("incoming Text " + jqXHR.responseText);
+    });
+</script>
+<div class="container">
+    <div id="map_canvas"></div>
+    <div id="controls"></div>
+</div>
+<div id="dialog"></div>
+</body>
+</html>
