@@ -870,8 +870,8 @@ function initializeMap()
         });
         let jsonFile = 'portals.json';
         // This is wrong.  The server should be configured to server up .json.gz instead of .json.
-        if (location.hostname != "localhost" && location.hostname != "127.0.0.1")
-            jsonFile += '.gz';
+        //if (location.hostname != "localhost" && location.hostname != "127.0.0.1")
+        //    jsonFile += '.gz';
         $.getJSON(jsonFile, function (data) {
             let ignore = data.ignore;
             for (let i=0; i<data.portals.length; i++) {
@@ -1132,7 +1132,7 @@ function initializeMap()
                 document.removeEventListener("mousemove", resize, false);
             }, false);
         })
-        .fail(function(jqXHR, textStatus, errorThrown) { S
+        .fail(function(jqXHR, textStatus, errorThrown) {
             console.log('getJSON request failed! ' + textStatus); 
             console.log("incoming Text " + jqXHR.responseText);
         });

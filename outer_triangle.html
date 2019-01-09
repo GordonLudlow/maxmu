@@ -416,8 +416,8 @@ function initializeMap()
         });
         // This is wrong.  The server should be configured to server up .json.gz instead of .json.
         let jsonFile = 'portals.json';
-        if (location.hostname != "localhost" && location.hostname != "127.0.0.1")
-            jsonFile += '.gz';
+        //if (location.hostname != "localhost" && location.hostname != "127.0.0.1")
+        //    jsonFile += '.gz';
         $.getJSON(jsonFile, function (data) {
             ignore = data.ignore;
             portal = data.portals;
