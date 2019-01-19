@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<title>Max Mu Portal Entry</title>
+<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+<style type="text/css">
+html { height: 100%; }
+body { height: 100%; margin: 0; padding: 0; }
+.container {display: flex; height: 100%; flex-direction: column;}
+#map_canvas {width:100%; height:50%; min-height: 200px;}
+#border {width: 100%; height: 1%; min-height: 5px; background-color: #0078B5; cursor: ns-resize;}
+#results {width:100%; height:49%; overflow:auto; min-height: 100px;}
+ul.no_bullet {list-style-type: none; padding: 0; margin: 0; }
+li.checked {background: url('./images/checked.png') no-repeat left top; padding-left: 36px; padding-top: 4px; line-height: 1.5em; height:auto}
+li.unchecked {background: url('./images/unchecked.png') no-repeat left top; padding-left: 36px; padding-top: 4px; line-height: 1.5em; height:auto}
+</style>
+
+<script type="text/javascript">
+
+var map;
+var mapInitialized = false;
+
+function initializeMap()
+{
+    if (!mapInitialized)
+    {
+        // Default map options
+        var mapOptions = { center: new google.maps.LatLng(47.488451,-122.169666),
+                            zoom: 10,
+                            mapTypeId: google.maps.MapTypeId.ROADMAP };
+        
+        map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions);
+        mapInitialized=true;
+        
+        // we probably didn't even need a map, but whatever
+        
+        
+        let triangle = [new google.maps.LatLng(47.48793,-122.173166),
+                        new google.maps.LatLng(47.488078,-122.169664),
+                        new google.maps.LatLng(47.486942,-122.171348)];
+        let area = google.maps.geometry.spherical.computeArea(triangle);
+        console.log(area);
+    }
+
+}
+
+
+
+</script>
+</head>
+
+<body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script>
+    $.getJSON('apikey.json', function (data) {
+        var s = document.createElement("script");
+        s.type = "text/javascript";
+        s.src = "http://maps.googleapis.com/maps/api/js?key=" + data.key + "&libraries=geometry&callback=initializeMap";
+        $("head").append(s);
+    })
+    .fail(function(jqXHR, textStatus, errorThrown) { 
+        console.log('getJSON request failed! ' + textStatus); 
+        console.log("incoming Text " + jqXHR.responseText);
+    });
+</script>
+<div class="container">
+    <div id="map_canvas"></div>
+    <div id="border"></div>
+    <div id="results"></div>
+</div>
+</body>
+</html>

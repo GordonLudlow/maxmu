@@ -124,6 +124,7 @@ function ResetFieldState() {
     keysRequired = {};
     selectingPortals = false;
     selectedPortals = [];
+    spine = [];
 
     // Remove dom elements that were dynamically added
     $("#keys_required").empty();
@@ -150,6 +151,7 @@ function ResetFieldState() {
     $("#keys_heading").html("");
     $("#links_heading").html("");
     $("#outer_triangle").html("");
+    $("#spine").html("");
     $("#share").html("");
 }
 
@@ -177,6 +179,16 @@ function FormatTriangleAndBackLink(p0,p1,p2,bl) {
         + "_" + p0.lat + "," + p0.lng + "," + p2.lat + "," + p2.lng
         + "_" + p1.lat + "," + p1.lng + "," + p2.lat + "," + p2.lng
         + "_" + p0.lat + "," + p0.lng + "," + bl.lat + "," + bl.lng;
+}
+
+function FormatSpine() {
+    let result = "pls=";
+    let prefix = "";
+    for (let i=0; i<spine.length;i++) {
+        result += prefix + spine[i][0].lat + "," + spine[i][0].lng + "," + spine[i][1].lat + "," + spine[i][1].lng;
+        prefix = "_";
+    }
+    return result;
 }
 
 function FormatPortal(p) {
@@ -454,6 +466,7 @@ function FindLargestInnerTriangle(triangle, portal, stealth) {
                         map: map
         });
         fieldSpecificMapElements.push(polyLine);
+        spine.push([innerTriangle[0], previousPoint]);
     }
     
     IncrementKeyCount(previousPoint, 0);
@@ -581,6 +594,8 @@ var markers = {};
 
 var selectingPortals = false;
 var selectedPortals = [];
+
+var spine = [];
 
 function BuildField(portal, triangle) {
     // TODO: Move all the math to a web worker (or maybe not.  It's really fast).  Also, move the javascript and css out of index.html.
@@ -779,7 +794,22 @@ function BuildField(portal, triangle) {
         + center.lng
         + "&" + FormatTriangle(triangle[0], triangle[1], triangle[2])
     );
-    $("#outer_triangle").html("Outer triangle");
+    $("#outer_triangle").html("Outer triangle on Intel map");
+    
+    // and the spine
+    let spineCenter = [0,0];
+    for (let i=0; i<spine.length; i++) {
+        spineCenter[0] += spine[i][0].lat + spine[i][1].lat;
+        spineCenter[1] += spine[i][0].lng + spine[i][1].lng;
+    }
+    $("#spine").attr('href',
+        "https://intel.ingress.com/intel?ll="
+        + spineCenter[0]/(spine.length*2)
+        + ","
+        + spineCenter[1]/(spine.length*2)
+        + "&" + FormatSpine()
+    );
+    $("#spine").html("Spine on Intel map");
     
     // Link for sharing the current field
     let shareHref = window.location.origin + window.location.pathname + "?";
@@ -1075,10 +1105,19 @@ function initializeMap()
                                     // Clear the UI
                                     $('#playbox option:gt(2)').remove().end();
                                     
-                                    // Clear the DB
+                                    // If there's no field DB, there shouldn't be any checkbox DBs either
                                     if (fieldDB) {
-                                        let store = fieldDB.transaction(['fields'],'readwrite').objectStore('fields');
-                                        store.clear();
+                                       // Delete the checkbox DBs
+                                        let fieldStore = fieldDB.transaction(['fields'],'readwrite').objectStore('fields');
+                                        fieldStore.getAll().onsuccess = function(event) {
+                                            let resultArray = event.target.result;
+                                            for (let i=0; i<resultArray.length; i++) {
+                                                console.log("Deleting " + "MaxMu" + resultArray[i].guid);
+                                                window.indexedDB.deleteDatabase("MaxMu" + resultArray[i].guid);
+                                            }
+                                        };
+                                        // Clear the field DB
+                                        fieldStore.clear();
                                     }
                                     
                                     // Clear any field that was drawn
@@ -1174,6 +1213,7 @@ function initializeMap()
         <p id="keys_heading"></p><ul id="keys_required" class="no_bullet"></ul>
         <p id="links_heading"></p><ul id="links" class="no_bullet"></ul>
         <p><a id="outer_triangle" href="" target="_blank"></a></p>
+        <p><a id="spine" href="" target="_blank"></a></p>
         <p><a id="share" href="" target="_blank"></a></p>
     </div>
 </div>
