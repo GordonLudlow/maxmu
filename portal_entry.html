@@ -159,6 +159,13 @@ function initializeMap()
     } 
 }
 
+function RemovePortal(id, guid) {
+    $("#bogus" + id).remove();
+    let index = portal.map(function(x) {return x.guid; }).indexOf(guid);
+    portal.splice(index, 1);
+    $("#portals").val(JSON.stringify({"ignore": ignore, "portals": portal}));
+}
+
 function userDataEntered() {
     let rawText = $('#input').val();
     let cleanText = "";
@@ -202,6 +209,51 @@ function userDataEntered() {
     }
     let dirty = false;
     let newPortals = JSON.parse(cleanText);
+    let minLat=9000;
+    let minLng=9000;
+    let maxLat=-9000;
+    let maxLng=-9000;
+    
+    // Check for bogus portals
+    $("#removals").empty();
+    for (let i=0; i<newPortals.length; i++) {
+        let latlngArray = newPortals[i].latlng.split(',');
+        let lat = parseFloat(latlngArray[0]);
+        let lng = parseFloat(latlngArray[1]);
+        if (lat < minLat) {
+            minLat = lat;
+        }
+        if (lat > maxLat) {
+            maxLat = lat;
+        }
+        if (lng < minLng) {
+            minLng = lng;
+        }
+        if (lng > maxLng) {
+            maxLng = lng;
+        }
+    }
+    let bogus = 0;
+    for (let i=0; i<portal.length; i++) {
+        let latlngArray = portal[i].latlng.split(',');
+        let lat = parseFloat(latlngArray[0]);
+        let lng = parseFloat(latlngArray[1]);
+        if (lat >= minLat && lat <= maxLat && lng >= minLng && lng <= maxLng) {
+            // Old portal is in the range being imported
+            if (!newPortals.some(e => e.guid === portal[i].guid)) {
+                // old portal is not among those being imported
+                // Add an option to remove it from the data
+                $("#removals").append(
+                    '<p id=bogus' + bogus + '>Old portal <a href="https://intel.ingress.com/intel?pll='
+                    + portal[i].latlng + '" target="_blank">' + portal[i].title
+                    + '</a> <button onclick=\'RemovePortal(' + bogus + ', "' + portal[i].guid + '");\'>Remove</button></p>'
+                );
+                bogus++;
+            }
+        }
+    }
+    
+    // Add new portals
     for (let i=0; i<newPortals.length; i++) {
         if (!portal.some(e => e.guid === newPortals[i].guid)) {
             dirty = true;
@@ -217,6 +269,8 @@ function userDataEntered() {
     if (dirty) {
         $("#portals").val(JSON.stringify({"ignore": ignore, "portals": portal}));
     }
+    
+    $('#input').val('');
 }
 
 </script>
@@ -244,6 +298,7 @@ function userDataEntered() {
         <textarea id="input" rows='8' style="width:90%"></textarea>
         <button onclick='userDataEntered();'>Add portals</button>
         <p />
+        <div id="removals"></div>
         <label for="portals">portals.json</label>
         <textarea id='portals' rows='8' style="width:90%"></textarea>
     </div>
