@@ -26,8 +26,11 @@ var markers = {};
 var ignore = [];
 var portal = [];
 
-function makeMarker(p, iconUrl, lat, lng) {
-    let name = p.title + " " + p.latlng;
+function makeMarker(p, iconUrl) {
+    let lat = parseFloat(p.coordinates.lat);
+    let lng = parseFloat(p.coordinates.lng);
+
+    let name = p.title + " " + lat + "," + lng;
     let marker = new google.maps.Marker({
         position: new google.maps.LatLng(lat, lng),
         map: map,
@@ -82,13 +85,14 @@ function initializeMap()
 
         // Load the portal coordinates
         // [{"title":"Title", "guid":"guid", "latlng":"lat,lng"},...]
+        // format changed from "latlng":"lat,lng"
+        // to "coordinates":{"lat":"lat","lng":"lng"}
+        // See:
+        // https://github.com/modkin/Ingress-IITC-Multi-Export/commit/eb26edf3937ec317fbd71d9b5df1b19885784f6f
         $.ajaxSetup({
             cache:false
-        });          
-        // This is wrong.  The server should be configured to server up .json.gz instead of .json.
+        });
         let jsonFile = 'portals.json';
-        //if (location.hostname != "localhost" && location.hostname != "127.0.0.1")
-        //    jsonFile += '.gz';
         $.getJSON(jsonFile, function (data) {
             ignore = data.ignore;
             portal = data.portals;
@@ -100,9 +104,8 @@ function initializeMap()
             let maxLat = -9000;
             let maxLng = -9000;
             for (let i=0; i<portal.length; i++) {
-                let latlngArray = portal[i].latlng.split(',');
-                let lat = parseFloat(latlngArray[0]);
-                let lng = parseFloat(latlngArray[1]);
+                let lat = parseFloat(portal[i].coordinates.lat);
+                let lng = parseFloat(portal[i].coordinates.lng);
                 if (lat < minLat) {
                     minLat = lat;
                 }
@@ -116,10 +119,10 @@ function initializeMap()
                     maxLng = lng;
                 }
                 if (ignore.some(e => e.guid === portal[i].guid)) {
-                    makeMarker(portal[i], './images/neutral.png', lat, lng);
+                    makeMarker(portal[i], './images/neutral.png');
                 }
                 else {
-                    makeMarker(portal[i], './images/hum_reso_08.png', lat, lng);
+                    makeMarker(portal[i], './images/hum_reso_08.png');
                 }
                 
             }
@@ -217,9 +220,8 @@ function userDataEntered() {
     // Check for bogus portals
     $("#removals").empty();
     for (let i=0; i<newPortals.length; i++) {
-        let latlngArray = newPortals[i].latlng.split(',');
-        let lat = parseFloat(latlngArray[0]);
-        let lng = parseFloat(latlngArray[1]);
+        let lat = parseFloat(newPortals[i].coordinates.lat);
+        let lng = parseFloat(newPortals[i].coordinates.lng);        
         if (lat < minLat) {
             minLat = lat;
         }
@@ -235,9 +237,8 @@ function userDataEntered() {
     }
     let bogus = 0;
     for (let i=0; i<portal.length; i++) {
-        let latlngArray = portal[i].latlng.split(',');
-        let lat = parseFloat(latlngArray[0]);
-        let lng = parseFloat(latlngArray[1]);
+        let lat = parseFloat(portal[i].coordinates.lat);
+        let lng = parseFloat(portal[i].coordinates.lng);   
         if (lat >= minLat && lat <= maxLat && lng >= minLng && lng <= maxLng) {
             // Old portal is in the range being imported
             if (!newPortals.some(e => e.guid === portal[i].guid)) {
@@ -245,8 +246,10 @@ function userDataEntered() {
                 // Add an option to remove it from the data
                 $("#removals").append(
                     '<p id=bogus' + bogus + '>Old portal <a href="https://intel.ingress.com/intel?pll='
-                    + portal[i].latlng + '" target="_blank">' + portal[i].title
-                    + '</a> <button onclick=\'RemovePortal(' + bogus + ', "' + portal[i].guid + '");\'>Remove</button></p>'
+                    + portal[i].coordinates.lat + "," + portal[i].coordinates.lng + '" target="_blank">' 
+                    + portal[i].title
+                    + '</a> <button onclick=\'RemovePortal(' + bogus + ', "' + portal[i].guid 
+                    + '");\'>Remove</button></p>'
                 );
                 bogus++;
             }
@@ -257,11 +260,8 @@ function userDataEntered() {
     for (let i=0; i<newPortals.length; i++) {
         if (!portal.some(e => e.guid === newPortals[i].guid)) {
             dirty = true;
-            let latlngArray = newPortals[i].latlng.split(',');
-            let lat = parseFloat(latlngArray[0]);
-            let lng = parseFloat(latlngArray[1]);
                 
-            makeMarker(newPortals[i], './images/enl_reso_01.png', lat, lng);
+            makeMarker(newPortals[i], './images/enl_reso_01.png');
             
             portal.push(newPortals[i]);
         }

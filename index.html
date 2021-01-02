@@ -895,25 +895,23 @@ function initializeMap()
 
         // Load the portal coordinates
         // [{"title":"Title", "guid":"guid", "latlng":"lat,lng"},...]
+        // Format changed from "latlng" to "coordinates":{"lat":lat,"lng":lng}
         $.ajaxSetup({
             cache:false
         });
         let jsonFile = 'portals.json';
-        // This is wrong.  The server should be configured to server up .json.gz instead of .json.
-        //if (location.hostname != "localhost" && location.hostname != "127.0.0.1")
-        //    jsonFile += '.gz';
         $.getJSON(jsonFile, function (data) {
             let ignore = data.ignore;
             for (let i=0; i<data.portals.length; i++) {
-                let latlngArray = data.portals[i].latlng.split(',');
-                let lat = parseFloat(latlngArray[0]);
-                let lng = parseFloat(latlngArray[1]);
+                let lat = parseFloat(data.portals[i].coordinates.lat);
+                let lng = parseFloat(data.portals[i].coordinates.lng);
                 let rawGuid = data.portals[i].guid;
                 
                 data.portals[i].lat = lat;
                 data.portals[i].lng = lng;
                 data.portals[i].x = lng; // convexHull function wants x,y
                 data.portals[i].y = lat;
+                data.portals[i].latlng = data.portals[i].coordinates.lat + "," + data.portals[i].coordinates.lng;
                 data.portals[i].guid = SanitizeGuid(rawGuid);
                   
                 if (ignore.some(e => e.guid === rawGuid)) {
