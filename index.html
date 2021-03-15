@@ -24,6 +24,7 @@ I mean, it'd be neat if you could easily say, "use a bigger font if the screen i
 ul.no_bullet {list-style-type: none; padding: 0; margin: 0; }
 li.checked {background: url('./images/checked.png') no-repeat left top; padding-left: 36px; padding-top: 4px; line-height: 1.5em; height:auto}
 li.unchecked {background: url('./images/unchecked.png') no-repeat left top; padding-left: 36px; padding-top: 4px; line-height: 1.5em; height:auto}
+p.outlined {border-style: solid;}
 </style>
 
 <script type="text/javascript">
@@ -86,20 +87,6 @@ function pointInTriangle(point, triangle) {
     return u>=0 && v>=0 && (u+v < 1)
 }
 
-function GetURLParameter(sParam)
-{
-    let sPageURL = window.location.search.substring(1);
-    let sURLVariables = sPageURL.split('&');
-    for (let i = 0; i < sURLVariables.length; i++)
-    {
-        let sParameterName = sURLVariables[i].split('=');
-        if (sParameterName[0] == sParam)
-        {
-            return sParameterName[1];
-        }
-    }
-}
-
 function PlsArgToArray(plsArg) {
     if (plsArg.includes("_")) {
         return plsArg.split("_").map(function(e) {
@@ -145,6 +132,7 @@ function ResetFieldState() {
     for (element in fieldSpecificMapElements) {
         fieldSpecificMapElements[element].setMap(null);
     }
+    fieldSpecificMapElements = [];
     
     // Remove field related text content
     $("#layer_count").html("");
@@ -215,6 +203,9 @@ function ExtendedFieldGuid(triangle) {
     if (continuousSpine) {
         guid += "__C";
     }
+    if (linksToAvoid.length) {
+        guid += "__A" + EncodeLinksToAvoid();
+    }
 
     return guid;
 }
@@ -225,6 +216,9 @@ function ParseExtendedFieldGuid(guid) {
     // __K<maxKeys>
     // __P<maxKeysPerPortal>
     // __C for continuous spine
+    // __A<fromLat0>,<fromLng0>,<toLat0>,<toLng0>_fromLat1>,<fromLng1>,<toLat1>,<toLng1>_...
+
+    linksToAvoid = []; // if A isn't specfied, there are no links to avoid
 
     let portalGuids = guid.split(/___/g);
     let overrides = portalGuids[2].split(/__/g);
@@ -243,6 +237,9 @@ function ParseExtendedFieldGuid(guid) {
                 break;
             case "C":
                 continuousSpine = true;
+                break;
+            case "A":
+                AddAvoidLinks(overrides[override].slice(1) + "_");
                 break;
         }
     }
@@ -284,6 +281,206 @@ function SelectFieldInDropDown(triangle) {
     $("#playbox").val(fieldGuid); // Select it
 }
 
+function Turn(p1, p2, p3) {
+  a = p1.lng; b = p1.lat; 
+  c = p2.lng; d = p2.lat;
+  e = p3.lng; f = p3.lat;
+  A = (f - b) * (c - a);
+  B = (d - b) * (e - a);
+  return (A > B + Number.EPSILON) ? 1 : (A + Number.EPSILON < B) ? -1 : 0;
+}
+
+function isIntersect(p1, p2, p3, p4) {
+    result = (Turn(p1, p3, p4) != Turn(p2, p3, p4)) && (Turn(p1, p2, p3) != Turn(p1, p2, p4));
+    return result; 
+}
+
+function SerializeIntersectionArgs(p1,p2,p3,p4) {
+    let result = "";
+    // whether or not two lines intersect doesn't depend on the direction of the lines
+    if (p1.lat < p2.lat || (p1.lat == p2.lat && p1.lng < p2.lng)) {
+        result += p1.lat.toString() + "," + p1.lng.toString() + "," 
+                + p2.lat.toString() + "," + p2.lng.toString() + ",";
+    } else { 
+        result += p2.lat.toString() + "," + p2.lng.toString() + "," 
+                + p1.lat.toString() + "," + p1.lng.toString() + ",";
+    }
+    if (p3.lat < p4.lat || (p3.lat == p4.lat && p3.lng < p4.lng)) {
+        result += p3.lat.toString() + "," + p3.lng.toString() + "," 
+                + p4.lat.toString() + "," + p4.lng.toString();
+    } else { 
+        result += p4.lat.toString() + "," + p4.lng.toString() + "," 
+                + p3.lat.toString() + "," + p3.lng.toString();
+    }
+    return result;
+
+}
+
+var isIntersection = (function() {
+    var memo = {};
+    var slice = Array.prototype.slice;
+    function f(p1,p2,p3,p4) {
+        var args = SerializeIntersectionArgs(p1,p2,p3,p4);
+        var value;
+
+        if (args in memo) {
+            value = memo[args];
+            //console.log("redundant", p1, p2, p3, p4);
+        } else {
+            value = isIntersect(p1, p2, p3, p4);
+            memo[args] = value;
+        }
+        return value;
+    }
+    return f;
+})();    
+
+function IsIntersectingTriangle(a, b, c) {
+    if (!linksToAvoid.length)
+        return false;
+    for (let link in linksToAvoid) {
+        if (linksToAvoid.hasOwnProperty(link)) {
+            let from = linksToAvoid[link].from;
+            let to = linksToAvoid[link].to;
+            if (isIntersection(from, to, a, b))
+                return true;
+            if (isIntersection(from, to, a, c))
+                return true;
+            if (isIntersection(from, to, b, c))
+                return true;
+        }
+    }
+    return false;
+}
+
+function AnyNonIntersectingTriangle(portal, triangle, continuousSpine) {
+    if (!linksToAvoid.length)
+        return true;
+
+    // It's not enough to find any triangle that doesn't intersect.
+    // We need to find a triangle that's a candidate for a field layer.
+    let b,c;
+    if (continuousSpine) {
+        let tempTri = JSON.parse(JSON.stringify(triangle));
+        previousPoint = tempTri[0];
+
+        b = tempTri[1];
+        c = tempTri[2];
+    }    
+
+    for (let i=0; i<portal.length; i++) {
+        let a = portal[i];
+        if (continuousSpine) {
+            if (!IsIntersectingTriangle(a, b, c)) {
+                return true;
+            }
+        }
+        else {
+            for (let exclude=0; exclude<3; exclude++) {
+                let tempTri = JSON.parse(JSON.stringify(triangle));
+                let excluded = JSON.parse(JSON.stringify(tempTri[exclude]));
+                tempTri.splice(exclude,1);
+            
+                b = tempTri[0];
+                c = tempTri[1];
+
+                if (!IsIntersectingTriangle(a, b, c)) {
+                    return true;
+                }
+            }
+        }
+    }
+
+    return false;
+}
+
+function GetURLParameter(sParam)
+{
+    let sPageURL = window.location.search.substring(1);
+    return GetURLParameterFromParameters(sPageURL, sParam);
+}
+
+function GetURLParameterFromParameters(parameters, sParam)
+{
+    let sURLVariables = parameters.split('&');
+    for (let i = 0; i < sURLVariables.length; i++)
+    {
+        let sParameterName = sURLVariables[i].split('=');
+        if (sParameterName[0] == sParam)
+        {
+            return sParameterName[1];
+        }
+    }
+    return "";
+}
+
+function GetURLParameterFromUrl(url, sParam)
+{
+    let questionMark = url.indexOf("?");
+    let parameters = url.substr(questionMark+1);
+    return GetURLParameterFromParameters(parameters, sParam);
+}
+
+var linksToAvoid = []; // array of all known portals [{from: {lat: #, lng: #}, to: {lat: #, lng: #}}, ...]
+
+function AddAvoidLinks(links) {
+    let underscore = links.indexOf("_");
+    while (underscore != -1) {
+        let twoPortals = links.substr(0, underscore);
+        let comma = twoPortals.indexOf(",");
+        let latFrom = twoPortals.substr(0,comma);
+        twoPortals = twoPortals.slice(comma+1);
+        comma = twoPortals.indexOf(",");
+        let lngFrom = twoPortals.substr(0,comma);
+        twoPortals = twoPortals.slice(comma+1);
+        comma = twoPortals.indexOf(",");
+        let latTo = twoPortals.substr(0,comma);
+        twoPortals = twoPortals.slice(comma+1);
+        let lngTo = twoPortals;
+
+        linksToAvoid.push({"from": {"lat": Number(latFrom), "lng": Number(lngFrom)}, "to": {"lat": Number(latTo), "lng": Number(lngTo)}});
+
+        links = links.slice(underscore + 1);
+        underscore = links.indexOf("_");
+    }
+}
+
+function AvoidLinks() {
+    // An example intel URL
+    // https://intel.ingress.com/intel?ll=47.392861,-122.1082&z=11&pls=47.488524,-122.271273,47.394262,-122.295249_47.488524,-122.271273,47.544062,-122.328496_47.394262,-122.295249,47.544062,-122.328496
+
+    // What we care about is the "pls" argument
+    // It's of the form lat[0],lng[0],lat[1],lng[1]_lat[2],lng[2],lat[3],lng[3]
+    // to signify links from lat[0],lng[0] to lat[1],lng[1] and from lat[2],lng[2] to lat[3],lng[3]
+
+    let links = GetURLParameterFromUrl($('#avoid_links').val(), "pls") + "_";
+    AddAvoidLinks(links);
+
+    ResetFieldState();
+    BuildField(allPortals.slice(), $("#results").data("triangle"));
+}
+
+function ClearBlockers() {
+    $('#avoid_links').val('');    
+    linksToAvoid = [];
+    ResetFieldState();
+    BuildField(allPortals.slice(), $("#results").data("triangle"));
+}
+
+function EncodeLinksToAvoid() {
+    let delimiter = "";
+    let result = "";
+    for (let link in linksToAvoid) {
+        if (linksToAvoid.hasOwnProperty(link)) {
+            let from = linksToAvoid[link].from;
+            let to = linksToAvoid[link].to;
+            result = result + delimiter + from.lat + "," + from.lng + "," + to.lat + "," + to.lng;
+            delimiter = "_";
+        }
+    }
+    return result;
+}
+
 function FindLargestInnerTriangle(triangle, portal, stealth) {
     if (verbose) {
         console.log("FindLargestInnerTriangle");
@@ -313,7 +510,9 @@ function FindLargestInnerTriangle(triangle, portal, stealth) {
             mkpp = keysRequired[key].count;
     }
 
-    if (!portal.length || triangleCount == maxLayers || (triangleCount+1)*3 > maxKeys || (mkpp >= maxKeysPerPortal)) {
+    let anyNonIntersectingTriangle = AnyNonIntersectingTriangle(portal, triangle, continuousSpine);
+
+    if (!portal.length || triangleCount == maxLayers || (triangleCount+1)*3 > maxKeys || (mkpp >= maxKeysPerPortal) || !anyNonIntersectingTriangle) {
         // We're at the end which is really the beginning.
         // The throws don't matter on this inner triangle.  One portal needs no keys, one needs a key and the third needs 2 keys.
         // So pick the one with the most keys already required to thow from so we don't increase it's count any more.
@@ -405,6 +604,9 @@ function FindLargestInnerTriangle(triangle, portal, stealth) {
     for (let i=0; i<portal.length; i++) {
         let a = portal[i];
         if (continuousSpine) {
+            if (IsIntersectingTriangle(a, b, c)) {
+                continue;
+            }
             let area = Math.abs(
                 (a.x * (b.y-c.y))
                 + (b.x * (c.y-a.y))
@@ -423,6 +625,10 @@ function FindLargestInnerTriangle(triangle, portal, stealth) {
             
                 b = tempTri[0];
                 c = tempTri[1];
+
+                if (IsIntersectingTriangle(a, b, c)) {
+                    continue;
+                }
 
                 let area = Math.abs(
                     (a.x * (b.y-c.y))
@@ -677,6 +883,22 @@ function BuildField(portal, triangle) {
         map: map
     });
     fieldSpecificMapElements.push(polygon);
+
+    // Draw the blocking links we worked around
+    for (let link in linksToAvoid) {
+        if (linksToAvoid.hasOwnProperty(link)) {
+            let from = linksToAvoid[link].from;
+            let to = linksToAvoid[link].to;
+            let polyLine = new google.maps.Polyline({
+                path: [new google.maps.LatLng(from), new google.maps.LatLng(to)],
+                strokeColor: '#000000',
+                strokeOpacity: 1.0,
+                strokeWeight: 2,
+                map: map
+            });
+            fieldSpecificMapElements.push(polyLine);
+        }
+    }
     
     $("#results").data("triangle", triangle);
     $("#links_heading").html("Links:");
@@ -1207,6 +1429,12 @@ function initializeMap()
     <div id="map_canvas"></div>
     <div id="border"></div>
     <div id="results">
+        <p class="outlined">
+            <label for="avoid_links">Links to avoid (intel map link)</label>
+            <textarea id="avoid_links" rows='1' style="width:90%"></textarea>
+            <button onclick='AvoidLinks();'>Add</button>
+            <button onclick='ClearBlockers();'>Clear</button>
+        </p>
         <p id="layer_count"></p>
         <p id="keys_heading"></p><ul id="keys_required" class="no_bullet"></ul>
         <p id="links_heading"></p><ul id="links" class="no_bullet"></ul>
